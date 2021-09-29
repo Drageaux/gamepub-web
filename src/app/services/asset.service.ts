@@ -1,25 +1,41 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import openGraphScraper from 'ts-open-graph-scraper';
+import normalizeUrl from 'normalize-url';
 
+import { BehaviorSubject, from } from 'rxjs';
+import { map, distinct, filter, mergeMap } from 'rxjs/operators';
+
+/**
+ * Web scraper credit: https://dev.to/jacobgoh101/simple--customizable-web-scraper-using-rxjs-and-node-1on7
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AssetService {
-  ogs = openGraphScraper;
-  constructor() {}
+  baseUrl = `https://assetstore.unity.com/`;
+  allUrl$ = new BehaviorSubject(this.baseUrl);
+  uniqueUrl$ = this.allUrl$.pipe(
+    // only crawl base url
+    filter((url) => url.includes(this.baseUrl)),
+    // normalize url for comparison
+    map((url) => normalizeUrl(url, { removeQueryParameters: ['ref', 'ref_'] })),
+    // distinct is a RxJS operator that filters out duplicated values
+    distinct()
+  );
 
-  async scrapeSite(siteUrl: string) {
+  constructor(private http: HttpClient) {}
+
+  scrapeSite(siteUrl: string) {
+    // const urlAndDOM$ = this.uniqueUrl$.pipe(
+    //   // mergeMap((url) => {
+    //   //   return this.http.get(url);
+    //   // })
+    //   map((siteUrl) => this.http.get(siteUrl))
+    // );
+
+    // urlAndDOM$.subscribe(console.log);
     console.log(siteUrl);
-    await this.ogs(
-      {
-        url: siteUrl,
-      }
-      // (error: any, results: any, response: any) => {
-      //   console.log('error:', error); // This is returns true or false. True if there was a error. The error it self is inside the results object.
-      //   console.log('results:', results); // This contains all of the Open Graph results
-      //   console.log('response:', response); // This contains the HTML of page)
-      // }
-    );
+    this.http.get(siteUrl).subscribe((res) => console.log(res), console.error);
   }
 
   private isValidURL(url: string) {
