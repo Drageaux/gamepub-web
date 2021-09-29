@@ -17,6 +17,6 @@ export class AssetDashboardComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    this.assetService.scrapeSite(this.form.value);
+    this.assetService.scrapeSite(this.form.get('link')?.value || '');
   }
 }

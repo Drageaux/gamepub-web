@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <label for="link">Paste Link: </label>
-  <input id="link" type="text" />
+  <input id="link" type="text" formControlName="link" />
   <button type="submit" [disabled]="!form.valid">Submit</button>
 </form>
