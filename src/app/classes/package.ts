@@ -1,5 +1,9 @@
 // mirror OpenUPM's and Unity's structure
 // example Unity package: https://packages.unity.com/com.unity.2d.animation
+
+export type PackageName = string;
+export type VersionName = string;
+
 // Package template
 /*
 category: "2D"
@@ -15,6 +19,16 @@ time: {5.0.8: '2021-09-29T08:08:10Z', 7.0.0: '2021-09-02T10:59:43Z', 3.2.11: '20
 versions: {5.0.8: {…}, 7.0.0: {…}, 3.2.11: {…}, 3.2.10: {…}, 5.0.7: {…}, …}
 _id: "com.unity.2d.animation"
 */
+export interface Package {
+  category: string;
+  description: string;
+  'dist-tags': { latest: string };
+  name: string;
+  provider: string;
+  time: Map<VersionName, string>;
+  versions: Map<VersionName, PackageDetails>;
+  _id: string;
+}
 
 // Version template
 /*
@@ -37,7 +51,15 @@ _id: "com.unity.2d.animation@5.0.8"
 _integrity: "sha512-I54vWnYtxY+yCDiAbcSwuhH6jwFTBP1D1IzQ6vSItMhyLw/vxAb6OfGwQt9xOovKZfG93HliDo9PHch8qvmgNw=="
 _resolved: "/pkgprom/com.unity.2d.animation-5.0.8.tgz"
 */
-
-export interface Package {}
-
-export interface PackageVersion {}
+export interface PackageDetails {
+  category: string;
+  description: string;
+  displayName: string;
+  name: string;
+  relatedPackages: Map<PackageName, VersionName>;
+  repository: { url: string; type: 'git' | string; revisions: 'string' };
+  unity: string;
+  // unityRelease: string;
+  version: VersionName;
+  _id: string;
+}
