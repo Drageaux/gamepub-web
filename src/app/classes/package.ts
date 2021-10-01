@@ -1,2 +1,1 @@
-export class Package {
-}
+export interface Package {}
