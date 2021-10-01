@@ -20,4 +20,6 @@ export class PackageService {
       .get<Map<PackageName, Package>>(`${this.apiUrl}${this.allPackagesUrl}`)
       .pipe(map((val) => val));
   }
+
+  // TODO: parse manifest file
 }

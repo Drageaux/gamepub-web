@@ -1,0 +1,10 @@
+{
+  "/registry/unity": {
+    "target": "https://packages.unity.com/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/registry/unity": ""
+    }
+  }
+}

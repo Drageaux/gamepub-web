@@ -35,6 +35,10 @@ export class AssetService {
 
     // urlAndDOM$.subscribe(console.log);
     console.log(siteUrl);
+    let proxyUrl = siteUrl.startsWith('https://packages.unity.com')
+      ? '/registry/unity'
+      : '/registry/openupm';
+
     this.http
       .get(siteUrl)
       .subscribe((res: any) => console.log(res), console.error);
