@@ -25,8 +25,8 @@ export interface Package {
   'dist-tags': { latest: string };
   name: string;
   provider: string;
-  time: Map<VersionName, string>;
-  versions: Map<VersionName, PackageDetails>;
+  time: Record<VersionName, string>; // "com.unity.""
+  versions: Record<VersionName, PackageDetails>;
   _id: string;
 }
 
@@ -57,7 +57,7 @@ export interface PackageDetails {
   displayName: string;
   name: string;
   relatedPackages: Map<PackageName, VersionName>;
-  repository: { url: string; type: 'git' | string; revisions: 'string' };
+  repository: { url: string; type: 'git' | string; revisions: string };
   unity: string;
   // unityRelease: string;
   version: VersionName;

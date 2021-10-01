@@ -4,6 +4,7 @@ import normalizeUrl from 'normalize-url';
 
 import { BehaviorSubject, from } from 'rxjs';
 import { map, distinct, filter, mergeMap } from 'rxjs/operators';
+import { Package } from '../classes/package';
 
 /**
  * Web scraper credit: https://dev.to/jacobgoh101/simple--customizable-web-scraper-using-rxjs-and-node-1on7
@@ -40,8 +41,16 @@ export class AssetService {
       : '/registry/openupm';
 
     this.http
-      .get('/registry/unity/com.unity.2d.animation')
-      .subscribe((res: any) => console.log(res), console.error);
+      .get<Package>('/registry/unity/com.unity.2d.animation')
+      // .get(
+      //   '/asset/unity/packages/3d/props/polygon-shops-pack-low-poly-3d-art-by-synty-199026'
+      // )
+      .subscribe((res: Package) => {
+        const latestVer = res['dist-tags']?.latest;
+        if (latestVer) {
+          console.log(res.versions[latestVer]);
+        }
+      }, console.error);
   }
 
   private isValidURL(url: string) {
