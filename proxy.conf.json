@@ -6,5 +6,13 @@
     "pathRewrite": {
       "^/registry/unity": ""
     }
+  },
+  "/asset/unity": {
+    "target": "https://assetstore.unity.com/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/asset/unity": ""
+    }
   }
 }
