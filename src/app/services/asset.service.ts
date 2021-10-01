@@ -40,7 +40,7 @@ export class AssetService {
       : '/registry/openupm';
 
     this.http
-      .get(siteUrl)
+      .get('/registry/unity/com.unity.2d.animation')
       .subscribe((res: any) => console.log(res), console.error);
   }
 
