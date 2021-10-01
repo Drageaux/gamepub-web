@@ -1,5 +1,6 @@
 // mirror OpenUPM's and Unity's structure
 // example Unity package: https://packages.unity.com/com.unity.2d.animation
+// Package template
 /*
 category: "2D"
 cnTags: []
@@ -15,7 +16,7 @@ versions: {5.0.8: {…}, 7.0.0: {…}, 3.2.11: {…}, 3.2.10: {…}, 5.0.7: {…
 _id: "com.unity.2d.animation"
 */
 
-// Each Version
+// Version template
 /*
 category: "2D"
 dependencies: {com.unity.2d.common: '4.0.3', com.unity.mathematics: '1.1.0', com.unity.2d.sprite: '1.0.0', com.unity.modules.animation: '1.0.0', com.unity.modules.uielements: '1.0.0'}
