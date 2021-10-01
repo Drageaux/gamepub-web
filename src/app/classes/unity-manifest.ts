@@ -7,6 +7,6 @@ export interface Registry {
 }
 
 export interface UnityManifest {
-  dependencies: Map<PackageName, VersionName>; // "com.unity.""
+  dependencies: Record<PackageName, VersionName>; // "com.unity."
   scopedRegistries: Registry[];
 }
