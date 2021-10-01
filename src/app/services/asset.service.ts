@@ -35,7 +35,9 @@ export class AssetService {
 
     // urlAndDOM$.subscribe(console.log);
     console.log(siteUrl);
-    this.http.get(siteUrl).subscribe((res) => console.log(res), console.error);
+    this.http
+      .get(siteUrl)
+      .subscribe((res: any) => console.log(res), console.error);
   }
 
   private isValidURL(url: string) {
