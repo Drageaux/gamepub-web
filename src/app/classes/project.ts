@@ -3,6 +3,6 @@ import { Asset } from './asset';
 
 export interface Project {
   name: string;
-  assets: Asset[];
-  packages: Package[];
+  assets?: Asset[];
+  packages?: Package[];
 }
