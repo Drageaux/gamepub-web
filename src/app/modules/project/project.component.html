@@ -1,1 +1,3 @@
-<p>project works!</p>
+<ul>
+  <li *ngFor="let i of projContents$ | async">{{ i?.name }}</li>
+</ul>

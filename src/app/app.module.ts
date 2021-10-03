@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 // Feature Modules
 import { AssetDashboardModule } from './modules/asset-dashboard/asset-dashboard.module';
 import { AssetService } from './services/asset.service';
+import { ProjectModule } from './modules/project/project.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { AssetService } from './services/asset.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ProjectModule,
     AssetDashboardModule,
   ],
   providers: [AssetService],

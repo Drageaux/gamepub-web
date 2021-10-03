@@ -11,26 +11,25 @@ import { throwError } from 'rxjs';
 })
 export class ProjectService {
   // data = testData;
+
   constructor(private http: HttpClient) {
-    const owner = 'OpenHogwarts';
-    const repo = 'hogwarts';
-    this.loadRepoTree(owner, repo);
+    // const owner = 'OpenHogwarts';
+    // const repo = 'hogwarts';
+    // this.loadRepoTree(owner, repo);
   }
 
   loadRepoTree(owner: string, repo: string) {
-    this.http
-      .get(`https://api.github.com/repos/${owner}/${repo}`)
-      .pipe(
-        mergeMap((proj: any) => {
-          console.log('proj:', proj);
-          if (proj?.hasOwnProperty('default_branch')) {
-            return this.http.get(
-              `https://api.github.com/repos/${owner}/${repo}/git/trees/${proj['default_branch']}?recursive=0`
-            );
-          } else return throwError('Cannot find default_branch of project!');
-        })
-      )
-      .subscribe(console.log, console.error);
+    return this.http.get(`https://api.github.com/repos/${owner}/${repo}`).pipe(
+      mergeMap((proj: any) => {
+        console.log('proj:', proj);
+        if (proj?.hasOwnProperty('default_branch')) {
+          return this.http.get<any[]>(
+            `https://api.github.com/repos/${owner}/${repo}/contents`
+            // `https://api.github.com/repos/${owner}/${repo}/git/trees/${proj['default_branch']}/root?recursive=0`
+          );
+        } else return throwError('Cannot find default_branch of project!');
+      })
+    );
   }
 
   // TODO: parse project structure
