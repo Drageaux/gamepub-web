@@ -1,3 +1,13 @@
-<ul>
-  <li *ngFor="let i of projContents$ | async">{{ i?.name }}</li>
-</ul>
+<div>
+  <ul>
+    <li *ngFor="let c of projContents$ | async">{{ c?.name }}</li>
+  </ul>
+
+  <!-- <ng-container *ngIf="packageManifest$ | async as manifest"> -->
+  <ul>
+    <li *ngFor="let unityDependency of unityPkgs$ | async | keyvalue">
+      {{ unityDependency | json }}
+    </li>
+  </ul>
+  <!-- </ng-container> -->
+</div>
