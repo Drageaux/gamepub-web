@@ -47,7 +47,7 @@ export class AssetService {
       // )
       .subscribe((res: Package) => {
         const latestVer = res['dist-tags']?.latest;
-        if (latestVer) {
+        if (latestVer && res.versions) {
           console.log(res.versions[latestVer]);
         }
       }, console.error);
