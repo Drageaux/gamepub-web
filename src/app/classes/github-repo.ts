@@ -1,3 +1,4 @@
+// generated using https://jvilk.com/MakeTypes/
 export interface GithubRepo {
   id: number;
   node_id?: string;
