@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { GithubContents } from './../../classes/github-contents';
 import { ProjectService } from 'src/app/services/project.service';
-import { UnityManifest } from 'src/app/classes/unity-manifest';
+import {
+  VersionOfPackage,
+  UnityManifest,
+} from 'src/app/classes/unity-manifest';
 
 @Component({
   selector: 'app-project',
@@ -17,6 +20,7 @@ export class ProjectComponent implements OnInit {
 
   projContents$: Observable<GithubContents[]>;
   packageManifest$: Observable<UnityManifest>;
+  unityPkgs$: Observable<VersionOfPackage>;
 
   constructor(private projService: ProjectService) {
     this.projContents$ = this.projService
@@ -24,6 +28,11 @@ export class ProjectComponent implements OnInit {
       .pipe(tap(console.log));
 
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
+
+    this.unityPkgs$ = this.packageManifest$.pipe(
+      map(this.projService.parseManifest),
+      tap(console.log)
+    );
   }
 
   ngOnInit(): void {}
