@@ -1,3 +1,5 @@
+// A GitHub Content type
+// https://developer.github.com/v3/repos/contents/
 // generated using https://jvilk.com/MakeTypes/
 export interface GithubContents {
   name: string;
@@ -8,7 +10,7 @@ export interface GithubContents {
   html_url: string;
   git_url: string;
   download_url: string;
-  type: string;
+  type: 'file' | 'symlink' | 'dir' | 'submodule';
   _links: GithubLinks;
 }
 
