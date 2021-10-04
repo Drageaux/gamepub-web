@@ -1,6 +1,10 @@
-import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+import { GithubContents } from './../../classes/github-contents';
 import { ProjectService } from 'src/app/services/project.service';
+import { UnityManifest } from 'src/app/classes/unity-manifest';
 
 @Component({
   selector: 'app-project',
@@ -8,10 +12,18 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  projContents$: Observable<any[]>;
+  owner = 'OpenHogwarts';
+  repo = 'hogwarts';
+
+  projContents$: Observable<GithubContents[]>;
+  packageManifest$: Observable<UnityManifest>;
 
   constructor(private projService: ProjectService) {
-    this.projContents$ = projService.loadRepoTree('OpenHogwarts', 'hogwarts');
+    this.projContents$ = this.projService
+      .loadRepoTree('OpenHogwarts', 'hogwarts')
+      .pipe(tap(console.log));
+
+    this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
   }
 
   ngOnInit(): void {}
