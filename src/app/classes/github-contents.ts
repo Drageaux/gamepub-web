@@ -12,6 +12,9 @@ export interface GithubContents {
   download_url: string;
   type: 'file' | 'symlink' | 'dir' | 'submodule';
   _links: GithubLinks;
+
+  content?: string;
+  encoding?: string;
 }
 
 export interface GithubLinks {
