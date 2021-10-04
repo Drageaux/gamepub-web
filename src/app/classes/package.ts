@@ -19,15 +19,19 @@ time: {5.0.8: '2021-09-29T08:08:10Z', 7.0.0: '2021-09-02T10:59:43Z', 3.2.11: '20
 versions: {5.0.8: {…}, 7.0.0: {…}, 3.2.11: {…}, 3.2.10: {…}, 5.0.7: {…}, …}
 _id: "com.unity.2d.animation"
 */
-export interface Package {
-  category: string;
-  description: string;
-  'dist-tags': { latest: string };
+export class Package {
+  category?: string;
+  description?: string;
+  'dist-tags'?: { latest: string };
   name: string;
-  provider: string;
-  time: Record<VersionName, string>; // "com.unity.""
-  versions: Record<VersionName, PackageDetails>;
-  _id: string;
+  provider?: string;
+  time?: Record<VersionName, string>; // "com.unity.""
+  versions?: Record<VersionName, PackageDetails>;
+  _id?: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
 }
 
 // Version template
