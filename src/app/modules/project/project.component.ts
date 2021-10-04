@@ -33,6 +33,8 @@ export class ProjectComponent implements OnInit {
       map(this.projService.parseManifest),
       tap(console.log)
     );
+
+    // TODO: get scoped registries info
   }
 
   ngOnInit(): void {}
