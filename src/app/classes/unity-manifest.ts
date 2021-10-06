@@ -1,9 +1,9 @@
 import { PackageName, VersionName } from './package';
 
-export type VersionOfPackage = Record<PackageName, VersionName>; // "com.unity."
+export type VersionOfPackageMapping = Record<PackageName, VersionName>; // "com.unity."
 
 export interface UnityManifest {
-  dependencies: VersionOfPackage;
+  dependencies: VersionOfPackageMapping;
   scopedRegistries: Registry[];
 }
 
