@@ -64,7 +64,7 @@ export class ProjectService {
           return throwError(err);
         })
       );
-    // uncomment below for test on custom file
+    // delete below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
     // .subscribe((res) => {
     //   for (const [k, v] of Object.entries(res.dependencies)) {
