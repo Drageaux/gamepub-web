@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { GithubContents } from './../../classes/github-contents';
 import { ProjectService } from 'src/app/services/project.service';
-import {
-  VersionOfPackage,
-  UnityManifest,
-} from 'src/app/classes/unity-manifest';
+import { UnityManifest } from 'src/app/classes/unity-manifest';
 
 @Component({
   selector: 'app-project',
@@ -20,7 +17,6 @@ export class ProjectComponent implements OnInit {
 
   projContents$: Observable<GithubContents[]>;
   packageManifest$: Observable<UnityManifest>;
-  unityPkgs$: Observable<VersionOfPackage>;
 
   constructor(private projService: ProjectService) {
     this.projContents$ = this.projService
@@ -28,13 +24,10 @@ export class ProjectComponent implements OnInit {
       .pipe(tap(console.log));
 
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
+  }
 
-    this.unityPkgs$ = this.packageManifest$.pipe(
-      map(this.projService.parseManifest),
-      tap(console.log)
-    );
-
-    // TODO: get scoped registries info
+  getScopedRegistries(manifest: UnityManifest) {
+    return [];
   }
 
   ngOnInit(): void {}

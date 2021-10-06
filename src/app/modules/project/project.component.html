@@ -3,11 +3,19 @@
     <li *ngFor="let c of projContents$ | async">{{ c?.name }}</li>
   </ul>
 
-  <!-- <ng-container *ngIf="packageManifest$ | async as manifest"> -->
-  <ul>
-    <li *ngFor="let unityDependency of unityPkgs$ | async | keyvalue">
-      {{ unityDependency | json }}
+  <ng-container *ngIf="packageManifest$ | async as manifest; else loading">
+    <ul>
+      <li *ngFor="let unityDependency of manifest.dependencies | keyvalue">
+        {{ unityDependency | json }}
+      </li>
+    </ul>
+
+    <!-- <ul>
+    <li *ngFor="let registry of scopedRegistries$ | async | keyvalue">
+      {{ registry | json }}
     </li>
-  </ul>
-  <!-- </ng-container> -->
+  </ul> -->
+  </ng-container>
+
+  <ng-template #loading> Loading... </ng-template>
 </div>
