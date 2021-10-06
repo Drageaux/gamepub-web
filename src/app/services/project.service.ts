@@ -5,8 +5,8 @@ import { UnityManifest } from './../classes/unity-manifest';
 import { Project } from './../classes/project';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { switchMap, mergeMap, map, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { switchMap, mergeMap, map, tap, catchError } from 'rxjs/operators';
+import { of, throwError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,11 @@ export class ProjectService {
     return unityRegistryPkgs;
   }
 
-  getManifest(owner: string, repo: string, path: string = 'Packages') {
+  getManifest(
+    owner: string,
+    repo: string,
+    path: string = 'Packages'
+  ): Observable<UnityManifest> {
     // TODO: Sometimes the file may be in a different location, so we should support custom path later
     // NOTE: Packages or UnityPackageManager folder
     return this.http
@@ -47,15 +51,20 @@ export class ProjectService {
         `https://api.github.com/repos/${owner}/${repo}/contents/${path}/manifest.json`
       )
       .pipe(
-        map((res) => {
+        switchMap((res) => {
           // file type from this API endpoint has base64 encoded content
           if (res.type === 'file' && res.content) {
             const decoded = atob(res.content);
-            return JSON.parse(decoded);
-          } else return throwError('Not a valid file');
+            return of(JSON.parse(decoded) as UnityManifest);
+          } else throw new Error('Not a valid file');
+        }),
+        // throw and catch error https://www.tektutorialshub.com/angular/using-throwerror-in-angular-observable/
+        catchError((err) => {
+          console.error(err);
+          return throwError(err);
         })
       );
-    // delete below for test on custom file
+    // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
     // .subscribe((res) => {
     //   for (const [k, v] of Object.entries(res.dependencies)) {
