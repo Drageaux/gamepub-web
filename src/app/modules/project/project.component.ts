@@ -20,10 +20,7 @@ export class ProjectComponent implements OnInit {
   projContents$: Observable<GithubContents[]>;
   packageManifest$: Observable<UnityManifest>;
 
-  constructor(
-    private projService: ProjectService,
-    private pkgService: PackageService
-  ) {
+  constructor(private projService: ProjectService) {
     this.projContents$ = this.projService
       .loadRepoTree('OpenHogwarts', 'hogwarts')
       .pipe(tap(console.log));
