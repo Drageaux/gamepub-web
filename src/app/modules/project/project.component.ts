@@ -1,3 +1,4 @@
+import { ScopedRegistry } from './../../classes/scoped-registry';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -5,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { GithubContents } from './../../classes/github-contents';
 import { ProjectService } from 'src/app/services/project.service';
 import { UnityManifest } from 'src/app/classes/unity-manifest';
+import { PackageService } from 'src/app/services/package.service';
 
 @Component({
   selector: 'app-project',
@@ -18,7 +20,10 @@ export class ProjectComponent implements OnInit {
   projContents$: Observable<GithubContents[]>;
   packageManifest$: Observable<UnityManifest>;
 
-  constructor(private projService: ProjectService) {
+  constructor(
+    private projService: ProjectService,
+    private pkgService: PackageService
+  ) {
     this.projContents$ = this.projService
       .loadRepoTree('OpenHogwarts', 'hogwarts')
       .pipe(tap(console.log));
@@ -26,8 +31,13 @@ export class ProjectComponent implements OnInit {
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
   }
 
-  getScopedRegistries(manifest: UnityManifest) {
-    return [];
+  // renderOpenUpmPackage(registry: ScopedRegistry) {
+  //   return this.pkgService.expandOpenUpmPackagesInfo(registry);
+  // }
+
+  isOpenUpmRegistry(registry: ScopedRegistry) {
+    console.log(registry.url === 'https://package.openupm.com');
+    return registry.url === 'https://package.openupm.com';
   }
 
   ngOnInit(): void {}
