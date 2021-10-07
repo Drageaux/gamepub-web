@@ -2,6 +2,7 @@ import { Package } from './../../../classes/package';
 import { Observable } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { PackageService } from 'src/app/services/package.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-openupm-package-details',
@@ -10,13 +11,21 @@ import { PackageService } from 'src/app/services/package.service';
 })
 export class OpenupmPackageDetailsComponent implements OnInit {
   @Input() packageName!: string;
-  packageDetails$?: Observable<Package>;
+  package$?: Observable<Package>;
 
   constructor(private pkgService: PackageService) {}
 
   ngOnInit(): void {
-    this.packageDetails$ = this.pkgService.expandOpenUpmPackageInfo(
-      this.packageName
-    );
+    this.package$ = this.pkgService.expandOpenUpmPackageInfo(this.packageName);
+  }
+
+  getLatestVersionDetails(pkg: Package) {
+    if (pkg) {
+      const latestVer = pkg['dist-tags']?.latest;
+      if (latestVer && pkg.versions) {
+        return pkg.versions[latestVer];
+      }
+    }
+    return null;
   }
 }
