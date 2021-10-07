@@ -16,7 +16,7 @@
     }
   },
   "/registry/openupm": {
-    "target": "https://api.openupm.com/packages/",
+    "target": "https://package.openupm.com/",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
