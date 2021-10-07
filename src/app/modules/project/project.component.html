@@ -19,9 +19,11 @@
           }}
           <!-- different ng-template for OpenUPM -->
           <ng-container *ngIf="isOpenUpmRegistry(registry); else otherRegistry">
-            <!-- <li *ngFor="let p of renderOpenUpmPackages(registry) | async">
-              {{ p | json }}
-            </li> -->
+            <app-openupm-package-details
+              *ngFor="let p of registry.scopes"
+              [packageName]="p"
+            >
+            </app-openupm-package-details>
             <!-- {{ renderOpenUpmPackages(registry) }} -->
           </ng-container>
 
