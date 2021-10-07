@@ -14,5 +14,13 @@
     "pathRewrite": {
       "^/asset/unity": ""
     }
+  },
+  "/registry/openupm": {
+    "target": "https://package.openupm.com/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/registry/openupm": ""
+    }
   }
 }
