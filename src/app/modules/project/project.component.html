@@ -10,11 +10,29 @@
       </li>
     </ul>
 
-    <!-- <ul>
-    <li *ngFor="let registry of scopedRegistries$ | async | keyvalue">
-      {{ registry | json }}
-    </li>
-  </ul> -->
+    <ul *ngIf="manifest.scopedRegistries?.length">
+      Scoped Registries
+      <li *ngFor="let registry of manifest.scopedRegistries">
+        <ul>
+          {{
+            registry.name
+          }}
+          <!-- different ng-template for OpenUPM -->
+          <ng-container *ngIf="isOpenUpmRegistry(registry); else otherRegistry">
+            <!-- <li *ngFor="let p of renderOpenUpmPackages(registry) | async">
+              {{ p | json }}
+            </li> -->
+            <!-- {{ renderOpenUpmPackages(registry) }} -->
+          </ng-container>
+
+          <ng-template #otherRegistry
+            ><li *ngFor="let p of registry.scopes">
+              {{ p }}
+            </li></ng-template
+          >
+        </ul>
+      </li>
+    </ul>
   </ng-container>
 
   <ng-template #loading> Loading... </ng-template>
