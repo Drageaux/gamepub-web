@@ -31,12 +31,7 @@ export class ProjectComponent implements OnInit {
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
   }
 
-  // renderOpenUpmPackage(registry: ScopedRegistry) {
-  //   return this.pkgService.expandOpenUpmPackagesInfo(registry);
-  // }
-
   isOpenUpmRegistry(registry: ScopedRegistry) {
-    console.log(registry.url === 'https://package.openupm.com');
     return registry.url === 'https://package.openupm.com';
   }
 
