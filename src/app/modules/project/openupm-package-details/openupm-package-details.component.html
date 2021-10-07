@@ -1,1 +1,1 @@
-<p>openupm-package-details works!</p>
+<div *ngIf="packageDetails$ | async as pkg">{{ pkg.name }}</div>
