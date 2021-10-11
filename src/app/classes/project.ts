@@ -2,7 +2,8 @@ import { Package } from './package';
 import { Asset } from './asset';
 
 export interface Project {
-  name: string;
-  assets?: Asset[];
-  packages?: Package[];
+  // assets?: Asset[];
+  // packages?: Package[];
+  ownerName?: string;
+  repoName?: string;
 }

@@ -30,6 +30,8 @@ export class ProjectComponent implements OnInit {
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
   }
 
+  ngOnInit(): void {}
+
   isOpenUpmRegistry(registry: ScopedRegistry) {
     return registry.url === 'https://package.openupm.com';
   }
@@ -37,6 +39,4 @@ export class ProjectComponent implements OnInit {
   trimPackageList(pkgs: PackageName[]) {
     return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
   }
-
-  ngOnInit(): void {}
 }

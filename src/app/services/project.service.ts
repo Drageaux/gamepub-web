@@ -22,14 +22,6 @@ export class ProjectService {
     );
   }
 
-  // TODO: parse project structure
-  projectBuilder(name: string = 'New Project'): Project {
-    const proj: Project = {
-      name,
-    };
-    return proj;
-  }
-
   parseManifest(manifest: UnityManifest) {
     // if (proj.default_branch) {
     // `https://api.github.com/repos/${owner}/${repo}/git/trees/${proj['default_branch']}/root?recursive=0`
