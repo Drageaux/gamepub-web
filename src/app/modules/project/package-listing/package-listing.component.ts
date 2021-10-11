@@ -1,5 +1,13 @@
+import { ProjectService } from 'src/app/services/project.service';
+import { Observable } from 'rxjs';
 import { UnityManifest } from 'src/app/classes/unity-manifest';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
 import { PackageName } from 'src/app/classes/package';
 import { ScopedRegistry } from 'src/app/classes/scoped-registry';
@@ -10,13 +18,19 @@ import { ScopedRegistry } from 'src/app/classes/scoped-registry';
   styleUrls: ['./package-listing.component.scss'],
 })
 export class PackageListingComponent implements OnInit {
-  @Input() manifest: UnityManifest = {
-    dependencies: {},
-  };
+  @Input() owner!: string;
+  @Input() repo!: string;
+  manifest$!: Observable<UnityManifest>;
 
-  constructor() {}
+  constructor(private projService: ProjectService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.manifest$ = this.projService.getManifest(
+      this.owner,
+      this.repo,
+      'Packages'
+    );
+  }
 
   isOpenUpmRegistry(registry: ScopedRegistry) {
     return registry.url === 'https://package.openupm.com';
