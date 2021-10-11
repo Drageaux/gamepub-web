@@ -16,6 +16,16 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
+  getProject(uid: string) {
+    // TODO: return a project from the database
+    // return this.http.get<Project>('/api/project/' + uid)
+    return of({
+      uid,
+      owner: 'OpenHogwarts',
+      repo: 'hogwarts',
+    });
+  }
+
   loadRepoTree(owner: string, repo: string) {
     return this.http.get<GithubContents[]>(
       `https://api.github.com/repos/${owner}/${repo}/contents`
