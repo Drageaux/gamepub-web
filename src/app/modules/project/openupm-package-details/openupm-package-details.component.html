@@ -1,0 +1,3 @@
+<div *ngIf="package$ | async as pkg">
+  {{ getLatestVersionDetails(pkg)?.displayName }}
+</div>

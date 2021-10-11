@@ -1,0 +1,40 @@
+<div>
+  <ul>
+    <li *ngFor="let c of projContents$ | async">{{ c?.name }}</li>
+  </ul>
+
+  <ng-container *ngIf="packageManifest$ | async as manifest; else loading">
+    <ul>
+      <li *ngFor="let unityDependency of manifest.dependencies | keyvalue">
+        {{ unityDependency | json }}
+      </li>
+    </ul>
+
+    <ul *ngIf="manifest.scopedRegistries?.length">
+      Scoped Registries
+      <li *ngFor="let registry of manifest.scopedRegistries">
+        <ul>
+          {{
+            registry.name
+          }}
+          <!-- different ng-template for OpenUPM -->
+          <ng-container *ngIf="isOpenUpmRegistry(registry); else otherRegistry">
+            <app-openupm-package-details
+              *ngFor="let p of trimPackageList(registry.scopes)"
+              [packageName]="p"
+            >
+            </app-openupm-package-details>
+          </ng-container>
+
+          <ng-template #otherRegistry
+            ><li *ngFor="let p of registry.scopes">
+              {{ p }}
+            </li></ng-template
+          >
+        </ul>
+      </li>
+    </ul>
+  </ng-container>
+
+  <ng-template #loading> Loading... </ng-template>
+</div>
