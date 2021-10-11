@@ -9,6 +9,7 @@ import { UnityManifest } from 'src/app/classes/unity-manifest';
 import { PackageService } from 'src/app/services/package.service';
 import { PackageName } from 'src/app/classes/package';
 import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
+import { Project } from 'src/app/classes/project';
 
 @Component({
   selector: 'app-project',
@@ -16,27 +17,24 @@ import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  owner = 'OpenHogwarts';
+  owner = 'openhogwarts';
   repo = 'hogwarts';
+  project$: Observable<Project>;
 
   projContents$: Observable<GithubContents[]>;
   packageManifest$: Observable<UnityManifest>;
 
   constructor(private projService: ProjectService) {
+    // TODO: pull an actual project from the database, requires project uid
+    this.project$ = this.projService.getProject('1');
+
+    // from project, pull GitHub repo contents to render packages included
     this.projContents$ = this.projService
-      .loadRepoTree('OpenHogwarts', 'hogwarts')
+      .loadRepoTree('openhogwarts', 'hogwarts')
       .pipe(tap(console.log));
 
     this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
   }
 
   ngOnInit(): void {}
-
-  isOpenUpmRegistry(registry: ScopedRegistry) {
-    return registry.url === 'https://package.openupm.com';
-  }
-
-  trimPackageList(pkgs: PackageName[]) {
-    return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
-  }
 }
