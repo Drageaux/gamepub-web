@@ -5,8 +5,6 @@ import { forkJoin, Observable } from 'rxjs';
 import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { Package } from '../classes/package';
 
-type PackageName = string;
-
 @Injectable({
   providedIn: 'root',
 })

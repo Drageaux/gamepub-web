@@ -7,6 +7,8 @@ import { GithubContents } from './../../classes/github-contents';
 import { ProjectService } from 'src/app/services/project.service';
 import { UnityManifest } from 'src/app/classes/unity-manifest';
 import { PackageService } from 'src/app/services/package.service';
+import { PackageName } from 'src/app/classes/package';
+import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
 
 @Component({
   selector: 'app-project',
@@ -30,6 +32,10 @@ export class ProjectComponent implements OnInit {
 
   isOpenUpmRegistry(registry: ScopedRegistry) {
     return registry.url === 'https://package.openupm.com';
+  }
+
+  trimPackageList(pkgs: PackageName[]) {
+    return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
   }
 
   ngOnInit(): void {}
