@@ -1,12 +1,12 @@
-import { GithubRepo } from './../classes/github-repo';
-import { GithubContents } from './../classes/github-contents';
-import { Package } from './../classes/package';
-import { UnityManifest } from './../classes/unity-manifest';
-import { Project } from './../classes/project';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { switchMap, mergeMap, map, tap, catchError } from 'rxjs/operators';
-import { of, throwError, Observable } from 'rxjs';
+
+import { GithubContents } from './../classes/github-contents';
+import { UnityManifest } from './../classes/unity-manifest';
+import { Project } from './../classes/project';
+
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -64,12 +64,7 @@ export class ProjectService {
           return throwError(err);
         })
       );
-    // delete below for test on custom file
+    // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
-    // .subscribe((res) => {
-    //   for (const [k, v] of Object.entries(res.dependencies)) {
-    //     console.log(k, v);
-    //   }
-    // });
   }
 }
