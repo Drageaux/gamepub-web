@@ -5,9 +5,11 @@
     [repo]="project.repoName"
   ></app-project-tree>
 
-  <!-- <ng-container *ngIf="packageManifest$ | async as manifest; else loading">
-    <app-package-listing [manifest]="manifest"></app-package-listing>
-  </ng-container> -->
+  <app-package-listing
+    *ngIf="project.ownerName && project.repoName"
+    [owner]="project.ownerName"
+    [repo]="project.repoName"
+  ></app-package-listing>
 
   <ng-template #loading> Loading... </ng-template>
 </div>
