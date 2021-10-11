@@ -21,9 +21,9 @@ export class ProjectService {
     // return this.http.get<Project>('/api/project/' + uid)
     return of({
       uid,
-      owner: 'OpenHogwarts',
-      repo: 'hogwarts',
-    });
+      ownerName: 'OpenHogwarts',
+      repoName: 'hogwarts',
+    } as Project);
   }
 
   loadRepoTree(owner: string, repo: string) {

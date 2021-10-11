@@ -5,6 +5,6 @@ export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
   uid: string;
-  ownerName?: string;
-  repoName?: string;
+  ownerName: string;
+  repoName: string;
 }

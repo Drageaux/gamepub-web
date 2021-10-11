@@ -17,23 +17,21 @@ import { Project } from 'src/app/classes/project';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  owner = 'openhogwarts';
-  repo = 'hogwarts';
   project$: Observable<Project>;
-
-  projContents$: Observable<GithubContents[]>;
-  packageManifest$: Observable<UnityManifest>;
+  projContents$!: Observable<GithubContents[]>;
+  packageManifest$!: Observable<UnityManifest>;
 
   constructor(private projService: ProjectService) {
     // TODO: pull an actual project from the database, requires project uid
     this.project$ = this.projService.getProject('1');
-
     // from project, pull GitHub repo contents to render packages included
-    this.projContents$ = this.projService
-      .loadRepoTree('openhogwarts', 'hogwarts')
-      .pipe(tap(console.log));
 
-    this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
+    // if (proj.ownerName && proj.repoName) {
+    //   this.packageManifest$ = this.projService.getManifest(
+    //     proj.ownerName,
+    //     proj.repoName,
+    //     'Packages'
+    //   );
   }
 
   ngOnInit(): void {}

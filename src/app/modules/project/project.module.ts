@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectComponent } from './project.component';
 import { OpenupmPackageDetailsComponent } from './openupm-package-details/openupm-package-details.component';
 import { PackageListingComponent } from './package-listing/package-listing.component';
+import { ProjectTreeComponent } from './project-tree/project-tree.component';
 
 
 
@@ -10,7 +11,8 @@ import { PackageListingComponent } from './package-listing/package-listing.compo
   declarations: [
     ProjectComponent,
     OpenupmPackageDetailsComponent,
-    PackageListingComponent
+    PackageListingComponent,
+    ProjectTreeComponent
   ],
   imports: [
     CommonModule
