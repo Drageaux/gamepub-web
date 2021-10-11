@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { GithubContents } from 'src/app/classes/github-contents';
@@ -16,12 +22,7 @@ export class ProjectTreeComponent implements OnInit {
 
   constructor(private projService: ProjectService) {}
 
-  ngOnInit(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    console.log(changes);
+  ngOnInit(): void {
     this.projContents$ = this.projService
       .loadRepoTree(this.owner, this.repo)
       .pipe(tap(console.log));
