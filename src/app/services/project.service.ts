@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { GithubContents } from './../classes/github-contents';
-import { UnityManifest } from './../classes/unity-manifest';
-import { Project } from './../classes/project';
+import { GithubContents } from '@classes/github-contents';
+import { UnityManifest } from '@classes/unity-manifest';
+import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';

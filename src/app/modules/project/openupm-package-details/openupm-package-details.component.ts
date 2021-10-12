@@ -1,8 +1,7 @@
-import { Package } from './../../../classes/package';
+import { Package } from '@classes/package';
 import { Observable } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
-import { PackageService } from 'src/app/services/package.service';
-import { map } from 'rxjs/operators';
+import { PackageService } from '@services/package.service';
 
 @Component({
   selector: 'app-openupm-package-details',

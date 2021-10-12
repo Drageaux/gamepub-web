@@ -1,9 +1,9 @@
-import { RegistryScope } from './../classes/scoped-registry';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
-import { map, shareReplay, take, tap } from 'rxjs/operators';
-import { Package } from '../classes/package';
+import { Observable } from 'rxjs';
+import { shareReplay, tap } from 'rxjs/operators';
+import { Package } from '@classes/package';
+import { RegistryScope } from '@classes/scoped-registry';
 
 @Injectable({
   providedIn: 'root',
