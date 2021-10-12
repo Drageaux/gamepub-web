@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { GithubContents } from './../../classes/github-contents';
-import { ProjectService } from 'src/app/services/project.service';
-import { UnityManifest } from 'src/app/classes/unity-manifest';
-import { Project } from 'src/app/classes/project';
+import { GithubContents } from '@classes/github-contents';
+import { ProjectService } from '@services/project.service';
+import { UnityManifest } from '@classes/unity-manifest';
+import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
+import { PackageName } from '@classes/package';
+import { ScopedRegistry } from '@classes/scoped-registry';
+import { Project } from '@classes/project';
 
 @Component({
   selector: 'app-project',

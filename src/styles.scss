@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+// // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+// @import "~@scss/_functions.scss";
+
+// // 2. Include any default variable overrides here
+
+// // 3. Include remainder of required Bootstrap stylesheets
+// @import "@bootstrap/scss/_variables";
+// @import "@bootstrap/scss/_mixins";
+
+// // 4. Include any optional Bootstrap components as you like
+// @import "@bootstrap/scss/_root";
+// @import "@bootstrap/scss/_reboot";
+// @import "@bootstrap/scss/_type";
+
+// // 5. Add additional custom code here

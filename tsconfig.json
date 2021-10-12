@@ -19,12 +19,19 @@
     "lib": ["es2018", "dom"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@bootstrap/*": ["node_modules/bootstrap/*"],
+      "@modules/*": ["src/app/modules/*"],
+      "@classes/*": ["src/app/classes/*"],
+      "@services/*": ["src/app/services/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "exclude": ["node_modules", "build"]
 }

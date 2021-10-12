@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AssetService } from 'src/app/services/asset.service';
+import { AssetService } from '@services/asset.service';
 
 @Component({
   selector: 'app-asset-dashboard',
