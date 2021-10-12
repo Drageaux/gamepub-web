@@ -1,4 +1,10 @@
 <div *ngIf="project$ | async as project">
+  <!-- Breadcrumb Title -->
+  <h1>
+    <span class="font-weight-light">{{ project.ownerName }}</span
+    >&nbsp;&#47;&nbsp;{{ project.repoName }}
+  </h1>
+
   <app-project-tree
     *ngIf="project.ownerName && project.repoName"
     [owner]="project.ownerName"

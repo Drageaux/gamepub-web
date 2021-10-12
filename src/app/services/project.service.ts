@@ -58,7 +58,7 @@ export class ProjectService {
           if (res.type === 'file' && res.content) {
             const decoded = atob(res.content);
             return of(JSON.parse(decoded) as UnityManifest);
-          } else throw new Error('Not a valid file');
+          } else throw new Error('Not a valid manifest file');
         }),
         // throw and catch error https://www.tektutorialshub.com/angular/using-throwerror-in-angular-observable/
         catchError((err) => {
