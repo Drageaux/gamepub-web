@@ -1,6 +1,4 @@
-import { ProjectService } from 'src/app/services/project.service';
 import { Observable } from 'rxjs';
-import { UnityManifest } from 'src/app/classes/unity-manifest';
 import {
   Component,
   Input,
@@ -8,9 +6,11 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
-import { PackageName } from 'src/app/classes/package';
-import { ScopedRegistry } from 'src/app/classes/scoped-registry';
+import { ProjectService } from '@services/project.service';
+import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
+import { UnityManifest } from '@classes/unity-manifest';
+import { PackageName } from '@classes/package';
+import { ScopedRegistry } from '@classes/scoped-registry';
 
 @Component({
   selector: 'app-package-listing',

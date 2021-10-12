@@ -5,10 +5,10 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { GithubContents } from '@classes/github-contents';
+import { ProjectService } from '@services/project.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { GithubContents } from 'src/app/classes/github-contents';
-import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-project-tree',
