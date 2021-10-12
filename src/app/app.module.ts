@@ -7,9 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // Feature Modules
-import { AssetDashboardModule } from './modules/asset-dashboard/asset-dashboard.module';
-import { AssetService } from './services/asset.service';
-import { ProjectModule } from './modules/project/project.module';
+import { AssetDashboardModule } from '@modules/asset-dashboard/asset-dashboard.module';
+import { AssetService } from '@services/asset.service';
+import { ProjectModule } from '@modules/project/project.module';
 
 @NgModule({
   declarations: [AppComponent],

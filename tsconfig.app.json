@@ -6,7 +6,9 @@
     "types": [],
 
     "paths": {
-      "@bootstrap/*": ["node_modules/bootstrap/*"]
+      "@modules/*": ["src/app/modules/*"],
+      "@classes/*": ["src/app/classes/*"],
+      "@services/*": ["src/app/services/*"]
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],

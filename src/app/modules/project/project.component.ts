@@ -5,7 +5,6 @@ import { tap } from 'rxjs/operators';
 import { GithubContents } from '@classes/github-contents';
 import { ProjectService } from '@services/project.service';
 import { UnityManifest } from '@classes/unity-manifest';
-import { PackageService } from '@services/package.service';
 import { PackageName } from '@classes/package';
 import { ScopedRegistry } from '@classes/scoped-registry';
 import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
