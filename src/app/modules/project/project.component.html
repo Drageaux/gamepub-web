@@ -1,9 +1,17 @@
 <div *ngIf="project$ | async as project">
   <!-- Breadcrumb Title -->
-  <h1>
-    <span class="font-weight-light">{{ project.ownerName }}</span
-    >&nbsp;&#47;&nbsp;{{ project.repoName }}
-  </h1>
+  <h1>Hogwarts Game</h1>
+  <h2 class="lead">
+    <a
+      [href]="
+        'https://github.com/' + project.ownerName + '/' + project.repoName
+      "
+      target="_blank"
+    >
+      <span class="fw-normal">{{ project.ownerName }}</span
+      >&#47;<span class="fw-bold">{{ project.repoName }}</span>
+    </a>
+  </h2>
 
   <app-project-tree
     *ngIf="project.ownerName && project.repoName"
