@@ -1,14 +1,14 @@
-import { ScopedRegistry } from './../../classes/scoped-registry';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { GithubContents } from './../../classes/github-contents';
-import { ProjectService } from 'src/app/services/project.service';
-import { UnityManifest } from 'src/app/classes/unity-manifest';
-import { PackageService } from 'src/app/services/package.service';
-import { PackageName } from 'src/app/classes/package';
-import { EXCLUDED_PACKAGES } from 'src/app/classes/CONSTANTS';
+import { GithubContents } from '@classes/github-contents';
+import { ProjectService } from '@services/project.service';
+import { UnityManifest } from '@classes/unity-manifest';
+import { PackageService } from '@services/package.service';
+import { PackageName } from '@classes/package';
+import { ScopedRegistry } from '@classes/scoped-registry';
+import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
 
 @Component({
   selector: 'app-project',
