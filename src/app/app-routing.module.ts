@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AssetDashboardComponent } from './modules/asset-dashboard/asset-dashboard.component';
-import { ProjectComponent } from './modules/project/project.component';
+import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
+import { ProjectComponent } from '@modules/project/project.component';
 
 const routes: Routes = [
   { path: 'project', component: ProjectComponent },

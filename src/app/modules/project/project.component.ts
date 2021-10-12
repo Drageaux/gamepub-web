@@ -4,9 +4,6 @@ import { Observable } from 'rxjs';
 import { GithubContents } from '@classes/github-contents';
 import { ProjectService } from '@services/project.service';
 import { UnityManifest } from '@classes/unity-manifest';
-import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
-import { PackageName } from '@classes/package';
-import { ScopedRegistry } from '@classes/scoped-registry';
 import { Project } from '@classes/project';
 
 @Component({

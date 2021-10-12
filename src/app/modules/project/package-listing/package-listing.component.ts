@@ -1,11 +1,5 @@
 import { Observable } from 'rxjs';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProjectService } from '@services/project.service';
 import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
 import { UnityManifest } from '@classes/unity-manifest';
