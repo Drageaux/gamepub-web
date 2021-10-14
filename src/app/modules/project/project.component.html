@@ -3,25 +3,23 @@
   <h1>Hogwarts Game</h1>
   <h2 class="lead">
     <a
-      [href]="
-        'https://github.com/' + project.ownerName + '/' + project.repoName
-      "
+      [href]="'https://github.com/' + project.ghOwner + '/' + project.ghRepo"
       target="_blank"
     >
-      <span class="fw-normal">{{ project.ownerName }}</span
-      >&#47;<span class="fw-bold">{{ project.repoName }}</span>
+      <span class="fw-normal">{{ project.ghOwner }}</span
+      >&#47;<span class="fw-bold">{{ project.ghRepo }}</span>
     </a>
   </h2>
 
   <app-project-tree
-    *ngIf="project.ownerName && project.repoName"
-    [owner]="project.ownerName"
-    [repo]="project.repoName"
+    *ngIf="project.ghOwner && project.ghRepo"
+    [owner]="project.ghOwner"
+    [repo]="project.ghRepo"
   ></app-project-tree>
 
   <app-package-listing
-    *ngIf="project.ownerName && project.repoName"
-    [owner]="project.ownerName"
-    [repo]="project.repoName"
+    *ngIf="project.ghOwner && project.ghRepo"
+    [owner]="project.ghOwner"
+    [repo]="project.ghRepo"
   ></app-package-listing>
 </div>

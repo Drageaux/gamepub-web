@@ -16,13 +16,13 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getProject(uid: string) {
+  getProject(_id: string) {
     // TODO: return a project from the database
     // return this.http.get<Project>('/api/project/' + uid)
     return of({
-      uid,
-      ownerName: 'OpenHogwarts',
-      repoName: 'hogwarts',
+      _id,
+      ghOwner: 'OpenHogwarts',
+      ghRepo: 'hogwarts',
     } as Project);
   }
 
