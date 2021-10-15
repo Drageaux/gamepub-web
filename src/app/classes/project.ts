@@ -1,3 +1,4 @@
+import { User } from './user';
 import { Package } from './package';
 import { Asset } from './asset';
 
@@ -5,7 +6,7 @@ export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
   _id: string;
-  creator: string;
+  creator: string | User;
   name: string;
   ghOwner?: string;
   ghRepo?: string;
