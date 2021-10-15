@@ -4,9 +4,9 @@ import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboar
 import { ProjectComponent } from '@modules/project/project.component';
 
 const routes: Routes = [
-  { path: 'project', component: ProjectComponent },
+  { path: 'project/:id', component: ProjectComponent },
   { path: 'dashboard', component: AssetDashboardComponent },
-  { path: '', redirectTo: '/project', pathMatch: 'full' }, // redirect
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
 ];
 

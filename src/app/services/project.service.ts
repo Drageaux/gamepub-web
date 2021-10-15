@@ -1,3 +1,4 @@
+import { ApiResponse } from './api-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,7 +7,7 @@ import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -16,14 +17,11 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getProject(_id: string) {
+  getProject(id: string): Observable<Project> {
     // TODO: return a project from the database
-    // return this.http.get<Project>('/api/project/' + uid)
-    return of({
-      _id,
-      ghOwner: 'OpenHogwarts',
-      ghRepo: 'hogwarts',
-    } as Project);
+    return this.http
+      .get<ApiResponse<Project>>('/api/projects/' + id)
+      .pipe(map((res) => res.data));
   }
 
   loadRepoTree(owner: string, repo: string) {
