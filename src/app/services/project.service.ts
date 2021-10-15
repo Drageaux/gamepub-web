@@ -18,7 +18,6 @@ export class ProjectService {
   constructor(private http: HttpClient) {}
 
   getProject(id: string): Observable<Project> {
-    // TODO: return a project from the database
     return this.http
       .get<ApiResponse<Project>>('/api/projects/' + id)
       .pipe(map((res) => res.data));
