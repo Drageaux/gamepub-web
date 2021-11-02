@@ -11,15 +11,28 @@
     </a>
   </h2>
 
-  <app-project-tree
-    *ngIf="project.ghOwner && project.ghRepo"
-    [owner]="project.ghOwner"
-    [repo]="project.ghRepo"
-  ></app-project-tree>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        routerLink="./"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Overview</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLink]="[
+          'details',
+          { ghOwner: project.ghOwner, ghRepo: project.ghRepo }
+        ]"
+        >Details</a
+      >
+    </li>
+  </ul>
 
-  <app-package-listing
-    *ngIf="project.ghOwner && project.ghRepo"
-    [owner]="project.ghOwner"
-    [repo]="project.ghRepo"
-  ></app-package-listing>
+  <router-outlet></router-outlet>
 </div>
