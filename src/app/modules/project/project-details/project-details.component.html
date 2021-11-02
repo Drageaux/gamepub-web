@@ -1,0 +1,25 @@
+<app-project-tree
+  *ngIf="owner && repo"
+  [owner]="owner"
+  [repo]="repo"
+></app-project-tree>
+
+<app-package-listing
+  *ngIf="owner && repo"
+  [owner]="owner"
+  [repo]="repo"
+></app-package-listing>
+
+<div *ngIf="project$ | async as project">
+  <app-project-tree
+    *ngIf="project.ghOwner && project.ghRepo"
+    [owner]="project.ghOwner"
+    [repo]="project.ghRepo"
+  ></app-project-tree>
+
+  <app-package-listing
+    *ngIf="project.ghOwner && project.ghRepo"
+    [owner]="project.ghOwner"
+    [repo]="project.ghRepo"
+  ></app-package-listing>
+</div>
