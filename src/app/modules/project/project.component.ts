@@ -16,9 +16,10 @@ import { map } from 'rxjs/operators';
 export class ProjectComponent implements OnInit {
   projId!: string | null;
   project$!: Observable<Project>;
+  tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private projService: ProjectService
   ) {}
 

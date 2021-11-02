@@ -7,7 +7,7 @@ import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap, map } from 'rxjs/operators';
+import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +18,10 @@ export class ProjectService {
   constructor(private http: HttpClient) {}
 
   getProject(id: string): Observable<Project> {
-    return this.http
-      .get<ApiResponse<Project>>('/api/projects/' + id)
-      .pipe(map((res) => res.data));
+    return this.http.get<ApiResponse<Project>>('/api/projects/' + id).pipe(
+      shareReplay(1),
+      map((res) => res.data)
+    );
   }
 
   loadRepoTree(owner: string, repo: string) {

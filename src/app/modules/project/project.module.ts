@@ -5,7 +5,6 @@ import { OpenupmPackageDetailsComponent } from './openupm-package-details/openup
 import { PackageListingComponent } from './package-listing/package-listing.component';
 import { ProjectTreeComponent } from './project-tree/project-tree.component';
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
-import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { RouterModule } from '@angular/router';
     PackageListingComponent,
     ProjectTreeComponent,
     ProjectOverviewComponent,
-    ProjectDetailsComponent,
   ],
   imports: [CommonModule, RouterModule],
 })

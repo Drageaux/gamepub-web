@@ -13,26 +13,38 @@
 
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a
+      <button
         class="nav-link"
-        routerLinkActive="active"
-        routerLink="./"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Overview</a
+        [class.active]="tab == 'Overview'"
+        (click)="tab = 'Overview'"
       >
+        Overview
+      </button>
     </li>
     <li class="nav-item">
-      <a
+      <button
         class="nav-link"
-        routerLinkActive="active"
-        [routerLink]="[
-          'details',
-          { ghOwner: project.ghOwner, ghRepo: project.ghRepo }
-        ]"
-        >Details</a
+        [class.active]="tab == 'Details'"
+        (click)="tab = 'Details'"
       >
+        Details
+      </button>
     </li>
   </ul>
 
-  <router-outlet></router-outlet>
+  <app-project-overview *ngIf="tab == 'Overview'"></app-project-overview>
+
+  <ng-container *ngIf="tab == 'Details'">
+    <app-project-tree
+      *ngIf="project.ghOwner && project.ghRepo"
+      [owner]="project.ghOwner"
+      [repo]="project.ghRepo"
+    ></app-project-tree>
+
+    <app-package-listing
+      *ngIf="project.ghOwner && project.ghRepo"
+      [owner]="project.ghOwner"
+      [repo]="project.ghRepo"
+    ></app-package-listing>
+  </ng-container>
 </div>
