@@ -4,7 +4,7 @@ export type VersionOfPackageMapping = Record<PackageName, VersionName>; // "com.
 
 export interface UnityManifest {
   dependencies: VersionOfPackageMapping;
-  scopedRegistries: Registry[];
+  scopedRegistries?: Registry[];
 }
 
 export interface Registry {

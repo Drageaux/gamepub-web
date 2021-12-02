@@ -4,7 +4,7 @@ import normalizeUrl from 'normalize-url';
 
 import { BehaviorSubject, from } from 'rxjs';
 import { map, distinct, filter, mergeMap } from 'rxjs/operators';
-import { Package } from '../classes/package';
+import { Package } from '@classes/package';
 
 /**
  * Web scraper credit: https://dev.to/jacobgoh101/simple--customizable-web-scraper-using-rxjs-and-node-1on7

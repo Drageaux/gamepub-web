@@ -1,15 +1,39 @@
-// // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-// @import "~@scss/_functions.scss";
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "_functions";
 
-// // 2. Include any default variable overrides here
+// 2. Include any default variable overrides here
 
-// // 3. Include remainder of required Bootstrap stylesheets
-// @import "@bootstrap/scss/_variables";
-// @import "@bootstrap/scss/_mixins";
+// 3. Include remainder of required Bootstrap stylesheets
+@import "_variables";
+@import "_mixins";
 
-// // 4. Include any optional Bootstrap components as you like
-// @import "@bootstrap/scss/_root";
-// @import "@bootstrap/scss/_reboot";
-// @import "@bootstrap/scss/_type";
+// 4. Include any optional Bootstrap components as you like
+@import "_root";
+@import "_reboot";
+@import "_type";
 
-// // 5. Add additional custom code here
+// 5. Add additional custom code here
+// @import "_pagination";
+// @import "_badge";
+// @import "_jumbotron";
+// @import "_alert";
+// @import "_progress";
+// @import "_media";
+// @import "_list-group";
+// @import "_close";
+// @import "_toasts";
+// @import "_modal";
+// @import "_tooltip";
+// @import "_popover";
+// @import "_carousel";
+// @import "_spinners";
+@import "_containers";
+@import "_grid";
+@import "_nav";
+@import "_utilities";
+
+// Helpers
+@import "helpers";
+
+// Utilities
+@import "utilities/api";

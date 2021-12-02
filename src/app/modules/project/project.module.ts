@@ -2,16 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectComponent } from './project.component';
 import { OpenupmPackageDetailsComponent } from './openupm-package-details/openupm-package-details.component';
-
-
+import { PackageListingComponent } from './package-listing/package-listing.component';
+import { ProjectTreeComponent } from './project-tree/project-tree.component';
+import { ProjectOverviewComponent } from './project-overview/project-overview.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     ProjectComponent,
-    OpenupmPackageDetailsComponent
+    OpenupmPackageDetailsComponent,
+    PackageListingComponent,
+    ProjectTreeComponent,
+    ProjectOverviewComponent,
   ],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule, RouterModule],
 })
-export class ProjectModule { }
+export class ProjectModule {}

@@ -1,40 +1,50 @@
-<div>
-  <ul>
-    <li *ngFor="let c of projContents$ | async">{{ c?.name }}</li>
+<div *ngIf="project$ | async as project">
+  <!-- Breadcrumb Title -->
+  <h1>Hogwarts Game</h1>
+  <h2 class="lead">
+    <a
+      [href]="'https://github.com/' + project.ghOwner + '/' + project.ghRepo"
+      target="_blank"
+    >
+      <span class="fw-normal">{{ project.ghOwner }}</span
+      >&#47;<span class="fw-bold">{{ project.ghRepo }}</span>
+    </a>
+  </h2>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        [class.active]="tab == 'Overview'"
+        (click)="tab = 'Overview'"
+      >
+        Overview
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        [class.active]="tab == 'Details'"
+        (click)="tab = 'Details'"
+      >
+        Details
+      </button>
+    </li>
   </ul>
 
-  <ng-container *ngIf="packageManifest$ | async as manifest; else loading">
-    <ul>
-      <li *ngFor="let unityDependency of manifest.dependencies | keyvalue">
-        {{ unityDependency | json }}
-      </li>
-    </ul>
+  <app-project-overview *ngIf="tab == 'Overview'"></app-project-overview>
 
-    <ul *ngIf="manifest.scopedRegistries?.length">
-      Scoped Registries
-      <li *ngFor="let registry of manifest.scopedRegistries">
-        <ul>
-          {{
-            registry.name
-          }}
-          <!-- different ng-template for OpenUPM -->
-          <ng-container *ngIf="isOpenUpmRegistry(registry); else otherRegistry">
-            <app-openupm-package-details
-              *ngFor="let p of trimPackageList(registry.scopes)"
-              [packageName]="p"
-            >
-            </app-openupm-package-details>
-          </ng-container>
+  <ng-container *ngIf="tab == 'Details'">
+    <app-project-tree
+      *ngIf="project.ghOwner && project.ghRepo"
+      [owner]="project.ghOwner"
+      [repo]="project.ghRepo"
+    ></app-project-tree>
 
-          <ng-template #otherRegistry
-            ><li *ngFor="let p of registry.scopes">
-              {{ p }}
-            </li></ng-template
-          >
-        </ul>
-      </li>
-    </ul>
+    <app-package-listing
+      *ngIf="project.ghOwner && project.ghRepo"
+      [owner]="project.ghOwner"
+      [repo]="project.ghRepo"
+    ></app-package-listing>
   </ng-container>
-
-  <ng-template #loading> Loading... </ng-template>
 </div>

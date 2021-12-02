@@ -1,3 +1,4 @@
+import { ApiResponse } from './api-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,7 +7,7 @@ import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -16,18 +17,17 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
+  getProject(id: string): Observable<Project> {
+    return this.http.get<ApiResponse<Project>>('/api/projects/' + id).pipe(
+      shareReplay(1),
+      map((res) => res.data)
+    );
+  }
+
   loadRepoTree(owner: string, repo: string) {
     return this.http.get<GithubContents[]>(
       `https://api.github.com/repos/${owner}/${repo}/contents`
     );
-  }
-
-  // TODO: parse project structure
-  projectBuilder(name: string = 'New Project'): Project {
-    const proj: Project = {
-      name,
-    };
-    return proj;
   }
 
   parseManifest(manifest: UnityManifest) {
@@ -56,7 +56,7 @@ export class ProjectService {
           if (res.type === 'file' && res.content) {
             const decoded = atob(res.content);
             return of(JSON.parse(decoded) as UnityManifest);
-          } else throw new Error('Not a valid file');
+          } else throw new Error('Not a valid manifest file');
         }),
         // throw and catch error https://www.tektutorialshub.com/angular/using-throwerror-in-angular-observable/
         catchError((err) => {

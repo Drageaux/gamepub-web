@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 import { GithubContents } from '@classes/github-contents';
 import { ProjectService } from '@services/project.service';
 import { UnityManifest } from '@classes/unity-manifest';
-import { PackageName } from '@classes/package';
-import { ScopedRegistry } from '@classes/scoped-registry';
-import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
+import { Project } from '@classes/project';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project',
@@ -15,27 +14,20 @@ import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  owner = 'OpenHogwarts';
-  repo = 'hogwarts';
+  projId!: string | null;
+  project$!: Observable<Project>;
+  tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
-  projContents$: Observable<GithubContents[]>;
-  packageManifest$: Observable<UnityManifest>;
+  constructor(
+    public route: ActivatedRoute,
+    private projService: ProjectService
+  ) {}
 
-  constructor(private projService: ProjectService) {
-    this.projContents$ = this.projService
-      .loadRepoTree('OpenHogwarts', 'hogwarts')
-      .pipe(tap(console.log));
-
-    this.packageManifest$ = this.projService.getManifest(this.owner, this.repo);
+  ngOnInit(): void {
+    // TODO: pull an actual project from the database, requires project uid
+    this.projId = this.route.snapshot.paramMap.get('id');
+    console.log(this.projId);
+    this.project$ = this.projService.getProject(this.projId!);
+    // from project, pull GitHub repo contents to render packages included}
   }
-
-  isOpenUpmRegistry(registry: ScopedRegistry) {
-    return registry.url === 'https://package.openupm.com';
-  }
-
-  trimPackageList(pkgs: PackageName[]) {
-    return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
-  }
-
-  ngOnInit(): void {}
 }
