@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 
 // Feature Modules
 import { AssetDashboardModule } from '@modules/asset-dashboard/asset-dashboard.module';
+import { ProfileModule } from '@modules/profile/profile.module';
 import { ProjectModule } from '@modules/project/project.module';
 import { AssetService } from '@services/asset.service';
 
@@ -16,6 +17,7 @@ import { AssetService } from '@services/asset.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ProfileModule,
     ProjectModule,
     AssetDashboardModule,
   ],
