@@ -1,9 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ProfileComponent } from './modules/profile/profile.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
 import { ProjectComponent } from '@modules/project/project.component';
 
 const routes: Routes = [
+  {
+    path: 'user',
+    // TODO: check against ID
+    component: ProfileComponent,
+  },
   {
     path: 'project/:id',
     component: ProjectComponent,
