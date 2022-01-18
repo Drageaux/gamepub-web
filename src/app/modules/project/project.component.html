@@ -2,12 +2,8 @@
   <!-- Breadcrumb Title -->
   <h1>Hogwarts Game</h1>
   <h2 class="lead">
-    <a
-      [href]="'https://github.com/' + project.ghOwner + '/' + project.ghRepo"
-      target="_blank"
-    >
-      <span class="fw-normal">{{ project.ghOwner }}</span
-      >&#47;<span class="fw-bold">{{ project.ghRepo }}</span>
+    <a [href]="'https://github.com/' + project.githubProject" target="_blank">
+      <span class="fw-normal">{{ project.githubProject }}</span>
     </a>
   </h2>
 
@@ -36,15 +32,14 @@
 
   <ng-container *ngIf="tab == 'Details'">
     <app-project-tree
-      *ngIf="project.ghOwner && project.ghRepo"
-      [owner]="project.ghOwner"
-      [repo]="project.ghRepo"
+      *ngIf="githubContents$ | async as contents"
+      [contents]="contents"
     ></app-project-tree>
 
-    <app-package-listing
+    <!-- <app-package-listing
       *ngIf="project.ghOwner && project.ghRepo"
       [owner]="project.ghOwner"
       [repo]="project.ghRepo"
-    ></app-package-listing>
+    ></app-package-listing> -->
   </ng-container>
 </div>

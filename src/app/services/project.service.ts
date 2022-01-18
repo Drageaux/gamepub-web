@@ -24,9 +24,9 @@ export class ProjectService {
     );
   }
 
-  loadRepoTree(owner: string, repo: string) {
+  loadRepoTree(project: string) {
     return this.http.get<GithubContents[]>(
-      `https://api.github.com/repos/${owner}/${repo}/contents`
+      `https://api.github.com/repos/${project}/contents`
     );
   }
 

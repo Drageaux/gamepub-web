@@ -8,6 +8,7 @@ export interface Project {
   _id: string;
   creator: string | User;
   name: string;
-  ghOwner?: string;
-  ghRepo?: string;
+  imageUrl?: string;
+  tags?: string[];
+  githubProject?: string;
 }
