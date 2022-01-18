@@ -1,4 +1,4 @@
-<ng-container *ngIf="manifest$ | async as manifest; else loading">
+<ng-container *ngIf="manifest; else loading">
   <ul>
     <li *ngFor="let unityDependency of manifest.dependencies | keyvalue">
       {{ unityDependency | json }}

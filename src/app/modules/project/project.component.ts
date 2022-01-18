@@ -6,7 +6,7 @@ import { ProjectService } from '@services/project.service';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project',
@@ -14,11 +14,12 @@ import { map, switchMap } from 'rxjs/operators';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  projId!: string | null;
+  projId!: string;
   project$!: Observable<Project>;
   tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
   githubContents$!: Observable<GithubContents[] | null>;
+  manifest$!: Observable<UnityManifest | null>;
 
   constructor(
     public route: ActivatedRoute,
@@ -26,14 +27,26 @@ export class ProjectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // TODO: pull an actual project from the database, requires project uid
-    this.projId = this.route.snapshot.paramMap.get('id');
-    console.log(this.projId);
-    this.project$ = this.projService.getProject(this.projId!);
+    this.projId = this.route.snapshot.paramMap.get('id') || '';
+
+    if (this.projId == '') {
+      // TODO: navigate back to homepage or a display proper message
+    }
+
+    this.project$ = this.projService.getProject(this.projId);
     this.githubContents$ = this.project$.pipe(
+      take(1),
       switchMap((proj) =>
         proj.githubProject
           ? this.projService.loadRepoTree(proj.githubProject)
+          : of(null)
+      )
+    );
+    this.manifest$ = this.project$.pipe(
+      take(1),
+      switchMap((proj) =>
+        proj.githubProject
+          ? this.projService.getManifest(proj.githubProject)
           : of(null)
       )
     );

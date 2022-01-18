@@ -40,15 +40,14 @@ export class ProjectService {
   }
 
   getManifest(
-    owner: string,
-    repo: string,
+    ghProject: string,
     path: string = 'Packages'
   ): Observable<UnityManifest> {
     // TODO: Sometimes the file may be in a different location, so we should support custom path later
     // NOTE: Packages or UnityPackageManager folder
     return this.http
       .get<GithubContents>(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}/manifest.json`
+        `https://api.github.com/repos/${ghProject}/contents/${path}/manifest.json`
       )
       .pipe(
         switchMap((res) => {
