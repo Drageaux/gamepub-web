@@ -23,6 +23,7 @@ export class PackageListingComponent implements OnInit {
   }
 
   trimPackageList(pkgs: PackageName[]) {
+    // exclude packages like openupm since its in every openupm package
     return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
   }
 }
