@@ -6,7 +6,7 @@ export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
   _id: string;
-  creator: string | User;
+  creatorId: string; // User._id
   name: string;
   imageUrl?: string;
   tags?: string[];
