@@ -6,9 +6,7 @@ import { Package } from '@classes/package';
 import { RegistryScope } from '@classes/scoped-registry';
 import { ProjectModule } from '@modules/project/project.module';
 
-@Injectable({
-  providedIn: ProjectModule,
-})
+@Injectable()
 export class PackageService {
   // openUpmApiUrl = 'https://api.openupm.com/packages';
   // openUpmPackagesUrl = 'https://package.openupm.com';
