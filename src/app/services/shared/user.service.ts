@@ -1,15 +1,42 @@
+import { HttpClient } from '@angular/common/http';
+import { AsyncSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { User } from '@classes/user';
+import { ApiResponse } from '@services/api-response';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  private apiUrl = '/api/users';
   // TODO: use dynamic user ID and implement login
-  private _id: string = '61e6d8b86af89e21c0608aa8';
+  private _username: string = 'davidtn';
+  private _profile$!: Observable<User>;
 
-  constructor() {}
+  constructor(private http: HttpClient) {
+    this._profile$ = this.getUserProfileByUsername(this._username);
+  }
 
-  public get id() {
-    return this._id;
+  public get username() {
+    return this._username;
+  }
+
+  public get profile$() {
+    return this._profile$;
+  }
+
+  // public getUserProfileById(id: string) {
+  //   return this.http.get<ApiResponse<User>>(`${this.apiUrl}/${id}`).pipe(
+  //     shareReplay(1),
+  //     map((res) => res.data)
+  //   );
+  // }
+
+  public getUserProfileByUsername(username: string) {
+    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/${username}`).pipe(
+      shareReplay(1),
+      map((res) => res.data)
+    );
   }
 }
