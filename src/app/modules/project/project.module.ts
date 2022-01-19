@@ -6,6 +6,8 @@ import { PackageListingComponent } from './package-listing/package-listing.compo
 import { ProjectTreeComponent } from './project-tree/project-tree.component';
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 import { RouterModule } from '@angular/router';
+import { PackageService } from '@services/package.service';
+import { ProjectService } from '@services/project.service';
 
 @NgModule({
   declarations: [
@@ -16,5 +18,6 @@ import { RouterModule } from '@angular/router';
     ProjectOverviewComponent,
   ],
   imports: [CommonModule, RouterModule],
+  providers: [ProjectService, PackageService],
 })
 export class ProjectModule {}
