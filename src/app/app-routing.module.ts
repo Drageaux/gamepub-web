@@ -6,13 +6,15 @@ import { ProjectComponent } from '@modules/project/project.component';
 
 const routes: Routes = [
   {
-    path: 'user',
+    path: ':id',
     // TODO: check against ID
     component: ProfileComponent,
-  },
-  {
-    path: 'project/:id',
-    component: ProjectComponent,
+    children: [
+      {
+        path: 'project/:id',
+        component: ProjectComponent,
+      },
+    ],
   },
   { path: 'dashboard', component: AssetDashboardComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
