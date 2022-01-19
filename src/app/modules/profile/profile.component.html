@@ -1,9 +1,21 @@
-<h1>Profile Page</h1>
+<ng-container *ngIf="profile$ | async as profile">
+  <h1>
+    <strong>{{ profile.username }}</strong>
+  </h1>
 
-<!-- TODO: Create new Project -->
+  <!-- TODO: Create new Project -->
 
-<!-- TODO: Create new Asset -->
+  <!-- TODO: Create new Asset -->
 
-<!-- TODO: List projects -->
+  <!-- TODO: List 2-3 top project contributions -->
 
-<!-- TODO: List assets -->
+  <!-- TODO: List projects -->
+  <div>
+    <h3>Projects</h3>
+    <ul>
+      <li></li>
+    </ul>
+  </div>
+
+  <!-- TODO: List assets like gallery style -->
+</ng-container>

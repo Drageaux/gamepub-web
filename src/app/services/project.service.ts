@@ -29,13 +29,16 @@ export class ProjectService {
     projectName: string,
     githubProject: string
   ): Observable<Project> {
-    return this.http
-      .post<ApiResponse<Project>>(`${this.apiUrl}`, {
-        name: projectName,
-        githubProject,
-        creatorId: this.userService.id, // TODO: intercept or auto fill creator id
-      })
-      .pipe(map((res) => res.data));
+    return this.userService.profile$.pipe(
+      switchMap((profile) =>
+        this.http.post<ApiResponse<Project>>(`${this.apiUrl}`, {
+          name: projectName,
+          githubProject,
+          creatorId: profile.id, // TODO: intercept or auto fill creator id
+        })
+      ),
+      map((res) => res.data)
+    );
   }
 
   loadRepoTree(project: string) {
