@@ -10,10 +10,10 @@
   <!-- TODO: List 2-3 top project contributions -->
 
   <!-- TODO: List projects -->
-  <div>
+  <div *ngIf="projects$ | async as projs">
     <h3>Projects</h3>
     <ul>
-      <li></li>
+      <li *ngFor="let p of projs">{{ p | json }}</li>
     </ul>
   </div>
 
