@@ -8,20 +8,34 @@ import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
+import { ProjectModule } from '@modules/project/project.module';
+import { UserService } from './shared/user.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProjectService {
   // data = testData;
+  apiUrl = 'api/projects';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   getProject(id: string): Observable<Project> {
-    return this.http.get<ApiResponse<Project>>('/api/projects/' + id).pipe(
+    return this.http.get<ApiResponse<Project>>(`${this.apiUrl}/${id}`).pipe(
       shareReplay(1),
       map((res) => res.data)
     );
+  }
+
+  createProject(
+    projectName: string,
+    githubProject: string
+  ): Observable<Project> {
+    return this.http
+      .post<ApiResponse<Project>>(`${this.apiUrl}`, {
+        name: projectName,
+        githubProject,
+        creatorId: this.userService.id, // TODO: intercept or auto fill creator id
+      })
+      .pipe(map((res) => res.data));
   }
 
   loadRepoTree(project: string) {
@@ -63,7 +77,7 @@ export class ProjectService {
           return throwError(err);
         })
       );
-    // uncomment below for test on custom file
+    // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
   }
 }
