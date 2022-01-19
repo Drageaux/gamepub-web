@@ -14,15 +14,26 @@ import { UserService } from './shared/user.service';
 @Injectable()
 export class ProjectService {
   // data = testData;
-  apiUrl = 'api/projects';
+  prefix = 'api';
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
-  getProject(id: string): Observable<Project> {
-    return this.http.get<ApiResponse<Project>>(`${this.apiUrl}/${id}`).pipe(
-      shareReplay(1),
-      map((res) => res.data)
-    );
+  getProject(projId: string): Observable<Project> {
+    return this.http
+      .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getProjectsByUsername(username: string): Observable<Project[]> {
+    return this.http
+      .get<ApiResponse<Project[]>>(`${this.prefix}/users/${username}/projects`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
   createProject(
@@ -31,7 +42,7 @@ export class ProjectService {
   ): Observable<Project> {
     return this.userService.profile$.pipe(
       switchMap((profile) =>
-        this.http.post<ApiResponse<Project>>(`${this.apiUrl}`, {
+        this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
           name: projectName,
           githubProject,
           creatorId: profile.id, // TODO: intercept or auto fill creator id
