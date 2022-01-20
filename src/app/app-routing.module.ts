@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './modules/profile/profile.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
 import { ProjectComponent } from '@modules/project/project.component';
+import { CreateProjectComponent } from '@modules/project/create-project/create-project.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       },
     ],
   },
+  { path: 'new-project', component: CreateProjectComponent },
   { path: 'dashboard', component: AssetDashboardComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page

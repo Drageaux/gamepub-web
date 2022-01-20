@@ -8,6 +8,7 @@ import { ProjectOverviewComponent } from './project-overview/project-overview.co
 import { RouterModule } from '@angular/router';
 import { PackageService } from '@services/package.service';
 import { ProjectService } from '@services/project.service';
+import { CreateProjectComponent } from './create-project/create-project.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProjectService } from '@services/project.service';
     PackageListingComponent,
     ProjectTreeComponent,
     ProjectOverviewComponent,
+    CreateProjectComponent,
   ],
   imports: [CommonModule, RouterModule],
   providers: [ProjectService, PackageService],
