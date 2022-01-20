@@ -1,0 +1,26 @@
+<ng-container *ngIf="profile$ | async as profile">
+  <h1>
+    <strong>{{ profile.username }}</strong>
+  </h1>
+
+  <div>
+    <h3>Create</h3>
+    <!-- TODO: Create new Project -->
+    <a class="btn btn-primary" [routerLink]="['/new-project']">New Project</a>
+
+    <!-- TODO: Create new Asset -->
+    <a class="btn btn-primary" [routerLink]="['/new-asset']">New Asset</a>
+  </div>
+
+  <!-- TODO: List 2-3 top project contributions -->
+
+  <!-- TODO: List projects -->
+  <div *ngIf="projects$ | async as projs">
+    <h3>Projects</h3>
+    <ul>
+      <li *ngFor="let p of projs">{{ p | json }}</li>
+    </ul>
+  </div>
+
+  <!-- TODO: List assets like gallery style -->
+</ng-container>

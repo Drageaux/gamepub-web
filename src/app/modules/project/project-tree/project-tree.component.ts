@@ -16,15 +16,9 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./project-tree.component.scss'],
 })
 export class ProjectTreeComponent implements OnInit {
-  @Input() owner!: string;
-  @Input() repo!: string;
-  projContents$!: Observable<GithubContents[]>;
+  @Input() contents!: GithubContents[];
 
-  constructor(private projService: ProjectService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.projContents$ = this.projService
-      .loadRepoTree(this.owner, this.repo)
-      .pipe(tap(console.log));
-  }
+  ngOnInit(): void {}
 }

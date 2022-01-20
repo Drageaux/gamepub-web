@@ -6,8 +6,9 @@ export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
   _id: string;
-  creator: string | User;
+  creatorId: string; // User._id
   name: string;
-  ghOwner?: string;
-  ghRepo?: string;
+  imageUrl?: string;
+  tags?: string[];
+  githubProject?: string;
 }

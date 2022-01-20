@@ -12,25 +12,18 @@ import { ScopedRegistry } from '@classes/scoped-registry';
   styleUrls: ['./package-listing.component.scss'],
 })
 export class PackageListingComponent implements OnInit {
-  @Input() owner!: string;
-  @Input() repo!: string;
-  manifest$!: Observable<UnityManifest>;
+  @Input() manifest!: UnityManifest;
 
   constructor(private projService: ProjectService) {}
 
-  ngOnInit(): void {
-    this.manifest$ = this.projService.getManifest(
-      this.owner,
-      this.repo,
-      'Packages'
-    );
-  }
+  ngOnInit(): void {}
 
   isOpenUpmRegistry(registry: ScopedRegistry) {
     return registry.url === 'https://package.openupm.com';
   }
 
   trimPackageList(pkgs: PackageName[]) {
+    // exclude packages like openupm since its in every openupm package
     return pkgs.filter((x) => EXCLUDED_PACKAGES.indexOf(x) == -1);
   }
 }

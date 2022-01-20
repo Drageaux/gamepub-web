@@ -8,25 +8,53 @@ import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
+import { ProjectModule } from '@modules/project/project.module';
+import { UserService } from './shared/user.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProjectService {
   // data = testData;
+  prefix = 'api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
-  getProject(id: string): Observable<Project> {
-    return this.http.get<ApiResponse<Project>>('/api/projects/' + id).pipe(
-      shareReplay(1),
+  getProject(projId: string): Observable<Project> {
+    return this.http
+      .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getProjectsByUsername(username: string): Observable<Project[]> {
+    return this.http
+      .get<ApiResponse<Project[]>>(`${this.prefix}/users/${username}/projects`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  createProject(
+    projectName: string,
+    githubProject: string
+  ): Observable<Project> {
+    return this.userService.profile$.pipe(
+      switchMap((profile) =>
+        this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
+          name: projectName,
+          githubProject,
+          creatorId: profile.id, // TODO: intercept or auto fill creator id
+        })
+      ),
       map((res) => res.data)
     );
   }
 
-  loadRepoTree(owner: string, repo: string) {
+  loadRepoTree(project: string) {
     return this.http.get<GithubContents[]>(
-      `https://api.github.com/repos/${owner}/${repo}/contents`
+      `https://api.github.com/repos/${project}/contents`
     );
   }
 
@@ -40,15 +68,14 @@ export class ProjectService {
   }
 
   getManifest(
-    owner: string,
-    repo: string,
+    ghProject: string,
     path: string = 'Packages'
   ): Observable<UnityManifest> {
     // TODO: Sometimes the file may be in a different location, so we should support custom path later
     // NOTE: Packages or UnityPackageManager folder
     return this.http
       .get<GithubContents>(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${path}/manifest.json`
+        `https://api.github.com/repos/${ghProject}/contents/${path}/manifest.json`
       )
       .pipe(
         switchMap((res) => {
@@ -64,7 +91,7 @@ export class ProjectService {
           return throwError(err);
         })
       );
-    // uncomment below for test on custom file
+    // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
   }
 }

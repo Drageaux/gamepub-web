@@ -1,13 +1,9 @@
 <div *ngIf="project$ | async as project">
   <!-- Breadcrumb Title -->
-  <h1>Hogwarts Game</h1>
+  <h1>{{ project.name || project.githubProject }}</h1>
   <h2 class="lead">
-    <a
-      [href]="'https://github.com/' + project.ghOwner + '/' + project.ghRepo"
-      target="_blank"
-    >
-      <span class="fw-normal">{{ project.ghOwner }}</span
-      >&#47;<span class="fw-bold">{{ project.ghRepo }}</span>
+    <a [href]="'https://github.com/' + project.githubProject" target="_blank">
+      <span class="fw-normal">{{ project.githubProject }}</span>
     </a>
   </h2>
 
@@ -32,19 +28,20 @@
     </li>
   </ul>
 
+  <router-outlet></router-outlet>
+
   <app-project-overview *ngIf="tab == 'Overview'"></app-project-overview>
 
+  <!-- "async" pipe only subscribes to the githubContents$ observable when Details tab is selected -->
   <ng-container *ngIf="tab == 'Details'">
     <app-project-tree
-      *ngIf="project.ghOwner && project.ghRepo"
-      [owner]="project.ghOwner"
-      [repo]="project.ghRepo"
+      *ngIf="githubContents$ | async as contents"
+      [contents]="contents"
     ></app-project-tree>
 
     <app-package-listing
-      *ngIf="project.ghOwner && project.ghRepo"
-      [owner]="project.ghOwner"
-      [repo]="project.ghRepo"
+      *ngIf="manifest$ | async as manifest"
+      [manifest]="manifest"
     ></app-package-listing>
   </ng-container>
 </div>
