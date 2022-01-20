@@ -6,6 +6,8 @@ import { ProjectComponent } from '@modules/project/project.component';
 import { CreateProjectComponent } from '@modules/project/create-project/create-project.component';
 
 const routes: Routes = [
+  { path: 'new-project', component: CreateProjectComponent },
+  { path: 'dashboard', component: AssetDashboardComponent },
   {
     path: ':id',
     // TODO: check against ID
@@ -17,8 +19,6 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'new-project', component: CreateProjectComponent },
-  { path: 'dashboard', component: AssetDashboardComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
   // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
 ];
