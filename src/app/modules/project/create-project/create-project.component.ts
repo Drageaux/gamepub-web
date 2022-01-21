@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-project',
@@ -6,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-project.component.scss'],
 })
 export class CreateProjectComponent implements OnInit {
+  newProjectForm = new FormGroup({
+    projectName: new FormControl(''),
+    githubRepo: new FormControl(''),
+  });
+
   constructor() {}
 
   ngOnInit(): void {}

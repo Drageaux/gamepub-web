@@ -30,6 +30,7 @@
 @import "_transitions";
 @import "_containers";
 @import "_buttons";
+@import "_forms";
 @import "_grid";
 @import "_nav";
 @import "_navbar";
@@ -40,3 +41,9 @@
 
 // Utilities
 @import "utilities/api";
+
+// Custom
+.form-group label.required:after {
+  color: red;
+  content: "*";
+}

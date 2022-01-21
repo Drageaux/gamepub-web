@@ -1,4 +1,31 @@
 <h1>Create a new project<br /></h1>
 <p>Have an idea? Start here.</p>
 
-<form></form>
+<form [formGroup]="newProjectForm" class="form-group">
+  <label for="project-name" class="required">Project Name</label>
+  <input
+    id="project-name"
+    type="text"
+    formControlName="projectName"
+    class="form-control"
+    required
+  />
+
+  <label for="github-repo">GitHub Repo</label>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <div class="input-group-text">github.com/</div>
+    </div>
+    <input
+      id="github-repo"
+      type="text"
+      formControlName="githubRepo"
+      class="form-control"
+      placeholder="owner/project-name"
+    />
+  </div>
+  <small id="github-repo-help" class="form-text text-muted"
+    >Link your project's source code repository from GitHub to help others see
+    the progress and join your cause.</small
+  >
+</form>
