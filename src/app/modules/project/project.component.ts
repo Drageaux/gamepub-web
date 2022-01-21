@@ -37,16 +37,16 @@ export class ProjectComponent implements OnInit {
     this.githubContents$ = this.project$.pipe(
       take(1),
       switchMap((proj) =>
-        proj.githubProject
-          ? this.projService.loadRepoTree(proj.githubProject)
+        proj.githubRepo
+          ? this.projService.loadRepoTree(proj.githubRepo)
           : of(null)
       )
     );
     this.manifest$ = this.project$.pipe(
       take(1),
       switchMap((proj) =>
-        proj.githubProject
-          ? this.projService.getManifest(proj.githubProject)
+        proj.githubRepo
+          ? this.projService.getManifest(proj.githubRepo)
           : of(null)
       )
     );
