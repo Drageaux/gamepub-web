@@ -36,18 +36,15 @@ export class ProjectService {
       );
   }
 
-  createProject(
-    projectName: string,
-    githubProject: string
-  ): Observable<Project> {
+  createProject(projectName: string, githubRepo: string): Observable<Project> {
     return this.userService.profile$.pipe(
-      switchMap((profile) =>
-        this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
+      switchMap((profile) => {
+        return this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
           name: projectName,
-          githubProject,
-          creatorId: profile.id, // TODO: intercept or auto fill creator id
-        })
-      ),
+          githubRepo,
+          creator: profile._id, // TODO: intercept or auto fill creator id
+        });
+      }),
       map((res) => res.data)
     );
   }
