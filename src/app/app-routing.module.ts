@@ -12,13 +12,18 @@ const routes: Routes = [
   { path: 'dashboard', component: AssetDashboardComponent },
   {
     path: ':username',
-    component: ProfileComponent,
     children: [
+      {
+        path: '',
+        component: ProfileComponent,
+        pathMatch: 'full',
+      },
       {
         // TODO: check against generated name
         path: 'project/:id',
         component: ProjectComponent,
       },
+      { path: '*', redirectTo: ':username' },
     ],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
