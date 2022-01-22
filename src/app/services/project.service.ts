@@ -8,7 +8,6 @@ import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
-import { ProjectModule } from '@modules/project/project.module';
 import { UserService } from './shared/user.service';
 
 @Injectable()
@@ -40,7 +39,7 @@ export class ProjectService {
     return this.userService.profile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
-          name: projectName,
+          displayName: projectName,
           githubRepo,
           creator: profile._id, // TODO: intercept or auto fill creator id
         });

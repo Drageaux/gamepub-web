@@ -1,6 +1,6 @@
 <div *ngIf="project$ | async as project">
   <!-- Breadcrumb Title -->
-  <h1>{{ project.name || project.githubRepo }}</h1>
+  <h1>{{ project.displayName || project.name || project.githubRepo }}</h1>
   <h2 class="lead">
     <a [href]="'https://github.com/' + project.githubRepo" target="_blank">
       <span class="fw-normal">{{ project.githubRepo }}</span>

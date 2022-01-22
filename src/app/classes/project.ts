@@ -7,9 +7,9 @@ export interface Project {
   // packages?: Package[];
   _id: string;
   creator: string | User;
-  name: string;
+  displayName: string;
   imageUrl?: string;
   tags?: string[];
   githubRepo?: string;
-  formattedName?: string;
+  name?: string;
 }
