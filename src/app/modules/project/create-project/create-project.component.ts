@@ -41,7 +41,7 @@ export class CreateProjectComponent implements OnInit {
             this.router.navigate(['/']);
           } else {
             this.router.navigate([
-              `/${(res.creator as User).username}/project/${res.displayName}`,
+              `/${(res.creator as User).username}/project/${res.name}`,
             ]);
           }
         },
