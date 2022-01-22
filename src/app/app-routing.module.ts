@@ -23,7 +23,7 @@ const routes: Routes = [
         path: 'project/:id',
         component: ProjectComponent,
       },
-      { path: '*', redirectTo: ':username' },
+      { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
     ],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
