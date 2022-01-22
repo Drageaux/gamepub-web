@@ -11,4 +11,5 @@ export interface Project {
   imageUrl?: string;
   tags?: string[];
   githubRepo?: string;
+  formattedName?: string;
 }

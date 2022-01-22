@@ -14,7 +14,7 @@ import { map, switchMap, take, tap } from 'rxjs/operators';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  projId!: string;
+  projName!: string;
   project$!: Observable<Project>;
   tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
@@ -27,13 +27,13 @@ export class ProjectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projId = this.route.snapshot.paramMap.get('id') || '';
+    this.projName = this.route.snapshot.paramMap.get('') || '';
 
-    if (this.projId == '') {
+    if (this.projName == '') {
       // TODO: navigate back to homepage or a display proper message
     }
 
-    this.project$ = this.projService.getProject(this.projId);
+    this.project$ = this.projService.getProject(this.projName);
     this.githubContents$ = this.project$.pipe(
       take(1),
       switchMap((proj) =>

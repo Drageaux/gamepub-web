@@ -1,3 +1,4 @@
+import { User } from '@classes/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,7 +21,7 @@ export class CreateProjectComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -30,12 +31,19 @@ export class CreateProjectComponent implements OnInit {
 
   onSubmit() {
     const { projectName, githubRepo } = this.projectForm.value;
-    // console.log(this.newProjectForm.value);
+
     this.projectService
       .createProject(projectName.trim(), githubRepo.trim())
       .subscribe(
         (res: Project) => {
           console.log(res);
+          if (!res.creator || res.creator instanceof String) {
+            this.router.navigate(['/']);
+          } else {
+            this.router.navigate([
+              `/${(res.creator as User).username}/project/${res.formattedName}`,
+            ]);
+          }
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't
