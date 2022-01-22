@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ProjectService } from '@services/project.service';
 
 @Component({
   selector: 'app-create-project',
@@ -7,12 +8,37 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./create-project.component.scss'],
 })
 export class CreateProjectComponent implements OnInit {
-  newProjectForm = new FormGroup({
-    projectName: new FormControl(''),
+  projectForm = new FormGroup({
+    projectName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     githubRepo: new FormControl(''),
   });
+  @ViewChild('form') form!: NgForm;
 
-  constructor() {}
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {}
+
+  get projectName() {
+    return this.projectForm.get('projectName');
+  }
+
+  onSubmit() {
+    const { projectName, githubRepo } = this.projectForm.value;
+    // console.log(this.newProjectForm.value);
+    this.projectService
+      .createProject(projectName.trim(), githubRepo.trim())
+      .subscribe(
+        (res) => {
+          console.log(res);
+        },
+        (err) => {
+          // resetForm also resets the submitted status, while reset() doesn't
+          this.form.resetForm({ projectName, githubRepo });
+          console.error(err);
+        }
+      );
+  }
 }
