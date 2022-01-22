@@ -27,6 +27,9 @@
       <div *ngIf="projectName?.errors?.['minlength']">
         Name must be at least 3 characters long.
       </div>
+      <div *ngIf="projectName?.errors?.['max length']">
+        Name must be at most 30 characters long.
+      </div>
     </div>
 
     <label for="github-repo">GitHub Repo</label>

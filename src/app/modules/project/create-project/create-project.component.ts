@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
 
 @Component({
@@ -12,6 +14,7 @@ export class CreateProjectComponent implements OnInit {
     projectName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
+      Validators.maxLength(30),
     ]),
     githubRepo: new FormControl(''),
   });
@@ -31,7 +34,7 @@ export class CreateProjectComponent implements OnInit {
     this.projectService
       .createProject(projectName.trim(), githubRepo.trim())
       .subscribe(
-        (res) => {
+        (res: Project) => {
           console.log(res);
         },
         (err) => {
