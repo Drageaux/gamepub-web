@@ -10,6 +10,7 @@ import { PackageListingComponent } from './package-listing/package-listing.compo
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 import { ProjectTreeComponent } from './project-tree/project-tree.component';
 import { ProjectComponent } from './project.component';
+import { ProjectProxyComponent } from './project-proxy/project-proxy.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ProjectComponent } from './project.component';
     ProjectTreeComponent,
     ProjectOverviewComponent,
     CreateProjectComponent,
+    ProjectProxyComponent,
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
   providers: [ProjectService, PackageService],

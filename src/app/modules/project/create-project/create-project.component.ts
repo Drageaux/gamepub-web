@@ -1,9 +1,18 @@
 import { User } from '@classes/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  NgForm,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
+import { Observable, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-project',
@@ -12,8 +21,12 @@ import { ProjectService } from '@services/project.service';
 })
 export class CreateProjectComponent implements OnInit {
   projectForm = new FormGroup({
-    projectName: new FormControl('', [
-      Validators.required,
+    formattedName: new FormControl(
+      '',
+      [Validators.required, Validators.minLength(3), Validators.maxLength(30)],
+      [this.validateUniqueProjectName.bind(this)]
+    ),
+    displayName: new FormControl('', [
       Validators.minLength(3),
       Validators.maxLength(30),
     ]),
@@ -25,31 +38,55 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  get projectName() {
-    return this.projectForm.get('projectName');
+  get displayName() {
+    return this.projectForm.get('displayName');
+  }
+
+  get formattedName() {
+    return this.projectForm.get('formattedName');
   }
 
   onSubmit() {
-    const { projectName, githubRepo } = this.projectForm.value;
+    const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
     this.projectService
-      .createProject(projectName.trim(), githubRepo.trim())
+      .createProject({
+        name: formattedName.trim(),
+        displayName: displayName.trim() || '',
+        githubRepo: githubRepo.trim(),
+      } as Project)
       .subscribe(
         (res: Project) => {
           console.log(res);
           if (!res.creator || res.creator instanceof String) {
-            this.router.navigate(['/']);
+            // TODO: needs testing
+            this.router.navigate(['project', res._id]);
           } else {
             this.router.navigate([
-              `/${(res.creator as User).username}/project/${res.displayName}`,
+              '',
+              (res.creator as User).username,
+              'project',
+              res.name,
             ]);
           }
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't
-          this.form.resetForm({ projectName, githubRepo });
+          this.form.resetForm(this.projectForm.value);
           console.error(err);
         }
       );
+  }
+
+  validateUniqueProjectName(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return timer(300).pipe(
+      switchMap(() =>
+        this.projectService
+          .isProjectNameTaken(control.value)
+          .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
+      )
+    );
   }
 }

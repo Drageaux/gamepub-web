@@ -36,7 +36,10 @@
             "styles": ["src/styles.scss"],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "src/assets/fontawesome/js/solid.min.js",
+              "src/assets/fontawesome/js/brands.min.js",
+              "src/assets/fontawesome/js/fontawesome.min.js"
             ]
           },
           "configurations": {

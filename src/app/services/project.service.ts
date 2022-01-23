@@ -17,7 +17,21 @@ export class ProjectService {
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
-  getProject(projId: string): Observable<Project> {
+  getProjectByFullPath(
+    username: string,
+    projName: string
+  ): Observable<Project> {
+    return this.http
+      .get<ApiResponse<Project>>(
+        `${this.prefix}/users/${username}/projects/${projName}`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getProjectById(projId: string): Observable<Project> {
     return this.http
       .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
       .pipe(
@@ -35,12 +49,11 @@ export class ProjectService {
       );
   }
 
-  createProject(projectName: string, githubRepo: string): Observable<Project> {
+  createProject(project: Project): Observable<Project> {
     return this.userService.profile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
-          displayName: projectName,
-          githubRepo,
+          ...project,
           creator: profile._id, // TODO: intercept or auto fill creator id
         });
       }),
@@ -48,6 +61,26 @@ export class ProjectService {
     );
   }
 
+  isProjectNameTaken(value: string): Observable<boolean> {
+    return this.userService.profile$.pipe(
+      switchMap((profile) => {
+        return this.http.post<ApiResponse<null>>(
+          `${this.prefix}/projects/check-name`,
+          {
+            name: value,
+            creator: profile._id,
+          },
+          { observe: 'response' }
+        );
+      }),
+      map((response) => response.status != 200),
+      catchError(() => of(true))
+    );
+  }
+
+  /*************************************************************************/
+  /******************************** DETAILS ********************************/
+  /*************************************************************************/
   loadRepoTree(project: string) {
     return this.http.get<GithubContents[]>(
       `https://api.github.com/repos/${project}/contents`

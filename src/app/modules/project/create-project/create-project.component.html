@@ -8,27 +8,72 @@
     #form="ngForm"
     (ngSubmit)="onSubmit()"
   >
-    <label for="project-name" class="required">Project Name</label>
-    <input
-      id="project-name"
-      type="text"
-      formControlName="projectName"
-      class="form-control"
-      placeholder="(e.g. Fantasy World)"
-      required
-    />
-    <div
-      *ngIf="
-        projectName?.invalid && (projectName?.dirty || projectName?.touched)
-      "
-      class="text-danger"
-    >
-      <div *ngIf="projectName?.errors?.['required']">Name is required.</div>
-      <div *ngIf="projectName?.errors?.['minlength']">
-        Name must be at least 3 characters long.
+    <div class="row">
+      <div class="col">
+        <label for="formatted-name" class="required">Name</label>
+        <input
+          id="formatted-name"
+          type="text"
+          formControlName="formattedName"
+          class="form-control"
+          placeholder="(e.g. fantasy-world)"
+          required
+        />
+
+        <div
+          *ngIf="
+            formattedName?.invalid &&
+            (formattedName?.dirty || formattedName?.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="formattedName?.errors?.['required']">
+            Name is required.
+          </div>
+          <div *ngIf="formattedName?.errors?.['minlength']">
+            Name must be at least 3 characters long.
+          </div>
+          <div *ngIf="formattedName?.errors?.['max length']">
+            Name must be at most 30 characters long.
+          </div>
+          <div *ngIf="formattedName?.errors?.['projectNameTaken']">
+            The project <b>{{ formattedName?.value }}</b> already exists on this
+            account.
+          </div>
+        </div>
+        <div
+          *ngIf="
+            formattedName?.valid &&
+            (formattedName?.dirty || formattedName?.touched)
+          "
+          class="text-success"
+        >
+          {{ formattedName?.value }} is available.
+        </div>
       </div>
-      <div *ngIf="projectName?.errors?.['max length']">
-        Name must be at most 30 characters long.
+
+      <div class="col">
+        <label for="display-name">Display Name</label>
+        <input
+          id="display-name"
+          type="text"
+          formControlName="displayName"
+          class="form-control"
+          placeholder="(e.g. Fantasy World)"
+        />
+        <div
+          *ngIf="
+            displayName?.invalid && (displayName?.dirty || displayName?.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="displayName?.errors?.['minlength']">
+            Display name must be at least 3 characters long.
+          </div>
+          <div *ngIf="displayName?.errors?.['max length']">
+            Display name must be at most 30 characters long.
+          </div>
+        </div>
       </div>
     </div>
 
