@@ -63,7 +63,7 @@ export class CreateProjectComponent implements OnInit {
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't
-          this.form.resetForm({ displayName, githubRepo });
+          this.form.resetForm(this.projectForm.value);
           console.error(err);
         }
       );
