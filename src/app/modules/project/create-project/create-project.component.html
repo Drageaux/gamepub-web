@@ -35,13 +35,17 @@
           <div *ngIf="formattedName?.errors?.['max length']">
             Name must be at most 30 characters long.
           </div>
+          <div *ngIf="formattedName?.errors?.['projectNameTaken']">
+            The project <b>{{ formattedName?.value }}</b> already exists on this
+            account.
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <label for="project-name">Display Name</label>
+        <label for="display-name">Display Name</label>
         <input
-          id="project-name"
+          id="display-name"
           type="text"
           formControlName="displayName"
           class="form-control"
