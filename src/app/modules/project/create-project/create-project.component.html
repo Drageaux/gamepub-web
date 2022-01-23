@@ -42,6 +42,15 @@
             account.
           </div>
         </div>
+        <div
+          *ngIf="
+            formattedName?.valid &&
+            (formattedName?.dirty || formattedName?.touched)
+          "
+          class="text-success"
+        >
+          {{ formattedName?.value }} is available.
+        </div>
       </div>
 
       <div class="col">
