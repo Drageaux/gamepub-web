@@ -11,8 +11,8 @@ import {
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-project',
@@ -81,8 +81,12 @@ export class CreateProjectComponent implements OnInit {
   validateUniqueProjectName(
     control: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
-    return this.projectService
-      .isProjectNameTaken(control.value)
-      .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)));
+    return timer(300).pipe(
+      switchMap(() =>
+        this.projectService
+          .isProjectNameTaken(control.value)
+          .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
+      )
+    );
   }
 }
