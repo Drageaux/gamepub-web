@@ -1,9 +1,18 @@
 import { User } from '@classes/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  NgForm,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-project',
@@ -12,11 +21,11 @@ import { ProjectService } from '@services/project.service';
 })
 export class CreateProjectComponent implements OnInit {
   projectForm = new FormGroup({
-    formattedName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(30),
-    ]),
+    formattedName: new FormControl(
+      '',
+      [Validators.required, Validators.minLength(3), Validators.maxLength(30)],
+      [this.validateUniqueProjectName.bind(this)]
+    ),
     displayName: new FormControl('', [
       Validators.minLength(3),
       Validators.maxLength(30),
@@ -67,5 +76,13 @@ export class CreateProjectComponent implements OnInit {
           console.error(err);
         }
       );
+  }
+
+  validateUniqueProjectName(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return this.projectService
+      .isProjectNameTaken(control.value)
+      .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)));
   }
 }

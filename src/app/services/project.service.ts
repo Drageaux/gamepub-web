@@ -61,6 +61,26 @@ export class ProjectService {
     );
   }
 
+  isProjectNameTaken(value: string): Observable<boolean> {
+    return this.userService.profile$.pipe(
+      switchMap((profile) => {
+        return this.http.post<ApiResponse<null>>(
+          `${this.prefix}/projects/check-name`,
+          {
+            name: value,
+            creator: profile._id,
+          },
+          { observe: 'response' }
+        );
+      }),
+      map((response) => response.status != 200),
+      catchError(() => of(true))
+    );
+  }
+
+  /*************************************************************************/
+  /******************************** DETAILS ********************************/
+  /*************************************************************************/
   loadRepoTree(project: string) {
     return this.http.get<GithubContents[]>(
       `https://api.github.com/repos/${project}/contents`
