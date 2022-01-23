@@ -17,9 +17,23 @@ export class ProjectService {
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
-  getProject(projId: string): Observable<Project> {
+  getProjectByFullPath(
+    username: string,
+    projName: string
+  ): Observable<Project> {
     return this.http
-      .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
+      .get<ApiResponse<Project>>(
+        `${this.prefix}/users/${username}/projects/${projName}`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getProjectById(projId: string): Observable<Project> {
+    return this.http
+      .get<ApiResponse<Project>>(`${this.prefix}/projects?id=${projId}`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)

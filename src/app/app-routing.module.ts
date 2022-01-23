@@ -20,10 +20,10 @@ const routes: Routes = [
       },
       {
         // TODO: check against generated name
-        path: 'project/:id',
+        path: 'project/:projectname',
         component: ProjectComponent,
       },
-      { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
+      // { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
     ],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
