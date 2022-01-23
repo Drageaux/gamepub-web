@@ -11,6 +11,7 @@
     <div class="row">
       <div class="col">
         <label for="formatted-name" class="required">Name</label>
+        <i class="fas fa-check"></i>
         <input
           id="formatted-name"
           type="text"
@@ -19,6 +20,7 @@
           placeholder="(e.g. fantasy-world)"
           required
         />
+
         <div
           *ngIf="
             formattedName?.invalid &&
