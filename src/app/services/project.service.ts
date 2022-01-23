@@ -33,7 +33,7 @@ export class ProjectService {
 
   getProjectById(projId: string): Observable<Project> {
     return this.http
-      .get<ApiResponse<Project>>(`${this.prefix}/projects?id=${projId}`)
+      .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)

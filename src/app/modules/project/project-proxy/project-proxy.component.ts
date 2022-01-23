@@ -21,9 +21,9 @@ export class ProjectProxyComponent implements OnInit {
       this.service.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
-            this.router.navigate([
-              '/' + (res.creator as User).username + '/project/' + res.name,
-            ]);
+            this.router.navigateByUrl(
+              '/' + (res.creator as User).username + '/project/' + res.name
+            );
           } else {
             this.router.navigate(['/']);
           }
