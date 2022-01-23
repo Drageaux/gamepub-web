@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 
 import { GithubContents } from '@classes/github-contents';
 import { ProjectService } from '@services/project.service';
@@ -59,7 +59,13 @@ export class ProjectComponent implements OnInit {
       .getProjectByFullPath(this.username, this.projName)
       .pipe(
         shareReplay(1),
+        map((project) => {
+          if (project) return project;
+          else throw new Error('No project found');
+        }),
         catchError((err) => {
+          console.error(err);
+          this.noProjectError$.next(true);
           return of(null);
         })
       );
