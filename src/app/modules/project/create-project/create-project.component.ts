@@ -38,10 +38,14 @@ export class CreateProjectComponent implements OnInit {
         (res: Project) => {
           console.log(res);
           if (!res.creator || res.creator instanceof String) {
-            this.router.navigate(['/']);
+            // TODO: needs testing
+            this.router.navigate(['project', res._id]);
           } else {
             this.router.navigate([
-              `/${(res.creator as User).username}/project/${res.name}`,
+              '',
+              (res.creator as User).username,
+              'project',
+              res.name,
             ]);
           }
         },
