@@ -12,8 +12,12 @@ import { ProjectService } from '@services/project.service';
 })
 export class CreateProjectComponent implements OnInit {
   projectForm = new FormGroup({
-    projectName: new FormControl('', [
+    formattedName: new FormControl('', [
       Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(30),
+    ]),
+    displayName: new FormControl('', [
       Validators.minLength(3),
       Validators.maxLength(30),
     ]),
@@ -25,15 +29,23 @@ export class CreateProjectComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  get projectName() {
-    return this.projectForm.get('projectName');
+  get displayName() {
+    return this.projectForm.get('displayName');
+  }
+
+  get formattedName() {
+    return this.projectForm.get('formattedName');
   }
 
   onSubmit() {
-    const { projectName, githubRepo } = this.projectForm.value;
+    const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
     this.projectService
-      .createProject(projectName.trim(), githubRepo.trim())
+      .createProject({
+        name: formattedName.trim(),
+        displayName: displayName.trim() || '',
+        githubRepo: githubRepo.trim(),
+      } as Project)
       .subscribe(
         (res: Project) => {
           console.log(res);
@@ -51,7 +63,7 @@ export class CreateProjectComponent implements OnInit {
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't
-          this.form.resetForm({ projectName, githubRepo });
+          this.form.resetForm({ displayName, githubRepo });
           console.error(err);
         }
       );
