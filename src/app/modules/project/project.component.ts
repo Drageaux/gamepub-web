@@ -52,7 +52,7 @@ export class ProjectComponent implements OnInit {
     // }
 
     this.noProjectError$.subscribe((hasError) => {
-      return this.router.navigate(['/' + this.username]);
+      if (hasError) this.router.navigate(['', this.username]);
     });
 
     this.project$ = this.projService
