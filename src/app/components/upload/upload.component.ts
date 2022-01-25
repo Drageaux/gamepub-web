@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-upload-component',
-  templateUrl: './upload-component.component.html',
-  styleUrls: ['./upload-component.component.scss'],
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.scss'],
 })
-export class UploadComponentComponent implements OnInit {
+export class UploadComponent implements OnInit {
   form: FormGroup = new FormGroup({
     image: new FormControl(null),
   });
