@@ -1,6 +1,6 @@
 <div *ngIf="project$ | async as project">
   <!-- TODO: Breadcrumb Title -->
-  <h1>{{ project.displayName }}</h1>
+  <h1>{{ project.displayName || project.name }}</h1>
   <h2 class="lead">
     <a [href]="'https://github.com/' + project.githubRepo" target="_blank">
       <span class="fw-normal">{{ project.githubRepo }}</span>
@@ -33,6 +33,7 @@
   <app-project-overview
     *ngIf="tab == 'Overview'"
     [project]="project"
+    (imageUpdatedEvent)="onProjectChange($event)"
   ></app-project-overview>
 
   <!-- "async" pipe only subscribes to the githubContents$ observable when Details tab is selected -->

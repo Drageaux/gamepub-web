@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { Observable, of, Subject, throwError } from 'rxjs';
 
 import { GithubContents } from '@classes/github-contents';
@@ -14,16 +20,20 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+
   username!: string;
   projName!: string;
-  project$!: Observable<Project | null>;
+  project$ = new Subject<Project | null>();
   tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
   githubContents$!: Observable<GithubContents[] | null>;
@@ -34,7 +44,8 @@ export class ProjectComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projService: ProjectService
+    private projService: ProjectService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -51,11 +62,12 @@ export class ProjectComponent implements OnInit {
     //   this.router.navigate(['/' + this.username]);
     // }
 
-    this.noProjectError$.subscribe((hasError) => {
+    this.subs.sink = this.noProjectError$.subscribe((hasError) => {
       if (hasError) this.router.navigate(['', this.username]);
     });
 
-    this.project$ = this.projService
+    // service retrieves once
+    this.subs.sink = this.projService
       .getProjectByFullPath(this.username, this.projName)
       .pipe(
         shareReplay(1),
@@ -68,7 +80,12 @@ export class ProjectComponent implements OnInit {
           this.noProjectError$.next(true);
           return of(null);
         })
-      );
+      )
+      .subscribe((proj) => {
+        // observable/subject project emits first data
+        this.project$.next(proj);
+      });
+
     this.githubContents$ = this.project$.pipe(
       take(1),
       switchMap((proj) =>
@@ -86,5 +103,14 @@ export class ProjectComponent implements OnInit {
       )
     );
     // from project, pull GitHub repo contents to render packages included}
+  }
+
+  onProjectChange(proj: Project) {
+    this.project$.next(proj);
+  }
+
+  // unsubscribe when the component dies
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
@@ -10,6 +10,7 @@ import { ProjectService } from '@services/project.service';
 })
 export class ProjectOverviewComponent implements OnInit {
   @Input() project!: Project;
+  @Output() imageUpdatedEvent = new EventEmitter<Project>();
 
   constructor(
     private route: ActivatedRoute,
@@ -26,6 +27,11 @@ export class ProjectOverviewComponent implements OnInit {
   onImageUploaded(fileData: string | null) {
     console.log(fileData);
     if (!fileData) return;
-    this.projService.uploadProjectImage(this.project._id, fileData);
+    // pass back to parent to keep the entire page up to date
+    this.projService
+      .uploadProjectImage(this.project._id, fileData)
+      .subscribe((project) => {
+        this.imageUpdatedEvent.emit(project);
+      });
   }
 }
