@@ -25,6 +25,7 @@ export class UploadComponent implements OnInit {
     const files = eventTarget.files;
     const file = files ? files[0] : null;
     this.fileSize = file ? file.size : 0;
+    // TODO: Deny files bigger than 4MB
     if (!file) return;
 
     this.form.patchValue({ image: file });
