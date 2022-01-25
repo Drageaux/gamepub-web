@@ -8,7 +8,7 @@ import { Project } from '@classes/project';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
-import { UserService } from './shared/user.service';
+import { UserService } from '../modules/shared/user.service';
 
 @Injectable()
 export class ProjectService {
@@ -17,6 +17,9 @@ export class ProjectService {
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
+  /*************************************************************************/
+  /****************************** API REQUESTS *****************************/
+  /*************************************************************************/
   getProjectByFullPath(
     username: string,
     projName: string
@@ -76,6 +79,17 @@ export class ProjectService {
       map((response) => response.status != 200),
       catchError(() => of(true))
     );
+  }
+
+  uploadProjectImage(projId: string, file: File | string) {
+    return this.http
+      .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
+        image: file,
+      })
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
   /*************************************************************************/
