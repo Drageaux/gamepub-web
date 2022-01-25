@@ -23,8 +23,9 @@ export class ProjectOverviewComponent implements OnInit {
     // this.project$ = this.projService.getProject(this.projId!);
   }
 
-  onImageUploaded(event: any) {
-    console.log(event);
-    this.projService.uploadProjectImage(this.project._id, event);
+  onImageUploaded(fileData: string | null) {
+    console.log(fileData);
+    if (!fileData) return;
+    this.projService.uploadProjectImage(this.project._id, fileData);
   }
 }

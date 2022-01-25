@@ -1,6 +1,12 @@
 <div class="row container-fluid">
   <div class="col">
-    <img [src]="'https://via.placeholder.com/250x250'" />
+    <img
+      *ngIf="project.imageUrl; else placeholderImageBlock"
+      [src]="project.imageUrl"
+    />
+    <ng-template #placeholderImageBlock>
+      <img [src]="'https://via.placeholder.com/250x250'" />
+    </ng-template>
   </div>
   <div class="col">
     <p>tags here</p>
