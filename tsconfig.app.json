@@ -8,7 +8,8 @@
     "paths": {
       "@modules/*": ["src/app/modules/*"],
       "@classes/*": ["src/app/classes/*"],
-      "@services/*": ["src/app/services/*"]
+      "@services/*": ["src/app/services/*"],
+      "@components/*": ["src/app/components/*"]
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
