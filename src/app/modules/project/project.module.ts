@@ -11,6 +11,7 @@ import { ProjectOverviewComponent } from './project-overview/project-overview.co
 import { ProjectTreeComponent } from './project-tree/project-tree.component';
 import { ProjectComponent } from './project.component';
 import { ProjectProxyComponent } from './project-proxy/project-proxy.component';
+import { SharedModule } from '@modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { ProjectProxyComponent } from './project-proxy/project-proxy.component';
     CreateProjectComponent,
     ProjectProxyComponent,
   ],
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, SharedModule],
   providers: [ProjectService, PackageService],
 })
 export class ProjectModule {}
