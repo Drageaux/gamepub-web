@@ -7,9 +7,15 @@
     <ng-template #placeholderImageBlock>
       <img [src]="'https://via.placeholder.com/250x250'" />
     </ng-template>
+    <button class="btn btn-light" (click)="updatingImage = !updatingImage">
+      <i class="fas fa-pencil"></i> Edit
+    </button>
+    <app-upload
+      *ngIf="updatingImage"
+      (imageUploadedEvent)="onImageUploaded($event)"
+    ></app-upload>
   </div>
   <div class="col">
     <p>tags here</p>
   </div>
 </div>
-<app-upload (imageUploadedEvent)="onImageUploaded($event)"></app-upload>

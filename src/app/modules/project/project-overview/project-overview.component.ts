@@ -11,6 +11,7 @@ import { ProjectService } from '@services/project.service';
 export class ProjectOverviewComponent implements OnInit {
   @Input() project!: Project;
   @Output() imageUpdatedEvent = new EventEmitter<Project>();
+  updatingImage = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,6 +27,7 @@ export class ProjectOverviewComponent implements OnInit {
 
   onImageUploaded(fileData: string | null) {
     console.log(fileData);
+    this.updatingImage = false;
     if (!fileData) return;
     // pass back to parent to keep the entire page up to date
     this.projService
