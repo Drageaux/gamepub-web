@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
@@ -7,22 +17,22 @@ import { ProjectService } from '@services/project.service';
   selector: 'app-project-overview',
   templateUrl: './project-overview.component.html',
   styleUrls: ['./project-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectOverviewComponent implements OnInit {
+export class ProjectOverviewComponent implements OnInit, OnChanges {
   @Input() project!: Project;
   @Output() imageUpdatedEvent = new EventEmitter<Project>();
   updatingImage = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private projService: ProjectService
-  ) {
-    // console.log(route.url);
-  }
+    private projService: ProjectService,
+    private ref: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {
-    // console.log(this.route.parent?.snapshot.paramMap.get('id'));
-    // this.project$ = this.projService.getProject(this.projId!);
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
 
   onImageUploaded(fileData: string | null) {
@@ -35,6 +45,7 @@ export class ProjectOverviewComponent implements OnInit {
       .subscribe((project) => {
         console.log(project);
         this.imageUpdatedEvent.emit(project);
+        this.ref.detectChanges();
       });
   }
 }
