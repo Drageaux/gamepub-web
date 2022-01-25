@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
+  @Output() imageUploadedEvent = new EventEmitter<any>();
   form: FormGroup = new FormGroup({
     image: new FormControl(null),
   });
@@ -35,6 +36,7 @@ export class UploadComponent implements OnInit {
     }
   }
   onSubmit() {
+    this.imageUploadedEvent.emit(this.imageData);
     this.form.reset();
     this.imageData = null;
   }
