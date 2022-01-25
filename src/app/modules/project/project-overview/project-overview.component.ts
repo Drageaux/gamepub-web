@@ -31,6 +31,7 @@ export class ProjectOverviewComponent implements OnInit {
     this.projService
       .uploadProjectImage(this.project._id, fileData)
       .subscribe((project) => {
+        console.log(project);
         this.imageUpdatedEvent.emit(project);
       });
   }

@@ -1,5 +1,6 @@
 <div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    {{ fileSize | filesize }}
     <input
       type="file"
       name="project-image"

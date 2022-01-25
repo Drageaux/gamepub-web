@@ -13,6 +13,7 @@ export class UploadComponent implements OnInit {
   });
 
   private imageData: string | null = null;
+  fileSize = 0;
 
   constructor() {}
 
@@ -23,6 +24,7 @@ export class UploadComponent implements OnInit {
     const eventTarget = event.target as HTMLInputElement;
     const files = eventTarget.files;
     const file = files ? files[0] : null;
+    this.fileSize = file ? file.size : 0;
     if (!file) return;
 
     this.form.patchValue({ image: file });
@@ -39,5 +41,6 @@ export class UploadComponent implements OnInit {
     this.imageUploadedEvent.emit(this.imageData);
     this.form.reset();
     this.imageData = null;
+    this.fileSize = 0;
   }
 }
