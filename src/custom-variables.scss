@@ -1,0 +1,48 @@
+// https://coolors.co/424b54-c81d25-ffb7c5-6bbaec
+
+$charcoal: #424b54; // used for background
+$lava: #c81d25; // red streaks
+$sakura: #ffb7c5; // ?? highlights
+$sakura-websafe: #ffcccc; // web-safe closest to sakura pink
+$aero: #6bbaec; // contrast
+
+@import "functions";
+@import "variables";
+@import "mixins";
+
+.dark {
+  /* redefine theme colors for dark theme */
+  $primary: #424b54;
+  $secondary: #111111;
+  $success: #222222;
+  $dark: #000;
+
+  $theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "danger": $danger,
+    "info": $indigo,
+    "dark": $dark,
+    "light": $light,
+  );
+
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: #eeeeee;
+  $body-bg: #263c5c;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  @import "bootstrap";
+}
