@@ -9,7 +9,9 @@ import { ProjectService } from '@services/project.service';
 export class AdminComponent implements OnInit {
   constructor(private projectService: ProjectService) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  generateProjects() {
     this.projectService.parseSteamStore();
   }
 }

@@ -159,8 +159,15 @@ export class ProjectService {
       console.log(games[i].name);
     }
 
+    // assume users are created, otherwise manually replace the get with create function
     forkJoin(
-      games.map((g) => this.userService.createUser('d-' + g.creator, 'test'))
+      games.map((g) =>
+        this.userService.getUserProfileByUsername('d-' + g.creator).pipe(
+          switchMap((user) => {
+            return this.createProject({ name: g.name, creator: user._id });
+          })
+        )
+      )
     ).subscribe(console.log, console.error);
   }
 
