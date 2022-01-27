@@ -5,7 +5,7 @@ import { Asset } from './asset';
 export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
-  _id: string;
+  _id?: string;
   creator: string | User;
   name: string;
   displayName?: string;

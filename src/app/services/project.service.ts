@@ -6,9 +6,11 @@ import { GithubContents } from '@classes/github-contents';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 
-import { Observable, of, throwError } from 'rxjs';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
+
+import json from '../../assets/test-data/steam-sample-games-1.json';
 
 @Injectable()
 export class ProjectService {
@@ -136,5 +138,69 @@ export class ProjectService {
       );
     // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
+  }
+
+  /*************************************************************************/
+  /************************** IMPORT DATA SCRIPTS **************************/
+  /*************************************************************************/
+  parseSteamStore() {
+    const limit = 10;
+    const games = [];
+    for (let i = 0; i < Math.min(limit, json.length); i++) {
+      const game = json[i];
+      games.push({
+        name: this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.name}-`)
+        ),
+        creator: this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.developer}-`)
+        ),
+      });
+      console.log(games[i].name);
+    }
+
+    // assume users are created, otherwise manually replace the get with create function
+    forkJoin(
+      games.map((g) =>
+        this.userService.getUserProfileByUsername('d-' + g.creator).pipe(
+          switchMap((user) => {
+            return this.createProject({ name: g.name, creator: user._id });
+          })
+        )
+      )
+    ).subscribe(console.log, console.error);
+  }
+
+  /**
+   * Only allow alphanumeric and hyphens, but not at the start nor end.
+   *
+   * @param val
+   * @returns
+   */
+  removeIllegalCharacters(val: string) {
+    // const result = val.replace(/[&\/\\#,+()$~%.'":*?<>{}=!?]/g, '');
+    const result = val.replace(/[^a-zA-Z0-9- ]|(^-)|(-$)/g, '');
+    return result;
+  }
+
+  /**
+   * Turn normal text into kebab-case name.
+   *
+   * @param rawName
+   * @returns
+   */
+  public generateUniformProjectName(rawName: string) {
+    const result = rawName
+      .trim()
+      .toLocaleLowerCase()
+      .split(' ')
+      .reduce((prev, curr, index) => {
+        let res = '';
+        if (index > 0) {
+          res += '-';
+        }
+        return prev + res + curr;
+      }, '');
+    return result;
   }
 }
