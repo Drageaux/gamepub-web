@@ -10,6 +10,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
 
+import json from '../../assets/test-data/steam-sample-games-1.json';
+
 @Injectable()
 export class ProjectService {
   // data = testData;
@@ -141,5 +143,48 @@ export class ProjectService {
   /*************************************************************************/
   /************************** IMPORT DATA SCRIPTS **************************/
   /*************************************************************************/
-  parseSteamStore() {}
+  parseSteamStore() {
+    const limit = 10;
+    for (let i = 0; i < Math.min(limit, json.length); i++) {
+      const game = json[i];
+      console.log(
+        this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.name}-`)
+        )
+      );
+    }
+  }
+
+  /**
+   * Only allow alphanumeric and hyphens, but not at the start nor end.
+   *
+   * @param val
+   * @returns
+   */
+  removeIllegalCharacters(val: string) {
+    // const result = val.replace(/[&\/\\#,+()$~%.'":*?<>{}=!?]/g, '');
+    const result = val.replace(/[^a-zA-Z0-9- ]|(^-)|(-$)/g, '');
+    return result;
+  }
+
+  /**
+   * Turn normal text into kebab-case name.
+   *
+   * @param rawName
+   * @returns
+   */
+  public generateUniformProjectName(rawName: string) {
+    const result = rawName
+      .trim()
+      .toLocaleLowerCase()
+      .split(' ')
+      .reduce((prev, curr, index) => {
+        let res = '';
+        if (index > 0) {
+          res += '-';
+        }
+        return prev + res + curr;
+      }, '');
+    return result;
+  }
 }
