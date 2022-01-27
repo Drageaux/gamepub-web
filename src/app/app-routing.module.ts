@@ -7,8 +7,10 @@ import { CreateProjectComponent } from '@modules/project/create-project/create-p
 import { ProjectProxyComponent } from '@modules/project/project-proxy/project-proxy.component';
 import { ProjectComponent } from '@modules/project/project.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
+import { FeedComponent } from '@modules/feed/feed.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', component: FeedComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'new-project', component: CreateProjectComponent },
   { path: 'new-asset', component: CreateAssetComponent },
@@ -30,8 +32,8 @@ const routes: Routes = [
       // { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
     ],
   },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
-  // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
+  // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
+  { path: '**', redirectTo: '' }, // Wildcard route for a 404 page
 ];
 
 @NgModule({
