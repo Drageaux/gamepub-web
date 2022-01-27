@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
 import { User } from '@classes/user';
 import { ProjectService } from '@services/project.service';
-import { UserService } from '@services/shared/user.service';
+import { UserService } from '@modules/shared/user.service';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

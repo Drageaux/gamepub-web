@@ -10,7 +10,8 @@ import { AssetDashboardModule } from '@modules/asset-dashboard/asset-dashboard.m
 import { ProfileModule } from '@modules/profile/profile.module';
 import { ProjectModule } from '@modules/project/project.module';
 import { AssetService } from '@services/asset.service';
-import { UserService } from '@services/shared/user.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '@modules/shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,11 +19,14 @@ import { UserService } from '@services/shared/user.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
     ProfileModule,
     ProjectModule,
     AssetDashboardModule,
   ],
-  providers: [UserService, AssetService],
+  exports: [],
+  providers: [AssetService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

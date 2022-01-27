@@ -1,0 +1,15 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    {{ fileSize | filesize }}
+    <input
+      type="file"
+      name="project-image"
+      accept="image/png, image/jpg, image/jpeg"
+      (change)="onChange($event)"
+    />
+    <button type="submit">Upload Image</button>
+    <button id="delete_button" class="delete_button" type="reset">
+      <i class="fa fa-trash"></i>
+    </button>
+  </form>
+</div>
