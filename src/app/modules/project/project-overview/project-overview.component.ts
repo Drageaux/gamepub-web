@@ -37,6 +37,7 @@ export class ProjectOverviewComponent implements OnInit, OnChanges {
 
   onImageUploaded(fileData: string | null) {
     this.updatingImage = false;
+    if (this.project._id == null) return;
     if (!fileData) return;
     // pass back to parent to keep the entire page up to date
     this.projService
