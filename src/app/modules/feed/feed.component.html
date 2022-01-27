@@ -1,1 +1,5 @@
-<p>feed works!</p>
+<div *ngIf="projects$ | async as projects">
+  <div *ngFor="let p of projects">
+    <div>{{ p.name }}</div>
+  </div>
+</div>
