@@ -137,4 +137,9 @@ export class ProjectService {
     // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
   }
+
+  /*************************************************************************/
+  /************************** IMPORT DATA SCRIPTS **************************/
+  /*************************************************************************/
+  parseSteamStore() {}
 }

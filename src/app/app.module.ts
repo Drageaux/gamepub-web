@@ -12,6 +12,7 @@ import { ProjectModule } from '@modules/project/project.module';
 import { AssetService } from '@services/asset.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@modules/shared/shared.module';
+import { AdminModule } from '@modules/admin/admin.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { SharedModule } from '@modules/shared/shared.module';
     ReactiveFormsModule,
     ProfileModule,
     ProjectModule,
+    AdminModule,
     AssetDashboardModule,
   ],
   exports: [],
