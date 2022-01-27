@@ -67,10 +67,14 @@ export class ProjectService {
   createProject(project: Project): Observable<Project> {
     return this.userService.profile$.pipe(
       switchMap((profile) => {
-        return this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
-          ...project,
-          creator: profile._id, // TODO: intercept or auto fill creator id
-        });
+        // TODO: use this profile's id to create only
+        // TODO: only admin can decide which profile to add to
+        let arg = { ...project };
+        if (!arg.creator) arg.creator = profile._id; // TODO: intercept or auto fill creator id
+        return this.http.post<ApiResponse<Project>>(
+          `${this.prefix}/projects`,
+          arg
+        );
       }),
       map((res) => res.data)
     );
