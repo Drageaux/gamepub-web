@@ -11,6 +11,7 @@ import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
 
 import json from '../../assets/test-data/steam-sample-games-1.json';
+import { User } from '@classes/user';
 
 @Injectable()
 export class ProjectService {
@@ -48,6 +49,15 @@ export class ProjectService {
   getProjectsByUsername(username: string): Observable<Project[]> {
     return this.http
       .get<ApiResponse<Project[]>>(`${this.prefix}/users/${username}/projects`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getAllProjects(): Observable<Project[]> {
+    return this.http
+      .get<ApiResponse<Project[]>>(`${this.prefix}/projects`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)
@@ -143,24 +153,45 @@ export class ProjectService {
   /*************************************************************************/
   /************************** IMPORT DATA SCRIPTS **************************/
   /*************************************************************************/
+
   parseSteamStore() {
-    const limit = 10;
     const games = [];
+    const limit = 10;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
+      const name = this.generateUniformProjectName(
+        this.removeIllegalCharacters(`-${game.name}-`)
+      );
+      const username =
+        'd-' +
+        this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.developer}---`)
+        );
+      const email = username + '@gmail.com';
       games.push({
-        name: this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.name}-`)
-        ),
-        creator: this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.developer}-`)
-        ),
-      });
-      console.log(games[i].name);
+        name,
+        displayName: game.name,
+        creator: {
+          username,
+          email,
+        },
+        imageUrl: game.header_image,
+        tags: game.genres.split(';').map((x) => x.toLocaleLowerCase()),
+      } as Project);
+      console.log(games[i]);
     }
+    return games;
+  }
 
+  createNewTestUsers(games: Project[]): Observable<User[]> {
+    return forkJoin(
+      games.map((g) => this.userService.createUser('d-' + g.creator, 'test'))
+    );
+  }
+
+  createTestGames(games: Project[]): Observable<Project[]> {
     // assume users are created, otherwise manually replace the get with create function
-    forkJoin(
+    return forkJoin(
       games.map((g) =>
         this.userService.getUserProfileByUsername('d-' + g.creator).pipe(
           switchMap((user) => {
@@ -168,18 +199,20 @@ export class ProjectService {
           })
         )
       )
-    ).subscribe(console.log, console.error);
+    );
   }
 
   /**
-   * Only allow alphanumeric and hyphens, but not at the start nor end.
+   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
    *
    * @param val
    * @returns
    */
   removeIllegalCharacters(val: string) {
-    // const result = val.replace(/[&\/\\#,+()$~%.'":*?<>{}=!?]/g, '');
-    const result = val.replace(/[^a-zA-Z0-9- ]|(^-)|(-$)/g, '');
+    const result = val
+      .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
+      .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
+
     return result;
   }
 
