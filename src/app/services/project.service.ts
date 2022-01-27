@@ -6,7 +6,7 @@ import { GithubContents } from '@classes/github-contents';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 
-import { Observable, of, throwError } from 'rxjs';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
 
@@ -145,14 +145,23 @@ export class ProjectService {
   /*************************************************************************/
   parseSteamStore() {
     const limit = 10;
+    const games = [];
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
-      console.log(
-        this.generateUniformProjectName(
+      games.push({
+        name: this.generateUniformProjectName(
           this.removeIllegalCharacters(`-${game.name}-`)
-        )
-      );
+        ),
+        creator: this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.developer}-`)
+        ),
+      });
+      console.log(games[i].name);
     }
+
+    forkJoin(
+      games.map((g) => this.userService.createUser('d-' + g.creator, 'test'))
+    ).subscribe(console.log, console.error);
   }
 
   /**

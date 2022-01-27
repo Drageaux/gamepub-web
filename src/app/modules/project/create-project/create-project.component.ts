@@ -23,12 +23,12 @@ export class CreateProjectComponent implements OnInit {
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(30)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(35)],
       [this.validateUniqueProjectName.bind(this)]
     ),
     displayName: new FormControl('', [
       Validators.minLength(3),
-      Validators.maxLength(30),
+      Validators.maxLength(50),
     ]),
     githubRepo: new FormControl(''),
   });

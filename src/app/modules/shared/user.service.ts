@@ -39,4 +39,18 @@ export class UserService {
       map((res) => res.data)
     );
   }
+
+  // TODO: secure this function
+  public createUser(username: string, password: string) {
+    return this.http
+      .post<ApiResponse<User>>(`${this.apiUrl}`, {
+        username,
+        password,
+        email: username + '@gmail.com',
+      })
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
 }
