@@ -183,21 +183,28 @@ export class ProjectService {
     return games;
   }
 
-  createNewTestUsers(games: Project[]): Observable<User[]> {
+  createNewTestUsers(games: Project[]): Observable<(string | User)[]> {
     return forkJoin(
-      games.map((g) => this.userService.createUser('d-' + g.creator, 'test'))
+      games.map((g) =>
+        this.userService
+          .createUser('d-' + g.creator, 'test')
+          .pipe(catchError((err) => of(g.creator)))
+      )
     );
   }
 
-  createTestGames(games: Project[]): Observable<Project[]> {
+  createNewTestGames(games: Project[]): Observable<Project[]> {
     // assume users are created, otherwise manually replace the get with create function
     return forkJoin(
       games.map((g) =>
-        this.userService.getUserProfileByUsername('d-' + g.creator).pipe(
-          switchMap((user) => {
-            return this.createProject({ name: g.name, creator: user._id });
-          })
-        )
+        this.userService
+          .getUserProfileByUsername((g.creator as User).username)
+          .pipe(
+            switchMap((user) => {
+              g.creator = user._id;
+              return this.createProject({ ...g });
+            })
+          )
       )
     );
   }
