@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
 export class FeedComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
-  projects$!: Subject<Project[]>;
+  projects$ = new Subject<Project[]>();
 
   constructor(private projectService: ProjectService) {}
 
