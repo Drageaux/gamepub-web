@@ -1,5 +1,23 @@
-<div *ngIf="projects$ | async as projects">
-  <div *ngFor="let p of projects">
-    <div>{{ p.name }}</div>
+<div *ngIf="projects$ | async as projects" class="row">
+  <div *ngFor="let p of projects" class="col-12 col-sm-6 col-lg-4">
+    <!-- <a
+      [routerLink]="
+        p.creator?._id
+          ? ['', p.creator._id, 'project', p.name]
+          : ['/project', p._id]
+      "
+    > -->
+    <a>
+      <div>{{ p.displayName || p.name }}</div>
+      <!-- TODO: Add optimized image and alt -->
+      <app-progressive-image
+        *ngIf="p.imageUrl"
+        [src]="''"
+        [fallback]="p.imageUrl"
+        [imgClass]="'img-fluid'"
+        class="d-block"
+      >
+      </app-progressive-image>
+    </a>
   </div>
 </div>

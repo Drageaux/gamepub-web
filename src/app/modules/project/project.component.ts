@@ -87,7 +87,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       });
 
     this.githubContents$ = this.project$.pipe(
-      take(1),
       switchMap((proj) =>
         proj && proj.githubRepo
           ? this.projService.loadRepoTree(proj.githubRepo)
@@ -95,7 +94,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       )
     );
     this.manifest$ = this.project$.pipe(
-      take(1),
       switchMap((proj) =>
         proj && proj.githubRepo
           ? this.projService.getManifest(proj.githubRepo)

@@ -40,6 +40,7 @@
 
   <!-- "async" pipe only subscribes to the githubContents$ observable when Details tab is selected -->
   <ng-container *ngIf="tab == 'Details'">
+    hey
     <app-project-tree
       *ngIf="githubContents$ | async as contents"
       [contents]="contents"
