@@ -1,0 +1,33 @@
+<ng-container>
+  <img
+    appProgressiveImage
+    [src]="src"
+    [fallback]="fallback"
+    [alt]="imgAlt"
+    class="{{ imgClass }} "
+    [ngClass]="{
+      'd-none': loading || noImage,
+      'd-block': !(loading || noImage)
+    }"
+    (loadedEvent)="
+      loading = false;
+      noImage = false;
+      imgLoadedEvent.emit(image.el);
+      cd.detectChanges()
+    "
+    (fallbackErrorEvent)="noImage = true; loading = false; cd.detectChanges()"
+  />
+
+  <div
+    *ngIf="loading"
+    class="loading w-100 h-100 d-flex justify-content-center align-items-center text-center text-muted font-weight-bold"
+  >
+    <i class="fas fa-spinner"></i>
+  </div>
+  <div
+    *ngIf="noImage"
+    class="no-image w-100 h-100 d-flex justify-content-center align-items-center text-center text-muted font-weight-bold"
+  >
+    <i class="fas fa-image"></i>
+  </div>
+</ng-container>
