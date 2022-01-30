@@ -23,7 +23,8 @@ export class FeedComponent implements OnInit, OnDestroy {
       .subscribe((res) => this.projects$.next(res));
   }
 
-  getLink(p: Project) {
+  getLink(p: Project): (string | undefined)[] {
+    if (!p) return [];
     return p.creator instanceof String
       ? ['project', p._id]
       : ['', (p.creator as User).username, 'project', p.name];
