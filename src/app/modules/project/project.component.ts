@@ -5,13 +5,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 
 import { GithubContents } from '@classes/github-contents';
 import { ProjectService } from '@services/project.service';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
   map,
@@ -33,7 +33,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   username!: string;
   projName!: string;
-  project$ = new Subject<Project | null>();
+  project$ = new ReplaySubject<Project | null>(1);
   tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
   githubContents$!: Observable<GithubContents[] | null>;
