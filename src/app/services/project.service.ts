@@ -160,7 +160,7 @@ export class ProjectService {
 
   parseSteamStore() {
     const games = [];
-    const limit = 50;
+    const limit = 250;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
       const name = this.generateUniformProjectName(

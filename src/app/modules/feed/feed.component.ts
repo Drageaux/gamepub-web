@@ -1,3 +1,4 @@
+import { User } from '@classes/user';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectService } from '@services/project.service';
@@ -20,6 +21,12 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.subs.sink = this.projectService
       .getAllProjects()
       .subscribe((res) => this.projects$.next(res));
+  }
+
+  getLink(p: Project) {
+    return p.creator instanceof String
+      ? ['project', p._id]
+      : ['', (p.creator as User).username, 'project', p.name];
   }
 
   ngOnDestroy(): void {

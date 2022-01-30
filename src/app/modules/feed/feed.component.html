@@ -1,13 +1,7 @@
 <div *ngIf="projects$ | async as projects" class="row">
   <div *ngFor="let p of projects" class="col-12 col-sm-6 col-lg-4">
-    <!-- <a
-      [routerLink]="
-        p.creator?._id
-          ? ['', p.creator._id, 'project', p.name]
-          : ['/project', p._id]
-      "
-    > -->
-    <a>
+    <a [routerLink]="getLink(p)">
+      <!-- <a> -->
       <div>{{ p.displayName || p.name }}</div>
       <!-- TODO: Add optimized image and alt -->
       <app-progressive-image
