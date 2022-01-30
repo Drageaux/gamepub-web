@@ -48,9 +48,6 @@ export class UserService {
         password,
         email: username + '@gmail.com',
       })
-      .pipe(
-        shareReplay(1),
-        map((res) => res.data)
-      );
+      .pipe(map((res) => res.data));
   }
 }
