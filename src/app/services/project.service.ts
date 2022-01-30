@@ -160,7 +160,7 @@ export class ProjectService {
 
   parseSteamStore() {
     const games = [];
-    const limit = 10;
+    const limit = 50;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
       const name = this.generateUniformProjectName(
@@ -187,29 +187,37 @@ export class ProjectService {
     return games;
   }
 
-  createNewTestUsers(games: Project[]): Observable<(string | User)[]> {
+  createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
     return forkJoin(
       games.map((g) =>
         this.userService
           .createUser((g.creator as User).username, 'test')
-          .pipe(catchError((err) => of(g.creator)))
+          .pipe(
+            catchError((err) =>
+              this.userService
+                .getUserProfileByUsername((g.creator as User).username)
+                .pipe(catchError((err) => of(null)))
+            )
+          )
       )
     );
   }
 
-  createNewTestGames(games: Project[]): Observable<Project[]> {
+  createNewTestGames(games: Project[]): Observable<(Project | null)[]> {
     // assume users are created, otherwise manually replace the get with create function
     return forkJoin(
-      games.map((g) =>
-        this.userService
+      games.map((g) => {
+        if (!g) return of(null);
+        return this.userService
           .getUserProfileByUsername((g.creator as User).username)
           .pipe(
             switchMap((user) => {
               g.creator = user._id;
               return this.createProject({ ...g });
-            })
-          )
-      )
+            }),
+            catchError((err) => of(null))
+          );
+      })
     );
   }
 
