@@ -10,22 +10,23 @@ import { catchError, map, switchMap } from 'rxjs/operators';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  games!: any;
   constructor(
     private projectService: ProjectService,
     private userService: UserService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.games = this.projectService.parseSteamStore();
+  }
 
   generateProjects() {
-    let games = this.projectService.parseSteamStore();
-
     this.projectService
-      .createNewTestUsers(games)
+      .createNewTestUsers(this.games)
       .pipe(
         switchMap((users) => {
           console.log(users);
-          return this.projectService.createNewTestGames(games);
+          return this.projectService.createNewTestGames(this.games);
         })
       )
       .subscribe(console.log, console.error);

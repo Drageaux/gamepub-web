@@ -10,7 +10,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
 
-import json from '../../assets/test-data/steam-sample-games-1.json';
+import json from '../../assets/test-data/steam-sample-games-2.json';
 import { User } from '@classes/user';
 
 @Injectable()
@@ -191,7 +191,7 @@ export class ProjectService {
     return forkJoin(
       games.map((g) =>
         this.userService
-          .createUser('d-' + g.creator, 'test')
+          .createUser((g.creator as User).username, 'test')
           .pipe(catchError((err) => of(g.creator)))
       )
     );
@@ -237,7 +237,7 @@ export class ProjectService {
     const result = rawName
       .trim()
       .toLocaleLowerCase()
-      .split(' ')
+      .split(/\s+/)
       .reduce((prev, curr, index) => {
         let res = '';
         if (index > 0) {
