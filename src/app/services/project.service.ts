@@ -65,7 +65,7 @@ export class ProjectService {
   }
 
   createProject(project: Project): Observable<Project> {
-    return this.userService.profile$.pipe(
+    return this.userService.myProfile$.pipe(
       switchMap((profile) => {
         // TODO: use this profile's id to create only
         // TODO: only admin can decide which profile to add to
@@ -81,7 +81,7 @@ export class ProjectService {
   }
 
   isProjectNameTaken(value: string): Observable<boolean> {
-    return this.userService.profile$.pipe(
+    return this.userService.myProfile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<null>>(
           `${this.prefix}/projects/check-name`,

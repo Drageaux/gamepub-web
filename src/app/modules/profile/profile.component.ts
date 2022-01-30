@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.myProfile$;
     this.projects$ = this.profile$.pipe(
       switchMap((prof: User) =>
         prof ? this.projectService.getProjectsByUsername(prof.username) : of([])

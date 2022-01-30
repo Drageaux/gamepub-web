@@ -11,6 +11,6 @@ export class AppComponent {
   profile$;
 
   constructor(private userService: UserService) {
-    this.profile$ = userService.profile$;
+    this.profile$ = userService.myProfile$;
   }
 }
