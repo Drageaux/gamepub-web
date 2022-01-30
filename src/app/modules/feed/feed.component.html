@@ -1,17 +1,19 @@
 <div *ngIf="projects$ | async as projects" class="row">
-  <div *ngFor="let p of projects" class="col-12 col-sm-6 col-lg-4">
-    <a [routerLink]="getLink(p)">
-      <!-- <a> -->
-      <div>{{ p.displayName || p.name }}</div>
-      <!-- TODO: Add optimized image and alt -->
-      <app-progressive-image
-        *ngIf="p.imageUrl"
-        [src]="''"
-        [fallback]="p.imageUrl"
-        [imgClass]="'img-fluid'"
-        class="d-block"
-      >
-      </app-progressive-image>
-    </a>
-  </div>
+  <ng-container *ngFor="let p of projects">
+    <div class="col-12 col-sm-6 col-lg-4">
+      <a [routerLink]="getLink(p)">
+        <!-- <a> -->
+        <div>{{ p.displayName || p.name }}</div>
+        <!-- TODO: Add optimized image and alt -->
+        <app-progressive-image
+          *ngIf="p.imageUrl"
+          [src]="''"
+          [fallback]="p.imageUrl"
+          [imgClass]="'img-fluid'"
+          class="d-block"
+        >
+        </app-progressive-image>
+      </a>
+    </div>
+  </ng-container>
 </div>
