@@ -11,19 +11,19 @@ import { map, shareReplay } from 'rxjs/operators';
 export class UserService {
   private apiUrl = '/api/users';
   // TODO: use dynamic user ID and implement login
-  private _username: string = 'davidtn';
-  private _profile$!: Observable<User>;
+  private _myUsername: string = 'davidtn';
+  private _myProfile$!: Observable<User>;
 
   constructor(private http: HttpClient) {
-    this._profile$ = this.getUserProfileByUsername(this._username);
+    this._myProfile$ = this.getUserProfileByUsername(this._myUsername);
   }
 
   public get username() {
-    return this._username;
+    return this._myUsername;
   }
 
-  public get profile$() {
-    return this._profile$;
+  public get myProfile$() {
+    return this._myProfile$;
   }
 
   // public getUserProfileById(id: string) {
@@ -48,9 +48,6 @@ export class UserService {
         password,
         email: username + '@gmail.com',
       })
-      .pipe(
-        shareReplay(1),
-        map((res) => res.data)
-      );
+      .pipe(map((res) => res.data));
   }
 }

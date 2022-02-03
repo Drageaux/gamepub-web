@@ -6,10 +6,11 @@ export interface Project {
   // assets?: Asset[];
   // packages?: Package[];
   _id?: string;
-  creator: string | User;
+  creator: User | string;
   name: string;
   displayName?: string;
   imageUrl?: string;
   tags?: string[];
   githubRepo?: string;
+  description?: string;
 }

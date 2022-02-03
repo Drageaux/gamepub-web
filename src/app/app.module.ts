@@ -13,6 +13,7 @@ import { AssetService } from '@services/asset.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@modules/shared/shared.module';
 import { AdminModule } from '@modules/admin/admin.module';
+import { FeedModule } from '@modules/feed/feed.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { AdminModule } from '@modules/admin/admin.module';
     AppRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    FeedModule,
     ProfileModule,
     ProjectModule,
     AdminModule,

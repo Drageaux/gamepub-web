@@ -10,7 +10,8 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UserService } from '../modules/shared/user.service';
 
-import json from '../../assets/test-data/steam-sample-games-1.json';
+import json from '../../assets/test-data/steam-sample-games-2.json';
+import { User } from '@classes/user';
 
 @Injectable()
 export class ProjectService {
@@ -54,20 +55,33 @@ export class ProjectService {
       );
   }
 
+  getAllProjects(): Observable<Project[]> {
+    return this.http
+      .get<ApiResponse<Project[]>>(`${this.prefix}/projects`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   createProject(project: Project): Observable<Project> {
-    return this.userService.profile$.pipe(
+    return this.userService.myProfile$.pipe(
       switchMap((profile) => {
-        return this.http.post<ApiResponse<Project>>(`${this.prefix}/projects`, {
-          ...project,
-          creator: profile._id, // TODO: intercept or auto fill creator id
-        });
+        // TODO: use this profile's id to create only
+        // TODO: only admin can decide which profile to add to
+        let arg = { ...project };
+        if (!arg.creator) arg.creator = profile._id; // TODO: intercept or auto fill creator id
+        return this.http.post<ApiResponse<Project>>(
+          `${this.prefix}/projects`,
+          arg
+        );
       }),
       map((res) => res.data)
     );
   }
 
   isProjectNameTaken(value: string): Observable<boolean> {
-    return this.userService.profile$.pipe(
+    return this.userService.myProfile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<null>>(
           `${this.prefix}/projects/check-name`,
@@ -143,43 +157,81 @@ export class ProjectService {
   /*************************************************************************/
   /************************** IMPORT DATA SCRIPTS **************************/
   /*************************************************************************/
+
   parseSteamStore() {
-    const limit = 10;
     const games = [];
+    const limit = 250;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
+      const name = this.generateUniformProjectName(
+        this.removeIllegalCharacters(`-${game.name}-`)
+      );
+      const username =
+        'd-' +
+        this.generateUniformProjectName(
+          this.removeIllegalCharacters(`-${game.developer}---`)
+        );
+      const email = username + '@gmail.com';
       games.push({
-        name: this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.name}-`)
-        ),
-        creator: this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.developer}-`)
-        ),
-      });
-      console.log(games[i].name);
+        name,
+        displayName: game.name,
+        creator: {
+          username,
+          email,
+        },
+        imageUrl: game.header_image,
+        tags: game.genres.split(';').map((x) => x.toLocaleLowerCase()),
+      } as Project);
+      console.log(games[i]);
     }
+    return games;
+  }
 
-    // assume users are created, otherwise manually replace the get with create function
-    forkJoin(
+  createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
+    return forkJoin(
       games.map((g) =>
-        this.userService.getUserProfileByUsername('d-' + g.creator).pipe(
-          switchMap((user) => {
-            return this.createProject({ name: g.name, creator: user._id });
-          })
-        )
+        this.userService
+          .createUser((g.creator as User).username, 'test')
+          .pipe(
+            catchError((err) =>
+              this.userService
+                .getUserProfileByUsername((g.creator as User).username)
+                .pipe(catchError((err) => of(null)))
+            )
+          )
       )
-    ).subscribe(console.log, console.error);
+    );
+  }
+
+  createNewTestGames(games: Project[]): Observable<(Project | null)[]> {
+    // assume users are created, otherwise manually replace the get with create function
+    return forkJoin(
+      games.map((g) => {
+        if (!g) return of(null);
+        return this.userService
+          .getUserProfileByUsername((g.creator as User).username)
+          .pipe(
+            switchMap((user) => {
+              g.creator = user._id;
+              return this.createProject({ ...g });
+            }),
+            catchError((err) => of(null))
+          );
+      })
+    );
   }
 
   /**
-   * Only allow alphanumeric and hyphens, but not at the start nor end.
+   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
    *
    * @param val
    * @returns
    */
   removeIllegalCharacters(val: string) {
-    // const result = val.replace(/[&\/\\#,+()$~%.'":*?<>{}=!?]/g, '');
-    const result = val.replace(/[^a-zA-Z0-9- ]|(^-)|(-$)/g, '');
+    const result = val
+      .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
+      .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
+
     return result;
   }
 
@@ -193,7 +245,7 @@ export class ProjectService {
     const result = rawName
       .trim()
       .toLocaleLowerCase()
-      .split(' ')
+      .split(/\s+/)
       .reduce((prev, curr, index) => {
         let res = '';
         if (index > 0) {
