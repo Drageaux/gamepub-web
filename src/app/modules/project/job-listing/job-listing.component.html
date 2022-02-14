@@ -6,17 +6,20 @@
       <tr *ngFor="let j of jobs">
         <td class="position-relative">
           <a
-            [routerLink]="['/', j._id]"
+            [routerLink]="['./jobs', j._id]"
             class="d-table-cell d-lg-none stretched-link"
           ></a>
           <h6>{{ j.title }}</h6>
         </td>
 
         <td class="d-none d-lg-table-cell">
-          <a [routerLink]="['/', j._id]">View</a>
+          <a [routerLink]="['./jobs', j._id]">View</a>
         </td>
         <td class="d-none d-lg-table-cell">
-          <a class="text-success">Subscribe</a>
+          <!-- TODO: subscribe action -->
+          <a class="text-success"><i class="fas fa-eye"></i>&nbsp;Subscribe</a>
+          <!-- TODO: subscribing -->
+          <!-- <a class="text-success"><i class="fas fa-check"></i>&nbsp;Subscribing</a> -->
         </td>
       </tr>
     </tbody>
