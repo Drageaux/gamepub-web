@@ -104,14 +104,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
           : of(null)
       )
     );
-    // TODO: get jobs from db
-    // this.jobs$ = this.jobService.getJobsByProject(this.username, this.projName);
-    this.jobs$ = of([
-      { _id: '0', project: '0', title: 'Main Character 3D model' },
-      { _id: '0', project: '0', title: 'Main Character 3D animation' },
-      { _id: '0', project: '0', title: '20 Main Character sounds' },
-      { _id: '0', project: '0', title: 'Product Manager needed!' },
-    ]);
 
     // from project, pull GitHub repo contents to render packages included}
   }

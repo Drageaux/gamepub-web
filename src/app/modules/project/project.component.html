@@ -29,13 +29,12 @@
       </button>
     </li>
     <li class="nav-item">
-      <button
+      <a
+        [routerLink]="['./', 'jobs']"
         class="nav-link"
-        [class.active]="tab == 'Jobs'"
-        (click)="tab = 'Jobs'"
+        routerLinkActive="active"
+        >Jobs</a
       >
-        Jobs
-      </button>
     </li>
   </ul>
 
@@ -60,11 +59,4 @@
       [manifest]="manifest"
     ></app-package-listing>
   </ng-container>
-
-  <ng-container *ngIf="tab == 'Jobs'">
-    <app-job-listing
-      *ngIf="jobs$ | async as jobs"
-      [jobs]="jobs"
-    ></app-job-listing
-  ></ng-container>
 </div>

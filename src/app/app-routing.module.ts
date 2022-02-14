@@ -9,6 +9,7 @@ import { ProjectComponent } from '@modules/project/project.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
 import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
+import { JobListingComponent } from '@modules/project/job-listing/job-listing.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: FeedComponent },
@@ -31,8 +32,11 @@ const routes: Routes = [
         component: ProjectComponent,
         children: [
           {
-            path: 'jobs/:id',
-            component: JobDetailsComponent,
+            path: 'jobs',
+            children: [
+              { path: '', component: JobListingComponent, pathMatch: 'full' },
+              { path: ':id', component: JobDetailsComponent },
+            ],
           },
         ],
       },
