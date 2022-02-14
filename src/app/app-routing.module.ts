@@ -10,6 +10,7 @@ import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
 import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
 import { JobListingComponent } from '@modules/project/job-listing/job-listing.component';
+import { ProjectOverviewComponent } from '@modules/project/project-overview/project-overview.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: FeedComponent },
@@ -31,6 +32,11 @@ const routes: Routes = [
         path: 'project/:projectname',
         component: ProjectComponent,
         children: [
+          {
+            path: '',
+            component: ProjectOverviewComponent,
+            pathMatch: 'full',
+          },
           {
             path: 'jobs',
             children: [

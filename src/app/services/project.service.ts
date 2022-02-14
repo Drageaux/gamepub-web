@@ -97,7 +97,7 @@ export class ProjectService {
     );
   }
 
-  uploadProjectImage(projId: string, file: File | string) {
+  uploadProjectImageByProjectId(projId: string, file: File | string) {
     return this.http
       .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
         image: file,

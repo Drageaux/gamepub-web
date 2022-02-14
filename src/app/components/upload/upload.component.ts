@@ -38,6 +38,7 @@ export class UploadComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   onSubmit() {
     this.imageUploadedEvent.emit(this.imageData);
     this.form.reset();

@@ -11,13 +11,13 @@
 
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <button
+      <a
+        [routerLink]="['./']"
         class="nav-link"
-        [class.active]="tab == 'Overview'"
-        (click)="tab = 'Overview'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Overview</a
       >
-        Overview
-      </button>
     </li>
     <li class="nav-item">
       <button
@@ -40,11 +40,11 @@
 
   <router-outlet></router-outlet>
 
-  <app-project-overview
+  <!-- <app-project-overview
     *ngIf="tab == 'Overview'"
     [project]="project"
     (imageUpdatedEvent)="onProjectChange($event)"
-  ></app-project-overview>
+  ></app-project-overview> -->
 
   <!-- "async" pipe only subscribes to the githubContents$ observable when Details tab is selected -->
   <ng-container *ngIf="tab == 'Details'">
