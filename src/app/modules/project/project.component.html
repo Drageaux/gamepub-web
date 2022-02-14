@@ -61,5 +61,10 @@
     ></app-package-listing>
   </ng-container>
 
-  <app-job-listing *ngIf="tab == 'Jobs'"></app-job-listing>
+  <ng-container *ngIf="tab == 'Jobs'">
+    <app-job-listing
+      *ngIf="jobs$ | async as jobs"
+      [jobs]="jobs"
+    ></app-job-listing
+  ></ng-container>
 </div>
