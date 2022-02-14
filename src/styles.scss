@@ -30,9 +30,11 @@
 // @import "_spinners";
 @import "_transitions";
 @import "_containers";
+@import "_card";
 @import "_buttons";
 @import "_forms";
 @import "_grid";
+@import "_tables";
 @import "_nav";
 @import "_navbar";
 @import "_utilities";
@@ -47,4 +49,9 @@
 .form-group label.required:after {
   color: red;
   content: "*";
+}
+
+body {
+  // saturate background to make other components pop
+  // background-color: rgb(235,239,247);
 }

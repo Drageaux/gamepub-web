@@ -8,6 +8,8 @@ import { ProjectProxyComponent } from '@modules/project/project-proxy/project-pr
 import { ProjectComponent } from '@modules/project/project.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
+import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
+import { JobListingComponent } from '@modules/project/job-listing/job-listing.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: FeedComponent },
@@ -28,6 +30,15 @@ const routes: Routes = [
         // TODO: check against generated name
         path: 'project/:projectname',
         component: ProjectComponent,
+        children: [
+          {
+            path: 'jobs',
+            children: [
+              { path: '', component: JobListingComponent, pathMatch: 'full' },
+              { path: ':id', component: JobDetailsComponent },
+            ],
+          },
+        ],
       },
       // { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
     ],

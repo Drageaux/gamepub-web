@@ -12,6 +12,8 @@ import { ProjectTreeComponent } from './project-tree/project-tree.component';
 import { ProjectComponent } from './project.component';
 import { ProjectProxyComponent } from './project-proxy/project-proxy.component';
 import { SharedModule } from '@modules/shared/shared.module';
+import { JobListingComponent } from './job-listing/job-listing.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { SharedModule } from '@modules/shared/shared.module';
     ProjectOverviewComponent,
     CreateProjectComponent,
     ProjectProxyComponent,
+    JobListingComponent,
+    JobDetailsComponent,
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule, SharedModule],
   providers: [ProjectService, PackageService],

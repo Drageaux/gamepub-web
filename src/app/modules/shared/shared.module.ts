@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FileSizePipe } from './file-size.pipe';
 import { ProgressiveImageComponent } from './progressive-image/progressive-image.component';
 import { ProgressiveImageDirective } from './progressive-image/progressive-image.directive';
+import { JobCardComponent } from './components/job-card/job-card.component';
 
 @NgModule({
   declarations: [
@@ -13,11 +14,13 @@ import { ProgressiveImageDirective } from './progressive-image/progressive-image
     FileSizePipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
+    JobCardComponent,
   ],
   exports: [
     UploadComponent,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
+    JobCardComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule],
   providers: [UserService],

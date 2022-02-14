@@ -21,6 +21,8 @@ import {
   tap,
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import { Job } from '@classes/job';
+import { JobService } from '@services/job.service';
 
 @Component({
   selector: 'app-project',
@@ -38,6 +40,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   githubContents$!: Observable<GithubContents[] | null>;
   manifest$!: Observable<UnityManifest | null>;
+  jobs$!: Observable<Job[] | null>;
 
   readonly noProjectError$ = new Subject<boolean>();
 
@@ -45,6 +48,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     private router: Router,
     private projService: ProjectService,
+    private jobService: JobService,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -100,6 +104,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
           : of(null)
       )
     );
+
     // from project, pull GitHub repo contents to render packages included}
   }
 
