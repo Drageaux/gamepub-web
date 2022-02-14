@@ -28,6 +28,15 @@
         Details
       </button>
     </li>
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        [class.active]="tab == 'Jobs'"
+        (click)="tab = 'Jobs'"
+      >
+        Jobs
+      </button>
+    </li>
   </ul>
 
   <router-outlet></router-outlet>
@@ -51,4 +60,6 @@
       [manifest]="manifest"
     ></app-package-listing>
   </ng-container>
+
+  <app-job-listing *ngIf="tab == 'Jobs'"></app-job-listing>
 </div>
