@@ -32,7 +32,7 @@ export class ProjectService {
         `${this.prefix}/users/${username}/projects/${projName}`
       )
       .pipe(
-        shareReplay(1),
+        shareReplay(10),
         map((res) => res.data)
       );
   }
@@ -95,6 +95,17 @@ export class ProjectService {
       map((response) => response.status != 200),
       catchError(() => of(true))
     );
+  }
+
+  uploadProjectImage(projId: string, file: File | string) {
+    return this.http
+      .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
+        image: file,
+      })
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
   uploadProjectImageByProjectId(projId: string, file: File | string) {

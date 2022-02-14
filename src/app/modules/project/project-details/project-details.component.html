@@ -1,0 +1,9 @@
+hey
+<app-project-tree
+  *ngIf="githubContents$ | async as contents"
+  [contents]="contents"
+></app-project-tree>
+<app-package-listing
+  *ngIf="manifest$ | async as manifest"
+  [manifest]="manifest"
+></app-package-listing>

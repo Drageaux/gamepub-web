@@ -24,8 +24,6 @@ import { SubSink } from 'subsink';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
-  // @Input() project!: Project;
-  // @Output() imageUpdatedEvent = new EventEmitter<Project>();
   private subs = new SubSink();
 
   username!: string;
@@ -42,8 +40,10 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.projName = this.route.snapshot.paramMap.get('projectname') || '';
+    // grab the path
     this.username = this.route.snapshot.paramMap.get('username') || '';
+    this.projName = this.route.snapshot.paramMap.get('projectname') || '';
+
     this.subs.sink = this.projService
       .getProjectByFullPath(this.username, this.projName)
       .pipe(

@@ -38,8 +38,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   project$ = new ReplaySubject<Project | null>(1);
   tab: 'Overview' | 'Details' | 'Jobs' | 'World' = 'Overview';
 
-  githubContents$!: Observable<GithubContents[] | null>;
-  manifest$!: Observable<UnityManifest | null>;
   jobs$!: Observable<Job[] | null>;
 
   readonly noProjectError$ = new Subject<boolean>();
@@ -90,22 +88,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.project$.next(proj);
       });
 
-    this.githubContents$ = this.project$.pipe(
-      switchMap((proj) =>
-        proj && proj.githubRepo
-          ? this.projService.loadRepoTree(proj.githubRepo)
-          : of(null)
-      )
-    );
-    this.manifest$ = this.project$.pipe(
-      switchMap((proj) =>
-        proj && proj.githubRepo
-          ? this.projService.getManifest(proj.githubRepo)
-          : of(null)
-      )
-    );
-
-    // from project, pull GitHub repo contents to render packages included}
+    // this.githubContents$ = this.project$.pipe(
+    //   switchMap((proj) =>
+    //     proj && proj.githubRepo
+    //       ? this.projService.loadRepoTree(proj.githubRepo)
+    //       : of(null)
+    //   )
+    // );
+    // this.manifest$ = this.project$.pipe(
+    //   switchMap((proj) =>
+    //     proj && proj.githubRepo
+    //       ? this.projService.getManifest(proj.githubRepo)
+    //       : of(null)
+    //   )
+    // );
   }
 
   onProjectChange(proj: Project) {
