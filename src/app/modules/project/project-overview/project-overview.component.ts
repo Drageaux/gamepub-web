@@ -31,7 +31,6 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
 
   project!: Project;
   updatingImage = false;
-  readonly noProjectError$ = new Subject<boolean>();
 
   constructor(
     public route: ActivatedRoute,
@@ -46,18 +45,6 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subs.sink = this.projService
       .getProjectByFullPath(this.username, this.projName)
-      .pipe(
-        shareReplay(1),
-        map((project) => {
-          if (project) return project;
-          else throw new Error('No project found');
-        }),
-        catchError((err) => {
-          console.error(err);
-          this.noProjectError$.next(true);
-          return of(null);
-        })
-      )
       .subscribe((proj) => {
         if (proj) {
           this.project = proj;
@@ -79,14 +66,11 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
     this.subs.sink = this.projService
       .uploadProjectImageByProjectId(this.project._id, fileData)
       .subscribe((project) => {
-        // console.log(this.project);
-        // console.log(project);
         this.project = project;
         this.ref.markForCheck();
       });
   }
 
-  // unsubscribe when the component dies
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
