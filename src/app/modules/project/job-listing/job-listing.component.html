@@ -1,3 +1,24 @@
 <div>
-  <app-job-card *ngFor="let j of jobs" [job]="j"></app-job-card>
+  <!-- <app-job-card *ngFor="let j of jobs" [job]="j"></app-job-card> -->
+  <table class="table table-hover table-bordered">
+    <thead></thead>
+    <tbody>
+      <tr *ngFor="let j of jobs">
+        <td class="position-relative">
+          <a
+            [routerLink]="['/', j._id]"
+            class="d-table-cell d-lg-none stretched-link"
+          ></a>
+          <h6>{{ j.title }}</h6>
+        </td>
+
+        <td class="d-none d-lg-table-cell">
+          <a [routerLink]="['/', j._id]">View</a>
+        </td>
+        <td class="d-none d-lg-table-cell">
+          <a class="text-success">Subscribe</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
