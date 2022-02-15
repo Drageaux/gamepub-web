@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@classes/user';
 import { ProjectApiService } from '@services/project-api.service';
 
+/**
+ * Takes a project ID and redirect user to the appropriate path
+ * e.g. project/329042 --> this-user/project/cool-project
+ */
 @Component({
   selector: 'app-project-proxy',
   templateUrl: './project-proxy.component.html',
