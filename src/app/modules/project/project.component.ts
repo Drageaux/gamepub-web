@@ -56,7 +56,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     // this.projName = this.route.snapshot.paramMap.get('projectname') || '';
     // this.username = this.route.snapshot.paramMap.get('username') || '';
 
-    this.route.params.subscribe((params) => {
+    this.subs.sink = this.route.params.subscribe((params) => {
       console.log('bruh');
       if (params['projectname'] || params['username']) {
         this.projectService.changeProject(
@@ -67,7 +67,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.projectService.getProject().subscribe((proj) => {
+    this.subs.sink = this.projectService.getProject().subscribe((proj) => {
       if (proj) {
         this.project = proj;
         this.ref.markForCheck();

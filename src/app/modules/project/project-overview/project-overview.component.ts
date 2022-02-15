@@ -16,58 +16,47 @@ import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of, Subject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-project-overview',
   templateUrl: './project-overview.component.html',
   styleUrls: ['./project-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
+export class ProjectOverviewComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   username!: string;
   projName!: string;
 
-  project!: Project;
+  project!: Project | null;
   updatingImage = false;
 
   constructor(
     public route: ActivatedRoute,
+    private projectService: ProjectService,
     private projectApi: ProjectApiService,
     private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // grab the path
-    this.username = this.route.snapshot.paramMap.get('username') || '';
-    this.projName = this.route.snapshot.paramMap.get('projectname') || '';
-
-    this.subs.sink = this.projectApi
-      .getProjectByFullPath(this.username, this.projName)
-      .subscribe((proj) => {
-        if (proj) {
-          this.project = proj;
-          this.ref.markForCheck();
-        }
-        // TODO: else navigate off
-      });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    this.subs.sink = this.projectService.getProject().subscribe((proj) => {
+      if (proj) {
+        this.project = proj;
+      }
+    });
   }
 
   onImageUploaded(fileData: string | null) {
     this.updatingImage = false;
-    if (this.project._id == null) return;
+    if (this.project?._id == null) return;
     if (!fileData) return;
 
     this.subs.sink = this.projectApi
-      .uploadProjectImageByProjectId(this.project._id, fileData)
+      .uploadProjectImageByProjectId(this.project?._id, fileData)
       .subscribe((project) => {
         this.project = project;
-        this.ref.markForCheck();
+        this.ref.markForCheck(); // explicitly check changes in project reference
       });
   }
 
