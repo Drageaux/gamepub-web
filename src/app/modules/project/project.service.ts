@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectApiService } from '@services/project-api.service';
-import { ReplaySubject, Observable, BehaviorSubject } from 'rxjs';
+import { ReplaySubject, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { ProjectModule } from './project.module';
 
+/**
+ * Share data among the ProjectComponent and its children.
+ *
+ * @service ProjectService
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  private project$ = new BehaviorSubject<Project | null>(null);
+  private project$ = new Subject<Project | null>();
   private username = '';
   private projectname = '';
 
