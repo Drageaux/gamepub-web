@@ -1,4 +1,8 @@
-<div *ngIf="project$ | async as project">
+<a [routerLink]="['', 'davidtn', 'project', 'fantasy-world']">world</a>
+<br />
+<a [routerLink]="['', 'davidtn', 'project', 'fantasy-farm']">farm</a>
+
+<div *ngIf="project">
   <!-- TODO: Breadcrumb Title -->
   <header class="p-2 p-md-0">
     <h1>{{ project.displayName || project.name }}</h1>
