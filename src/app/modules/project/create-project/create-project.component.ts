@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -34,7 +34,10 @@ export class CreateProjectComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(
+    private projectService: ProjectApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PackageService } from '@services/package.service';
-import { ProjectService } from '@services/project.service';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { OpenupmPackageDetailsComponent } from './openupm-package-details/openupm-package-details.component';
 import { PackageListingComponent } from './package-listing/package-listing.component';
@@ -30,6 +29,6 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
     ProjectDetailsComponent,
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule, SharedModule],
-  providers: [ProjectService, PackageService],
+  providers: [PackageService],
 })
 export class ProjectModule {}

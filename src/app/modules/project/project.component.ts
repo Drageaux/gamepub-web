@@ -8,7 +8,7 @@ import {
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 
 import { GithubContents } from '@classes/github-contents';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ import {
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { Job } from '@classes/job';
-import { JobService } from '@services/job.service';
+import { JobApiService } from '@services/job-api.service';
 
 @Component({
   selector: 'app-project',
@@ -45,8 +45,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projService: ProjectService,
-    private jobService: JobService,
+    private projService: ProjectApiService,
+    private jobService: JobApiService,
     private ref: ChangeDetectorRef
   ) {}
 

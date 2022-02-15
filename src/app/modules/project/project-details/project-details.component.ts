@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GithubContents } from '@classes/github-contents';
 import { UnityManifest } from '@classes/unity-manifest';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projService: ProjectService
+    private projService: ProjectApiService
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +29,8 @@ export class ProjectDetailsComponent implements OnInit {
     this.username = this.route.snapshot.parent?.paramMap.get('username') || '';
     this.projName =
       this.route.snapshot.parent?.paramMap.get('projectname') || '';
+
+    // TODO: navigate off if not found
 
     // TODO: optimize these to reuse the requested project
     this.githubContents$ = this.projService

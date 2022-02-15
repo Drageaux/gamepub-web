@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@classes/user';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 
 @Component({
   selector: 'app-project-proxy',
@@ -12,7 +12,7 @@ export class ProjectProxyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ProjectService
+    private service: ProjectApiService
   ) {}
 
   ngOnInit(): void {

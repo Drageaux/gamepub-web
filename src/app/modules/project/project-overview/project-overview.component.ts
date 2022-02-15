@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of, Subject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -34,7 +34,7 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    private projService: ProjectService,
+    private projService: ProjectApiService,
     private ref: ChangeDetectorRef
   ) {}
 

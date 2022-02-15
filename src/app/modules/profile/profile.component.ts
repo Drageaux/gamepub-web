@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { User } from '@classes/user';
-import { UserService } from '@modules/shared/user.service';
-import { ProjectService } from '@services/project.service';
+import { UserService } from '@services/user.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { UserApiService } from '@services/user-api.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private projectService: ProjectService,
+    private userApi: UserApiService,
+    private projectService: ProjectApiService,
     private route: ActivatedRoute
   ) {}
 
@@ -31,7 +33,7 @@ export class ProfileComponent implements OnInit {
     this.profile$ = this.username$.pipe(
       switchMap((username) => {
         if (!username) return of(null);
-        else return this.userService.getUserProfileByUsername(username);
+        else return this.userApi.getUserProfileByUsername(username);
       })
     );
     this.projects$ = this.username$.pipe(
