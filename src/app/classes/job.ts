@@ -5,5 +5,5 @@ export interface Job {
   project: string | Project;
   title: string;
   body?: string;
-  imgUrl?: string;
+  imageUrl?: string;
 }
