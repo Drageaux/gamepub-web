@@ -36,10 +36,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   username!: string;
-  projName!: string;
-
   project!: Project | null;
-  jobs$!: Observable<Job[] | null>;
 
   readonly noProjectError$ = new Subject<boolean>();
 
@@ -53,18 +50,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.projName = this.route.snapshot.paramMap.get('projectname') || '';
-    // this.username = this.route.snapshot.paramMap.get('username') || '';
-
     this.subs.sink = this.route.params.subscribe((params) => {
       console.log('bruh');
       if (params['projectname'] || params['username']) {
+        this.username = params['username'];
         this.projectService.changeProject(
           params['username'],
           params['projectname']
         );
         this.ref.markForCheck();
       }
+    });
+
+    this.subs.sink = this.noProjectError$.subscribe((hasError) => {
+      if (hasError) this.router.navigate(['', this.username]);
     });
 
     this.subs.sink = this.projectService.getProject().subscribe((proj) => {
@@ -83,10 +82,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
     //   // TODO: navigate back to homepage or a display proper message
     //   this.router.navigate(['/' + this.username]);
     // }
-
-    this.subs.sink = this.noProjectError$.subscribe((hasError) => {
-      if (hasError) this.router.navigate(['', this.username]);
-    });
 
     // service retrieves once
     // this.subs.sink = this.projectApi
