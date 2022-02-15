@@ -16,6 +16,7 @@ import {
   catchError,
   map,
   shareReplay,
+  skip,
   switchMap,
   take,
   tap,
@@ -51,7 +52,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.sink = this.route.params.subscribe((params) => {
-      console.log('bruh');
       if (params['projectname'] || params['username']) {
         this.username = params['username'];
         this.projectService.changeProject(
@@ -72,55 +72,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.ref.markForCheck();
       } else this.noProjectError$.next(true);
     });
-
-    // if (this.username === '') {
-    //   console.log('no username');
-    //   this.router.navigate(['/']);
-    // }
-    // if (this.projName === '') {
-    //   console.log('no project name');
-    //   // TODO: navigate back to homepage or a display proper message
-    //   this.router.navigate(['/' + this.username]);
-    // }
-
-    // service retrieves once
-    // this.subs.sink = this.projectApi
-    //   .getProjectByFullPath(this.username, this.projName)
-    //   .pipe(
-    //     shareReplay(1),
-    //     map((project) => {
-    //       if (project) return project;
-    //       else throw new Error('No project found');
-    //     }),
-    //     catchError((err) => {
-    //       console.error(err);
-    //       this.noProjectError$.next(true);
-    //       return of(null);
-    //     })
-    //   )
-    //   .subscribe((proj) => {
-    //     // observable/subject project emits first data
-    //     // if (proj) this.project$.next(proj);
-    //   });
-
-    // this.githubContents$ = this.project$.pipe(
-    //   switchMap((proj) =>
-    //     proj && proj.githubRepo
-    //       ? this.projService.loadRepoTree(proj.githubRepo)
-    //       : of(null)
-    //   )
-    // );
-    // this.manifest$ = this.project$.pipe(
-    //   switchMap((proj) =>
-    //     proj && proj.githubRepo
-    //       ? this.projService.getManifest(proj.githubRepo)
-    //       : of(null)
-    //   )
-    // );
-  }
-
-  onProjectChange(proj: Project) {
-    // this.project$.next(proj);
   }
 
   // unsubscribe when the component dies
