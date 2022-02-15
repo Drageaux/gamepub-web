@@ -27,9 +27,6 @@ export class ProjectDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // TODO: navigate off if not found
-
-    // TODO: optimize these to reuse the requested project
     this.githubContents$ = this.projectService
       .getProject()
       .pipe(
