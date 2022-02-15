@@ -26,9 +26,6 @@ import { ProjectService } from '../project.service';
 export class ProjectOverviewComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
-  username!: string;
-  projName!: string;
-
   project!: Project | null;
   updatingImage = false;
 

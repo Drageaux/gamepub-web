@@ -1,6 +1,8 @@
-<a [routerLink]="['', 'davidtn', 'project', 'fantasy-world']">world</a>
+<a [routerLink]="['', 'davidtn', 'project', 'fantasy-world', 'details']">
+  world
+</a>
 <br />
-<a [routerLink]="['', 'davidtn', 'project', 'fantasy-farm']">farm</a>
+<a [routerLink]="['', 'davidtn', 'project', 'fantasy-farm', 'details']">farm</a>
 
 <div *ngIf="project">
   <!-- TODO: Breadcrumb Title -->
@@ -37,8 +39,8 @@
         [routerLink]="['./', 'jobs']"
         class="nav-link"
         routerLinkActive="active"
-        >Jobs</a
-      >
+        >Jobs
+      </a>
     </li>
   </ul>
 

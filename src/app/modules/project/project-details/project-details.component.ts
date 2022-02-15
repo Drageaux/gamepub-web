@@ -5,6 +5,7 @@ import { UnityManifest } from '@classes/unity-manifest';
 import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-project-details',
@@ -21,20 +22,16 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
+    private projectService: ProjectService,
     private projectApi: ProjectApiService
   ) {}
 
   ngOnInit(): void {
-    // need the call to the ProjectComponent, hence .parent
-    this.username = this.route.snapshot.parent?.paramMap.get('username') || '';
-    this.projName =
-      this.route.snapshot.parent?.paramMap.get('projectname') || '';
-
     // TODO: navigate off if not found
 
     // TODO: optimize these to reuse the requested project
-    this.githubContents$ = this.projectApi
-      .getProjectByFullPath(this.username, this.projName)
+    this.githubContents$ = this.projectService
+      .getProject()
       .pipe(
         switchMap((proj) =>
           proj && proj.githubRepo
@@ -43,8 +40,8 @@ export class ProjectDetailsComponent implements OnInit {
         )
       );
 
-    this.manifest$ = this.projectApi
-      .getProjectByFullPath(this.username, this.projName)
+    this.manifest$ = this.projectService
+      .getProject()
       .pipe(
         switchMap((proj) =>
           proj && proj.githubRepo
