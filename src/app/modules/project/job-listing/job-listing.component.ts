@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 export class JobListingComponent implements OnInit {
   jobs$!: Observable<Job[]>;
 
-  constructor(private service: JobApiService) {}
+  constructor(private jobApi: JobApiService) {}
 
   ngOnInit(): void {
     // TODO: get jobs from db

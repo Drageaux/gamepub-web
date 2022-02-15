@@ -34,7 +34,7 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    private projService: ProjectApiService,
+    private projectApi: ProjectApiService,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -43,7 +43,7 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
     this.username = this.route.snapshot.paramMap.get('username') || '';
     this.projName = this.route.snapshot.paramMap.get('projectname') || '';
 
-    this.subs.sink = this.projService
+    this.subs.sink = this.projectApi
       .getProjectByFullPath(this.username, this.projName)
       .subscribe((proj) => {
         if (proj) {
@@ -63,7 +63,7 @@ export class ProjectOverviewComponent implements OnInit, OnChanges, OnDestroy {
     if (this.project._id == null) return;
     if (!fileData) return;
 
-    this.subs.sink = this.projService
+    this.subs.sink = this.projectApi
       .uploadProjectImageByProjectId(this.project._id, fileData)
       .subscribe((project) => {
         this.project = project;

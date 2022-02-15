@@ -21,7 +21,7 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projService: ProjectApiService
+    private projectApi: ProjectApiService
   ) {}
 
   ngOnInit(): void {
@@ -33,22 +33,22 @@ export class ProjectDetailsComponent implements OnInit {
     // TODO: navigate off if not found
 
     // TODO: optimize these to reuse the requested project
-    this.githubContents$ = this.projService
+    this.githubContents$ = this.projectApi
       .getProjectByFullPath(this.username, this.projName)
       .pipe(
         switchMap((proj) =>
           proj && proj.githubRepo
-            ? this.projService.loadRepoTree(proj.githubRepo)
+            ? this.projectApi.loadRepoTree(proj.githubRepo)
             : of(null)
         )
       );
 
-    this.manifest$ = this.projService
+    this.manifest$ = this.projectApi
       .getProjectByFullPath(this.username, this.projName)
       .pipe(
         switchMap((proj) =>
           proj && proj.githubRepo
-            ? this.projService.getManifest(proj.githubRepo)
+            ? this.projectApi.getManifest(proj.githubRepo)
             : of(null)
         )
       );

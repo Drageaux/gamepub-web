@@ -12,13 +12,13 @@ export class ProjectProxyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ProjectApiService
+    private projectApi: ProjectApiService
   ) {}
 
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.service.getProjectById(id).subscribe(
+      this.projectApi.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
             this.router.navigateByUrl(

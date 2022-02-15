@@ -34,10 +34,7 @@ export class CreateProjectComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(
-    private projectService: ProjectApiService,
-    private router: Router
-  ) {}
+  constructor(private projectApi: ProjectApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -52,7 +49,7 @@ export class CreateProjectComponent implements OnInit {
   onSubmit() {
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
-    this.projectService
+    this.projectApi
       .createProject({
         name: formattedName.trim(),
         displayName: displayName.trim() || '',
@@ -86,7 +83,7 @@ export class CreateProjectComponent implements OnInit {
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return timer(300).pipe(
       switchMap(() =>
-        this.projectService
+        this.projectApi
           .isProjectNameTaken(control.value)
           .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
       )

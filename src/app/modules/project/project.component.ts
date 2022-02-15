@@ -45,8 +45,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projService: ProjectApiService,
-    private jobService: JobApiService,
+    private projectApi: ProjectApiService,
+    private jobApi: JobApiService,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -69,7 +69,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     });
 
     // service retrieves once
-    this.subs.sink = this.projService
+    this.subs.sink = this.projectApi
       .getProjectByFullPath(this.username, this.projName)
       .pipe(
         shareReplay(1),
