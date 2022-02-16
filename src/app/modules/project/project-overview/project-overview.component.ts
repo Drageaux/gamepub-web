@@ -46,7 +46,7 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
 
   onImageUploaded(fileData: string | null) {
     this.updatingImage = false;
-    if (this.project?._id == null) return;
+    if (!this.project?._id) return;
     if (!fileData) return;
 
     this.subs.sink = this.projectApi
