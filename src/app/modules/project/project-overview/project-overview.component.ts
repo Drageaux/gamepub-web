@@ -5,47 +5,59 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
+import { Observable, of, Subject } from 'rxjs';
+import { shareReplay, map, catchError } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-project-overview',
   templateUrl: './project-overview.component.html',
   styleUrls: ['./project-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectOverviewComponent implements OnInit, OnChanges {
-  @Input() project!: Project;
-  @Output() imageUpdatedEvent = new EventEmitter<Project>();
+export class ProjectOverviewComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+
+  project!: Project | null;
   updatingImage = false;
 
   constructor(
-    private projService: ProjectService,
+    public route: ActivatedRoute,
+    private projectService: ProjectService,
+    private projectApi: ProjectApiService,
     private ref: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  ngOnInit(): void {
+    this.subs.sink = this.projectService.getProject().subscribe((proj) => {
+      if (proj) {
+        this.project = proj;
+      }
+    });
   }
 
   onImageUploaded(fileData: string | null) {
     this.updatingImage = false;
-    if (this.project._id == null) return;
+    if (this.project?._id == null) return;
     if (!fileData) return;
-    // pass back to parent to keep the entire page up to date
-    this.projService
-      .uploadProjectImage(this.project._id, fileData)
+
+    this.subs.sink = this.projectApi
+      .uploadProjectImageByProjectId(this.project?._id, fileData)
       .subscribe((project) => {
-        console.log(project);
-        this.imageUpdatedEvent.emit(project);
-        this.ref.detectChanges();
+        this.project = project;
+        this.ref.markForCheck(); // explicitly check changes in project reference
       });
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

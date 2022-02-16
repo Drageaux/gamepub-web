@@ -18,7 +18,11 @@
   <div *ngIf="projects$ | async as projs">
     <h3>Projects</h3>
     <ul>
-      <li *ngFor="let p of projs">{{ p | json }}</li>
+      <li *ngFor="let p of projs">
+        <a [routerLink]="['', profile.username, 'project', p.name]">{{
+          p.displayName || p.name
+        }}</a>
+      </li>
     </ul>
   </div>
 

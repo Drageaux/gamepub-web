@@ -9,7 +9,7 @@ import { ApiResponse } from './api-response';
 @Injectable({
   providedIn: 'root',
 })
-export class JobService {
+export class JobApiService {
   prefix = 'api';
 
   constructor(private http: HttpClient) {}

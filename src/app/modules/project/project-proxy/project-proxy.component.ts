@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@classes/user';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 
+/**
+ * Takes a project ID and redirect user to the appropriate path
+ * e.g. project/329042 --> this-user/project/cool-project
+ */
 @Component({
   selector: 'app-project-proxy',
   templateUrl: './project-proxy.component.html',
@@ -12,13 +16,13 @@ export class ProjectProxyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ProjectService
+    private projectApi: ProjectApiService
   ) {}
 
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.service.getProjectById(id).subscribe(
+      this.projectApi.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
             this.router.navigateByUrl(

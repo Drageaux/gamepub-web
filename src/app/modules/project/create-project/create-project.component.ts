@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectService } from '@services/project.service';
+import { ProjectApiService } from '@services/project-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -34,7 +34,7 @@ export class CreateProjectComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(private projectApi: ProjectApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -49,7 +49,7 @@ export class CreateProjectComponent implements OnInit {
   onSubmit() {
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
-    this.projectService
+    this.projectApi
       .createProject({
         name: formattedName.trim(),
         displayName: displayName.trim() || '',
@@ -83,7 +83,7 @@ export class CreateProjectComponent implements OnInit {
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return timer(300).pipe(
       switchMap(() =>
-        this.projectService
+        this.projectApi
           .isProjectNameTaken(control.value)
           .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
       )

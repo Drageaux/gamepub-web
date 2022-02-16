@@ -15,6 +15,11 @@ import { SharedModule } from '@modules/shared/shared.module';
 import { AdminModule } from '@modules/admin/admin.module';
 import { FeedModule } from '@modules/feed/feed.module';
 
+// API Services
+import { JobApiService } from '@services/job-api.service';
+import { ProjectApiService } from '@services/project-api.service';
+import { UserApiService } from '@services/user-api.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -30,7 +35,7 @@ import { FeedModule } from '@modules/feed/feed.module';
     AssetDashboardModule,
   ],
   exports: [],
-  providers: [AssetService],
+  providers: [AssetService, ProjectApiService, UserApiService, JobApiService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

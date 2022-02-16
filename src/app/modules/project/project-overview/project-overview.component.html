@@ -2,8 +2,8 @@
   <div class="col-12 col-sm-5 col-md-4 p-0">
     <img
       class="w-100"
-      *ngIf="project.imageUrl; else placeholderImageBlock"
-      [src]="project.imageUrl"
+      *ngIf="project?.imageUrl; else placeholderImageBlock"
+      [src]="project?.imageUrl"
     />
     <ng-template #placeholderImageBlock>
       <img [src]="'https://via.placeholder.com/250x250'" />

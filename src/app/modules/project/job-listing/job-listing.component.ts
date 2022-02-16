@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Job } from '@classes/job';
-import { JobService } from '@services/job.service';
+import { JobApiService } from '@services/job-api.service';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 export class JobListingComponent implements OnInit {
   jobs$!: Observable<Job[]>;
 
-  constructor(private service: JobService) {}
+  constructor(private jobApi: JobApiService) {}
 
   ngOnInit(): void {
     // TODO: get jobs from db

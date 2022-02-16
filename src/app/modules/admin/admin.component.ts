@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@modules/shared/user.service';
-import { ProjectService } from '@services/project.service';
-import { of } from 'rxjs';
+import { ProjectApiService } from '@services/project-api.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -11,22 +9,19 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 })
 export class AdminComponent implements OnInit {
   games!: any;
-  constructor(
-    private projectService: ProjectService,
-    private userService: UserService
-  ) {}
+  constructor(private projectApi: ProjectApiService) {}
 
   ngOnInit(): void {
-    this.games = this.projectService.parseSteamStore();
+    this.games = this.projectApi.parseSteamStore();
   }
 
   generateProjects() {
-    this.projectService
+    this.projectApi
       .createNewTestUsers(this.games)
       .pipe(
         switchMap((users) => {
           console.log(users);
-          return this.projectService.createNewTestGames(this.games);
+          return this.projectApi.createNewTestGames(this.games);
         })
       )
       .subscribe(console.log, console.error);

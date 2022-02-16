@@ -1,4 +1,4 @@
-import { ApiResponse } from './api-response';
+import { ApiResponse } from '@services/api-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -8,17 +8,24 @@ import { Project } from '@classes/project';
 
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
-import { UserService } from '../modules/shared/user.service';
+import { UserService } from './user.service';
 
 import json from '../../assets/test-data/steam-sample-games-2.json';
 import { User } from '@classes/user';
+import { UserApiService } from './user-api.service';
 
-@Injectable()
-export class ProjectService {
+@Injectable({
+  providedIn: 'root',
+})
+export class ProjectApiService {
   // data = testData;
   prefix = 'api';
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private userApi: UserApiService
+  ) {}
 
   /*************************************************************************/
   /****************************** API REQUESTS *****************************/
@@ -32,7 +39,7 @@ export class ProjectService {
         `${this.prefix}/users/${username}/projects/${projName}`
       )
       .pipe(
-        shareReplay(1),
+        shareReplay(10),
         map((res) => res.data)
       );
   }
@@ -98,6 +105,17 @@ export class ProjectService {
   }
 
   uploadProjectImage(projId: string, file: File | string) {
+    return this.http
+      .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
+        image: file,
+      })
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  uploadProjectImageByProjectId(projId: string, file: File | string) {
     return this.http
       .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
         image: file,
@@ -190,11 +208,11 @@ export class ProjectService {
   createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
     return forkJoin(
       games.map((g) =>
-        this.userService
+        this.userApi
           .createUser((g.creator as User).username, 'test')
           .pipe(
             catchError((err) =>
-              this.userService
+              this.userApi
                 .getUserProfileByUsername((g.creator as User).username)
                 .pipe(catchError((err) => of(null)))
             )
@@ -208,7 +226,7 @@ export class ProjectService {
     return forkJoin(
       games.map((g) => {
         if (!g) return of(null);
-        return this.userService
+        return this.userApi
           .getUserProfileByUsername((g.creator as User).username)
           .pipe(
             switchMap((user) => {

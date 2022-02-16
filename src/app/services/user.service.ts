@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { User } from '@classes/user';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
+import { UserApiService } from './user-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +15,8 @@ export class UserService {
   private _myUsername: string = 'davidtn';
   private _myProfile$!: Observable<User>;
 
-  constructor(private http: HttpClient) {
-    this._myProfile$ = this.getUserProfileByUsername(this._myUsername);
+  constructor(private http: HttpClient, private userApi: UserApiService) {
+    this._myProfile$ = this.userApi.getUserProfileByUsername(this._myUsername);
   }
 
   public get username() {
@@ -32,22 +33,4 @@ export class UserService {
   //     map((res) => res.data)
   //   );
   // }
-
-  public getUserProfileByUsername(username: string) {
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/${username}`).pipe(
-      shareReplay(1),
-      map((res) => res.data)
-    );
-  }
-
-  // TODO: secure this function
-  public createUser(username: string, password: string) {
-    return this.http
-      .post<ApiResponse<User>>(`${this.apiUrl}`, {
-        username,
-        password,
-        email: username + '@gmail.com',
-      })
-      .pipe(map((res) => res.data));
-  }
 }
