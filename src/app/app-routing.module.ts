@@ -12,6 +12,7 @@ import { JobDetailsComponent } from '@modules/project/job-details/job-details.co
 import { JobListingComponent } from '@modules/project/job-listing/job-listing.component';
 import { ProjectOverviewComponent } from '@modules/project/project-overview/project-overview.component';
 import { ProjectDetailsComponent } from '@modules/project/project-details/project-details.component';
+import { CreateJobComponent } from '@modules/project/create-job/create-job.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: FeedComponent },
@@ -43,6 +44,11 @@ const routes: Routes = [
             path: 'jobs',
             children: [
               { path: '', component: JobListingComponent, pathMatch: 'full' },
+              {
+                path: 'new-job',
+                component: CreateJobComponent,
+                pathMatch: 'full',
+              },
               { path: ':id', component: JobDetailsComponent },
             ],
           },

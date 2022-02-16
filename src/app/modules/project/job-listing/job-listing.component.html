@@ -1,6 +1,8 @@
-<div *ngIf="jobs$ | async as jobs">
+<div>
   <!-- <app-job-card *ngFor="let j of jobs" [job]="j"></app-job-card> -->
-  <table class="table table-hover table-bordered">
+  <a class="btn btn-success" [routerLink]="['./', 'new-job']">New Job</a>
+
+  <table class="table table-hover table-bordered" *ngIf="jobs$ | async as jobs">
     <thead></thead>
     <tbody>
       <tr *ngFor="let j of jobs">

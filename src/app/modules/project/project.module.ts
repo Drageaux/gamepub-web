@@ -15,6 +15,7 @@ import { JobListingComponent } from './job-listing/job-listing.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectService } from './project.service';
+import { CreateJobComponent } from './create-job/create-job.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProjectService } from './project.service';
     JobListingComponent,
     JobDetailsComponent,
     ProjectDetailsComponent,
+    CreateJobComponent,
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule, SharedModule],
   providers: [PackageService],
