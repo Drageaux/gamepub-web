@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectApiService } from '@services/project-api.service';
-import { ReplaySubject, Observable, BehaviorSubject, Subject } from 'rxjs';
-import { ProjectModule } from './project.module';
+import { ReplaySubject, Observable } from 'rxjs';
 
 /**
  * Share data among the ProjectComponent and its children.
