@@ -1,1 +1,46 @@
-<p>create-job works!</p>
+<div class="container mt-3 mx-auto p-4 border border-1 rounded">
+  <div class="text-center">
+    <h4>What do you need help with?<br /></h4>
+    <p>
+      Post a new job. Others can accept it and send their submissions for your
+      approval.
+    </p>
+  </div>
+
+  <form
+    class="form-group"
+    [formGroup]="jobForm"
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <label for="job-title" class="required">Title</label>
+        <input
+          id="job-title"
+          type="text"
+          formControlName="title"
+          class="form-control"
+          placeholder="(e.g. 3D Character Model)"
+          required
+        />
+        <div
+          *ngIf="title?.invalid && (title?.dirty || title?.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="title?.errors?.['required']">Title is required.</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4"></div>
+    </div>
+
+    <hr />
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="jobForm.invalid || form.submitted"
+    >
+      {{ !form.submitted ? "Post new job" : "Posting new job..." }}
+    </button>
+  </form>
+</div>
