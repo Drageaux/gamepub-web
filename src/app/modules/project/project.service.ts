@@ -13,19 +13,27 @@ import { ReplaySubject, Observable } from 'rxjs';
 })
 export class ProjectService {
   private project$ = new ReplaySubject<Project | null>(1);
-  private username = '';
-  private projectname = '';
+  private _username = '';
+  private _projectname = '';
 
   constructor(private projectApi: ProjectApiService) {}
 
+  get username() {
+    return this._username;
+  }
+
+  get projectname() {
+    return this._projectname;
+  }
+
   changeProject(username: string, projectName: string) {
-    if (username === this.username && projectName === this.username) {
+    if (username === this._username && projectName === this._username) {
       return;
     } else {
-      this.username = username;
-      this.projectname = projectName;
+      this._username = username;
+      this._projectname = projectName;
       this.projectApi
-        .getProjectByFullPath(username, projectName)
+        .getProjectByFullPath(this._username, this._projectname)
         .subscribe((proj) => {
           if (proj) this.project$.next(proj);
         });
