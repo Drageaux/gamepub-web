@@ -1,13 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Job } from '@classes/job';
 import { JobApiService } from '@services/job-api.service';
+import { SubSink } from 'subsink';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-create-job',
   templateUrl: './create-job.component.html',
   styleUrls: ['./create-job.component.scss'],
 })
-export class CreateJobComponent implements OnInit {
+export class CreateJobComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+
   jobForm = new FormGroup({
     title: new FormControl('', [
       Validators.required,
@@ -16,12 +22,7 @@ export class CreateJobComponent implements OnInit {
     ]),
     body: new FormControl(''),
   });
-
   @ViewChild('form') form!: NgForm;
-
-  constructor(private jobApi: JobApiService) {}
-
-  ngOnInit(): void {}
 
   get title() {
     return this.jobForm.get('title');
@@ -31,5 +32,40 @@ export class CreateJobComponent implements OnInit {
     return this.jobForm.get('body');
   }
 
-  onSubmit() {}
+  constructor(
+    private jobApi: JobApiService,
+    private projectService: ProjectService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {}
+
+  onSubmit() {
+    const username = this.projectService.username;
+    const projectname = this.projectService.projectname;
+
+    const { title, body } = this.jobForm.value;
+    this.subs.sink = this.jobApi
+      .createJob(username, projectname, { title, body })
+      .subscribe(
+        (res: Job) => {
+          this.router.navigate([
+            username,
+            'project',
+            projectname,
+            'jobs',
+            res._id,
+          ]);
+        },
+        (err) => {
+          // resetForm also resets the submitted status, while reset() doesn't
+          this.form.resetForm(this.jobForm.value);
+          console.error(err);
+        }
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }

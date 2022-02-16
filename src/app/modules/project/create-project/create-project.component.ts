@@ -1,5 +1,5 @@
 import { User } from '@classes/user';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -13,13 +13,16 @@ import { Project } from '@classes/project';
 import { ProjectApiService } from '@services/project-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
 })
-export class CreateProjectComponent implements OnInit {
+export class CreateProjectComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
@@ -34,10 +37,6 @@ export class CreateProjectComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(private projectApi: ProjectApiService, private router: Router) {}
-
-  ngOnInit(): void {}
-
   get displayName() {
     return this.projectForm.get('displayName');
   }
@@ -46,10 +45,14 @@ export class CreateProjectComponent implements OnInit {
     return this.projectForm.get('formattedName');
   }
 
+  constructor(private projectApi: ProjectApiService, private router: Router) {}
+
+  ngOnInit(): void {}
+
   onSubmit() {
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
-    this.projectApi
+    this.subs.sink = this.projectApi
       .createProject({
         name: formattedName.trim(),
         displayName: displayName.trim() || '',
@@ -58,7 +61,7 @@ export class CreateProjectComponent implements OnInit {
       .subscribe(
         (res: Project) => {
           console.log(res);
-          if (!res.creator || res.creator instanceof String) {
+          if (!res?.creator || res?.creator instanceof String) {
             // TODO: needs testing
             this.router.navigate(['project', res._id]);
           } else {
@@ -88,5 +91,9 @@ export class CreateProjectComponent implements OnInit {
           .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
       )
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

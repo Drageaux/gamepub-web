@@ -14,6 +14,18 @@ export class JobApiService {
 
   constructor(private http: HttpClient) {}
 
+  createJob(username: string, projectname: string, job: Job): Observable<Job> {
+    return this.http
+      .post<ApiResponse<Job>>(
+        `${this.prefix}/users/${username}/projects/${projectname}/jobs`,
+        job
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   getJobsByProject(username: string, projName: string): Observable<Job[]> {
     return this.http
       .get<ApiResponse<Job[]>>(
