@@ -13,7 +13,7 @@ import { ProjectModule } from './project.module';
   providedIn: 'root',
 })
 export class ProjectService {
-  private project$ = new Subject<Project | null>();
+  private project$ = new ReplaySubject<Project | null>(1);
   private username = '';
   private projectname = '';
 
