@@ -11,12 +11,18 @@
             [routerLink]="['./', j._id]"
             class="d-table-cell d-lg-none stretched-link"
           ></a>
-          <h6>{{ j.title }}</h6>
+          <h6 class="position-relative">
+            <a
+              [routerLink]="['./', j._id]"
+              class="d-table-none d-lg-inline stretched-link"
+            >
+              {{ j.title }}</a
+            >
+            <a [routerLink]="['./', j._id]">{{ j.title }}</a>
+            <span class="ml-2 text-muted">#{{ j.jobNumber }}</span>
+          </h6>
         </td>
 
-        <td class="d-none d-lg-table-cell">
-          <a [routerLink]="['./', j._id]">View</a>
-        </td>
         <td class="d-none d-lg-table-cell">
           <!-- TODO: subscribe action -->
           <a class="text-success"><i class="far fa-bell"></i>&nbsp;Subscribe</a>
