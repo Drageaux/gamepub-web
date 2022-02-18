@@ -49,7 +49,7 @@ const routes: Routes = [
                 component: CreateJobComponent,
                 pathMatch: 'full',
               },
-              { path: ':id', component: JobDetailsComponent },
+              { path: ':jobnumber', component: JobDetailsComponent },
             ],
           },
         ],
