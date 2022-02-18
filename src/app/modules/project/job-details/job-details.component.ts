@@ -1,5 +1,5 @@
 import { ProjectService } from './../project.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobApiService } from '@services/job-api.service';
 import { SubSink } from 'subsink';
@@ -21,7 +21,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private jobApi: JobApiService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,13 +47,14 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.newComment = '';
           this.submitting = false;
           // TODO: push new comment to array
+          this.ref.markForCheck();
         },
         (err) => {
+          // TODO: display error message
           console.error(err);
-          // alternatively, use finalize rxjs operator
           this.submitting = false;
-        },
-        () => {}
+          this.ref.markForCheck();
+        }
       );
   }
 

@@ -1,13 +1,12 @@
 <div class="container">
-  <form>
+  <div>
     <input [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" />
     <button
-      type="submit"
-      [disabled]="submitting || !newComment"
+      [disabled]="submitting || newComment === ''"
       class="btn btn-success"
       (click)="postComment()"
     >
       Comment
     </button>
-  </form>
+  </div>
 </div>
