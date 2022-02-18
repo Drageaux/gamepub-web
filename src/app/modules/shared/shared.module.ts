@@ -14,7 +14,7 @@ import { UserService } from '@services/user.service';
 import { ProjectApiService } from '@services/project-api.service';
 import { UserApiService } from '@services/user-api.service';
 import { JobApiService } from '@services/job-api.service';
-import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
+import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +27,8 @@ import { DateAgoPipe } from 'src/app/shared/date-ago.pipe';
   ],
   exports: [
     UploadComponent,
+    FileSizePipe,
+    DateAgoPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     JobCardComponent,

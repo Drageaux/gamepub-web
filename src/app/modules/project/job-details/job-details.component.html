@@ -5,7 +5,7 @@
       class="bg-white lift-1 p-2 mb-2 border border-1 rounded"
     >
       <div>
-        <b>[commenter]</b>&nbsp;<span>{{ c.createdAt | date }}</span>
+        <b>[commenter]</b>&nbsp;<span>{{ c.createdAt | dateAgo }}</span>
       </div>
       <div>
         {{ c.body }}
