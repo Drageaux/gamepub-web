@@ -26,12 +26,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(35)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
       [this.validateUniqueProjectName.bind(this)]
     ),
     displayName: new FormControl('', [
       Validators.minLength(3),
-      Validators.maxLength(50),
+      Validators.maxLength(100),
     ]),
     githubRepo: new FormControl(''),
   });
