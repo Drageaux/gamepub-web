@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobApiService } from '@services/job-api.service';
 import { SubSink } from 'subsink';
+import { JobComment } from '@classes/job-comment';
 
 @Component({
   selector: 'app-job-details',
@@ -14,6 +15,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   username!: string;
   projectname!: string;
   jobnumber!: number | string;
+
+  comments!: JobComment[];
 
   newComment = '';
   submitting = false;
@@ -29,13 +32,20 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.username = this.projectService.username;
     this.projectname = this.projectService.projectname;
     this.jobnumber = parseInt(this.route.snapshot.params['jobnumber']);
+
+    this.subs.sink = this.jobApi
+      .getJobComments(this.username, this.projectname, this.jobnumber)
+      .subscribe((comments) => {
+        this.comments = comments;
+        this.ref.markForCheck();
+      });
   }
 
   postComment() {
     if (!this.newComment) return;
 
     this.submitting = true;
-    this.jobApi
+    this.subs.sink = this.jobApi
       .postJobComment(
         this.username,
         this.projectname,

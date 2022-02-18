@@ -38,6 +38,21 @@ export class JobApiService {
       );
   }
 
+  getJobComments(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<JobComment[]> {
+    return this.http
+      .get<ApiResponse<JobComment[]>>(
+        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   postJobComment(
     username: string,
     projName: string,
