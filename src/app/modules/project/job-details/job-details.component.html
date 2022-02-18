@@ -1,6 +1,13 @@
 <div class="container">
-  <div>
-    <input [(ngModel)]="newComment" />
-    <button (click)="postComment()"></button>
-  </div>
+  <form>
+    <input [(ngModel)]="newComment" [ngModelOptions]="{ standalone: true }" />
+    <button
+      type="submit"
+      [disabled]="submitting || !newComment"
+      class="btn btn-success"
+      (click)="postComment()"
+    >
+      Comment
+    </button>
+  </form>
 </div>

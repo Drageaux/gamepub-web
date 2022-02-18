@@ -46,7 +46,7 @@ export class JobApiService {
   ): Observable<JobComment> {
     return this.http
       .post<ApiResponse<JobComment>>(
-        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}`,
+        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`,
         { body }
       )
       .pipe(

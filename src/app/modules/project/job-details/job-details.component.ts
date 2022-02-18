@@ -44,12 +44,15 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       .subscribe(
         (comment) => {
           this.newComment = '';
+          this.submitting = false;
           // TODO: push new comment to array
         },
-        console.error,
-        () => {
+        (err) => {
+          console.error(err);
+          // alternatively, use finalize rxjs operator
           this.submitting = false;
-        }
+        },
+        () => {}
       );
   }
 
