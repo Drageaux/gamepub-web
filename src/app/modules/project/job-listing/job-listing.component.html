@@ -11,15 +11,12 @@
             [routerLink]="['./', j._id]"
             class="d-table-cell d-lg-none stretched-link"
           ></a>
-          <h6 class="position-relative">
-            <a
-              [routerLink]="['./', j._id]"
-              class="d-table-none d-lg-inline stretched-link"
-            >
+          <h6>
+            <a [routerLink]="['./', j._id]" class="d-none d-lg-inline">
               {{ j.title }}</a
             >
-            <a [routerLink]="['./', j._id]">{{ j.title }}</a>
-            <span class="ml-2 text-muted">#{{ j.jobNumber }}</span>
+            <span class="d-inline d-lg-none">{{ j.title }}</span>
+            <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
           </h6>
         </td>
 
