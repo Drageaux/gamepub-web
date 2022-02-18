@@ -4,11 +4,16 @@
       *ngFor="let c of comments"
       class="bg-white lift-1 p-2 mb-2 border border-1 rounded"
     >
-      {{ c.body }}
+      <div>
+        <b>[commenter]</b>&nbsp;<span>{{ c.createdAt | date }}</span>
+      </div>
+      <div>
+        {{ c.body }}
+      </div>
     </div>
   </div>
 
-  <div>
+  <div class="form-group">
     <input
       class="form-control mb-2"
       [(ngModel)]="newComment"
