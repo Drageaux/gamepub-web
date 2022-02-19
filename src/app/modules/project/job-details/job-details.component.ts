@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { JobApiService } from '@services/job-api.service';
 import { SubSink } from 'subsink';
 import { JobComment } from '@classes/job-comment';
+import { Job } from '@classes/job';
 
 @Component({
   selector: 'app-job-details',
@@ -12,10 +13,11 @@ import { JobComment } from '@classes/job-comment';
 })
 export class JobDetailsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-  username!: string;
-  projectname!: string;
-  jobnumber!: number | string;
+  private username!: string;
+  private projectname!: string;
+  private jobnumber!: number | string;
 
+  job!: Job;
   comments!: JobComment[];
 
   newComment = '';
@@ -32,6 +34,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.username = this.projectService.username;
     this.projectname = this.projectService.projectname;
     this.jobnumber = parseInt(this.route.snapshot.params['jobnumber']);
+
+    this.subs.sink = this.jobApi
+      .getJobByJobNumber(this.username, this.projectname, this.jobnumber)
+      .subscribe((job) => {
+        this.job = job;
+        this.ref.markForCheck();
+      });
 
     this.subs.sink = this.jobApi
       .getJobComments(this.username, this.projectname, this.jobnumber)
