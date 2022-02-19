@@ -6,12 +6,14 @@
           >#{{ job.jobNumber }}</span
         >
       </h2>
-      <a class="btn btn-primary" [routerLink]="['../', 'new-job']">New Job</a>
+      <a [routerLink]="['../', 'new-job']"
+        ><button class="btn btn-primary">New Job</button></a
+      >
     </div>
     <hr />
     <div
       *ngFor="let c of comments"
-      class="bg-white lift-1 p-2 mb-2 border border-1 rounded"
+      class="comment bg-white lift-1 p-2 mb-2 border border-1 rounded"
     >
       <div>
         <b>[commenter]</b>&nbsp;<span>{{ c.createdAt | dateAgo }}</span>
@@ -22,7 +24,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group py-3">
     <input
       class="form-control mb-2"
       [(ngModel)]="newComment"
