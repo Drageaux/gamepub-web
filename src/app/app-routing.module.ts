@@ -13,9 +13,11 @@ import { JobListingComponent } from '@modules/project/job-listing/job-listing.co
 import { ProjectOverviewComponent } from '@modules/project/project-overview/project-overview.component';
 import { ProjectDetailsComponent } from '@modules/project/project-details/project-details.component';
 import { CreateJobComponent } from '@modules/project/create-job/create-job.component';
+import { JobsComponent } from '@modules/jobs/jobs.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: FeedComponent },
+  { path: 'jobs', component: JobsComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'new-project', component: CreateProjectComponent },
   { path: 'new-asset', component: CreateAssetComponent },

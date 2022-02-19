@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@modules/shared/shared.module';
 import { AdminModule } from '@modules/admin/admin.module';
 import { FeedModule } from '@modules/feed/feed.module';
+import { JobsModule } from '@modules/jobs/jobs.module';
 
 // API Services
 import { JobApiService } from '@services/job-api.service';
@@ -29,6 +30,7 @@ import { UserApiService } from '@services/user-api.service';
     SharedModule,
     ReactiveFormsModule,
     FeedModule,
+    JobsModule,
     ProfileModule,
     ProjectModule,
     AdminModule,
