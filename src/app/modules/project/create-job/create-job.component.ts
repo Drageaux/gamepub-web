@@ -54,7 +54,7 @@ export class CreateJobComponent implements OnInit, OnDestroy {
             'project',
             projectname,
             'jobs',
-            res._id,
+            res.jobNumber,
           ]);
         },
         (err) => {

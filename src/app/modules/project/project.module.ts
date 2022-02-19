@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PackageService } from '@services/package.service';
 import { CreateProjectComponent } from './create-project/create-project.component';
@@ -31,7 +31,13 @@ import { CreateJobComponent } from './create-job/create-job.component';
     ProjectDetailsComponent,
     CreateJobComponent,
   ],
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, SharedModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    SharedModule,
+  ],
   providers: [PackageService],
 })
 export class ProjectModule {}

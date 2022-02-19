@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Job } from '@classes/job';
+import { JobComment } from '@classes/job-comment';
 import { Project } from '@classes/project';
 import { Observable } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
@@ -30,6 +31,53 @@ export class JobApiService {
     return this.http
       .get<ApiResponse<Job[]>>(
         `${this.prefix}/users/${username}/projects/${projName}/jobs`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getJobByJobNumber(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<Job> {
+    return this.http
+      .get<ApiResponse<Job>>(
+        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getJobComments(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<JobComment[]> {
+    return this.http
+      .get<ApiResponse<JobComment[]>>(
+        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  postJobComment(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    body: string
+  ): Observable<JobComment> {
+    return this.http
+      .post<ApiResponse<JobComment>>(
+        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`,
+        { body }
       )
       .pipe(
         shareReplay(1),

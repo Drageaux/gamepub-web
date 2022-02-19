@@ -14,17 +14,21 @@ import { UserService } from '@services/user.service';
 import { ProjectApiService } from '@services/project-api.service';
 import { UserApiService } from '@services/user-api.service';
 import { JobApiService } from '@services/job-api.service';
+import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 
 @NgModule({
   declarations: [
     UploadComponent,
     FileSizePipe,
+    DateAgoPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     JobCardComponent,
   ],
   exports: [
     UploadComponent,
+    FileSizePipe,
+    DateAgoPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     JobCardComponent,
