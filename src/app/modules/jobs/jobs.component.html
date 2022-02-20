@@ -1,1 +1,27 @@
-<p>jobs works!</p>
+<table class="table table-hover table-bordered" *ngIf="jobs$ | async as jobs">
+  <thead></thead>
+  <tbody>
+    <tr *ngFor="let j of jobs">
+      <td class="position-relative">
+        <!-- <a
+          [routerLink]="['./', j.jobNumber]"
+          class="d-table-cell d-lg-none stretched-link"
+        ></a> -->
+        <h6>
+          <!-- <a [routerLink]="['./', j.jobNumber]" class="d-none d-lg-inline"> -->
+          {{ j.title }}
+          <!-- </a> -->
+          <span class="d-inline d-lg-none">{{ j.title }}</span>
+          <!-- <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span> -->
+        </h6>
+      </td>
+
+      <td class="d-none d-lg-table-cell">
+        <!-- TODO: subscribe action -->
+        <a class="text-success"><i class="far fa-bell"></i>&nbsp;Subscribe</a>
+        <!-- TODO: subscribing -->
+        <!-- <a class="text-success"><i class="fas fa-check"></i>&nbsp;Subscribing</a> -->
+      </td>
+    </tr>
+  </tbody>
+</table>

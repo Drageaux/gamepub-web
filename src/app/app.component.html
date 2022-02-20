@@ -18,6 +18,10 @@
         <a class="nav-link" [routerLink]="['']">Home</a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['jobs']">Jobs</a>
+      </li>
+
       <li class="nav-item" *ngIf="profile$ | async as profile">
         <!-- TODO: specific user <a class="nav-link" [routerLink]="['/admin']">Profile</a> -->
         <a class="nav-link" [routerLink]="[profile.username]">Profile</a>

@@ -15,6 +15,13 @@ export class JobApiService {
 
   constructor(private http: HttpClient) {}
 
+  getAllJobs() {
+    return this.http.get<ApiResponse<Job[]>>(`${this.prefix}/jobs`).pipe(
+      shareReplay(1),
+      map((res) => res.data)
+    );
+  }
+
   createJob(username: string, projectname: string, job: Job): Observable<Job> {
     return this.http
       .post<ApiResponse<Job>>(
