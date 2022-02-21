@@ -1,5 +1,10 @@
 a {
   cursor: pointer;
-  text-decoration: none;
   font-weight: 500;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 }
