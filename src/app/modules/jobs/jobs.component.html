@@ -8,11 +8,17 @@
           class="d-table-cell d-lg-none stretched-link"
         ></a> -->
         <h6>
-          <!-- <a [routerLink]="['./', j.jobNumber]" class="d-none d-lg-inline"> -->
+          <!-- <a
+            [routerLink]="['./', j.jobNumber]"
+            class="d-inline d-lg-none stretched-link"
+            > -->
           {{ j.title }}
-          <!-- </a> -->
-          <span class="d-inline d-lg-none">{{ j.title }}</span>
-          <!-- <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span> -->
+          <!-- </a
+          > -->
+          <!-- <a [routerLink]="['./', j.jobNumber]" class="d-none d-lg-inline">
+            {{ j.title }}</a
+          > -->
+          <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
         </h6>
       </td>
 
