@@ -18,7 +18,10 @@
           <!-- <a [routerLink]="['./', j.jobNumber]" class="d-none d-lg-inline">
             {{ j.title }}</a
           > -->
-          <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
+          <br />
+          <span class="ml-2 text-muted fw-normal">{{
+            getProject(j)?.name
+          }}</span>
         </h6>
       </td>
 
