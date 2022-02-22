@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Job } from '@classes/job';
 import { Project } from '@classes/project';
+import { User } from '@classes/user';
 import { JobApiService } from '@services/job-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
@@ -26,6 +27,12 @@ export class JobsComponent implements OnInit, OnDestroy {
     if (!job.project || job.project instanceof String) return null;
 
     return job.project as Project;
+  }
+
+  getUser(project: Project): User | null {
+    if (!project.creator || project.creator instanceof String) return null;
+    console.log(project.creator);
+    return project.creator as User;
   }
 
   ngOnDestroy(): void {
