@@ -2,23 +2,9 @@
   <thead></thead>
   <tbody>
     <tr *ngFor="let j of jobs">
-      <td class="position-relative d-flex">
+      <td class="position-relative">
         <ng-container *ngIf="getProject(j) as project">
-          <app-progressive-image
-            *ngIf="project.imageUrl"
-            [src]="''"
-            [fallback]="project.imageUrl"
-            [imgClass]="'img-fluid'"
-            class="d-block mr-3"
-          >
-          </app-progressive-image>
-          <h6 *ngIf="getUser(project) as user">
-            <a
-              [routerLink]="['./', j.jobNumber]"
-              class="d-inline d-md-none stretched-link"
-            >
-              {{ j.title }}
-            </a>
+          <h6 *ngIf="getUser(project) as user" class="d-flex">
             <a
               [routerLink]="[
                 '/',
@@ -28,24 +14,58 @@
                 'jobs',
                 j.jobNumber
               ]"
-              class="d-none d-md-inline"
+              class="pr-3"
             >
-              {{ j.title }}
+              <app-progressive-image
+                *ngIf="project.imageUrl"
+                [src]="''"
+                [fallback]="project.imageUrl"
+                [imgClass]="'img-fluid'"
+                class="d-block"
+              >
+              </app-progressive-image>
             </a>
-
-            <br />
-            <a
-              [routerLink]="['/', user.username, 'project', project.name]"
-              style="
-                 {
-                  z-index: 1;
-                }
-              "
-            >
-              <span class="ml-2 text-muted fw-normal">{{
-                project?.name
-              }}</span></a
-            >
+            <div>
+              <a
+                [routerLink]="[
+                  '/',
+                  user.username,
+                  'project',
+                  project.name,
+                  'jobs',
+                  j.jobNumber
+                ]"
+                class="job-title d-inline d-md-none stretched-link"
+              >
+                {{ j.title }}
+              </a>
+              <a
+                [routerLink]="[
+                  '/',
+                  user.username,
+                  'project',
+                  project.name,
+                  'jobs',
+                  j.jobNumber
+                ]"
+                class="job-title d-none d-md-inline"
+              >
+                {{ j.title }}
+              </a>
+              <br />
+              <a
+                [routerLink]="['/', user.username, 'project', project.name]"
+                style="
+                   {
+                    z-index: 1;
+                  }
+                "
+              >
+                <span class="ml-2 text-muted fw-normal">{{
+                  project?.name
+                }}</span></a
+              >
+            </div>
           </h6>
         </ng-container>
       </td>

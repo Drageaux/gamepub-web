@@ -9,6 +9,14 @@ a {
   }
 }
 
+.d-flex {
+  gap: 1rem;
+}
+
 app-progressive-image {
-  width: 240px;
+  width: 180px;
+}
+
+.job-title {
+  font-size: 1.2em;
 }
