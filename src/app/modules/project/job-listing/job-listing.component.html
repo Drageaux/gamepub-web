@@ -10,17 +10,17 @@
           <h6>
             <a
               [routerLink]="['./', j.jobNumber]"
-              class="d-inline d-lg-none stretched-link"
+              class="d-inline d-md-none stretched-link"
               >{{ j.title }}</a
             >
-            <a [routerLink]="['./', j.jobNumber]" class="d-none d-lg-inline">
+            <a [routerLink]="['./', j.jobNumber]" class="d-none d-md-inline">
               {{ j.title }}</a
             >
             <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
           </h6>
         </td>
 
-        <td class="d-none d-lg-table-cell">
+        <td class="d-none d-md-table-cell">
           <!-- TODO: subscribe action -->
           <a class="text-success"><i class="far fa-bell"></i>&nbsp;Subscribe</a>
           <!-- TODO: subscribing -->
