@@ -31,7 +31,6 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   getUser(project: Project): User | null {
     if (!project.creator || project.creator instanceof String) return null;
-    console.log(project.creator);
     return project.creator as User;
   }
 
