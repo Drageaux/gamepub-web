@@ -5,6 +5,7 @@ import { JobApiService } from '@services/job-api.service';
 import { SubSink } from 'subsink';
 import { JobComment } from '@classes/job-comment';
 import { Job } from '@classes/job';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-job-details',
@@ -16,6 +17,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   private username!: string;
   private projectname!: string;
   private jobnumber!: number | string;
+
+  newJobLink = `${ProjectsRoutesNames.NEWJOB}`;
+  jobParamName = `${ProjectsRoutesNames.JOBPARAMNAME}`;
 
   job!: Job;
   comments!: JobComment[];
@@ -33,7 +37,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.username = this.projectService.username;
     this.projectname = this.projectService.projectname;
-    this.jobnumber = parseInt(this.route.snapshot.params['jobnumber']);
+    this.jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
 
     this.subs.sink = this.jobApi
       .getJobByJobNumber(this.username, this.projectname, this.jobnumber)

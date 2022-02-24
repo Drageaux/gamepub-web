@@ -6,6 +6,7 @@ import { JobApiService } from '@services/job-api.service';
 import { Observable, of } from 'rxjs';
 import { ProjectService } from '../project.service';
 import { User } from '@classes/user';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-job-listing',
@@ -13,6 +14,8 @@ import { User } from '@classes/user';
   styleUrls: ['./job-listing.component.scss'],
 })
 export class JobListingComponent implements OnInit {
+  newJobLink = `${ProjectsRoutesNames.NEWJOB}`;
+
   project!: Project;
   jobs$!: Observable<Job[]>;
 

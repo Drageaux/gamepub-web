@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 import { User } from '@classes/user';
 import { ProjectApiService } from '@services/project-api.service';
 
@@ -13,6 +14,8 @@ import { ProjectApiService } from '@services/project-api.service';
   styleUrls: ['./project-proxy.component.scss'],
 })
 export class ProjectProxyComponent implements OnInit {
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -25,9 +28,12 @@ export class ProjectProxyComponent implements OnInit {
       this.projectApi.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
-            this.router.navigateByUrl(
-              '/' + (res.creator as User).username + '/project/' + res.name
-            );
+            this.router.navigate([
+              '/',
+              (res.creator as User).username,
+              this.projectsLink,
+              res.name,
+            ]);
           } else {
             this.router.navigate(['/']);
           }
