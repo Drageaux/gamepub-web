@@ -12,14 +12,12 @@ import { ApiResponse } from './api-response';
   providedIn: 'root',
 })
 export class JobsApiService {
-  prefix = 'api';
-  env = environment;
+  apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAllJobs() {
-    console.log(this.env);
-    return this.http.get<ApiResponse<Job[]>>(`${this.prefix}/jobs`).pipe(
+    return this.http.get<ApiResponse<Job[]>>(`${this.apiUrl}/jobs`).pipe(
       shareReplay(1),
       map((res) => res.data)
     );
@@ -28,7 +26,7 @@ export class JobsApiService {
   createJob(username: string, projectname: string, job: Job): Observable<Job> {
     return this.http
       .post<ApiResponse<Job>>(
-        `${this.prefix}/users/${username}/projects/${projectname}/jobs`,
+        `${this.apiUrl}/users/${username}/projects/${projectname}/jobs`,
         job
       )
       .pipe(
@@ -40,7 +38,7 @@ export class JobsApiService {
   getJobsByProject(username: string, projName: string): Observable<Job[]> {
     return this.http
       .get<ApiResponse<Job[]>>(
-        `${this.prefix}/users/${username}/projects/${projName}/jobs`
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs`
       )
       .pipe(
         shareReplay(1),
@@ -55,7 +53,7 @@ export class JobsApiService {
   ): Observable<Job> {
     return this.http
       .get<ApiResponse<Job>>(
-        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}`
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}`
       )
       .pipe(
         shareReplay(1),
@@ -70,7 +68,7 @@ export class JobsApiService {
   ): Observable<JobComment[]> {
     return this.http
       .get<ApiResponse<JobComment[]>>(
-        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`
       )
       .pipe(
         shareReplay(1),
@@ -86,7 +84,7 @@ export class JobsApiService {
   ): Observable<JobComment> {
     return this.http
       .post<ApiResponse<JobComment>>(
-        `${this.prefix}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`,
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`,
         { body }
       )
       .pipe(
