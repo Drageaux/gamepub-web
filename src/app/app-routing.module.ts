@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from '@modules/admin/admin.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
 import { CreateAssetComponent } from '@modules/asset/create-asset/create-asset.component';
-import { CreateProjectComponent } from '@modules/project/create-project/create-project.component';
-import { ProjectProxyComponent } from '@modules/project/project-proxy/project-proxy.component';
-import { ProjectsComponent } from '@modules/project/projects.component';
+import { CreateProjectComponent } from '@modules/projects/create-project/create-project.component';
+import { ProjectProxyComponent } from '@modules/projects/project-proxy/project-proxy.component';
+import { ProjectsComponent } from '@modules/projects/projects.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
-import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
-import { JobListingComponent } from '@modules/project/job-listing/job-listing.component';
-import { ProjectOverviewComponent } from '@modules/project/project-overview/project-overview.component';
-import { ProjectDetailsComponent } from '@modules/project/project-details/project-details.component';
-import { CreateJobComponent } from '@modules/project/create-job/create-job.component';
+import { JobDetailsComponent } from '@modules/projects/job-details/job-details.component';
+import { JobListingComponent } from '@modules/projects/job-listing/job-listing.component';
+import { ProjectOverviewComponent } from '@modules/projects/project-overview/project-overview.component';
+import { ProjectDetailsComponent } from '@modules/projects/project-details/project-details.component';
+import { CreateJobComponent } from '@modules/projects/create-job/create-job.component';
 import { JobsComponent } from '@modules/jobs/jobs.component';
 import {
   FeedRoutesNames,

@@ -14,7 +14,6 @@ import { SharedModule } from '@modules/shared/shared.module';
 import { JobListingComponent } from './job-listing/job-listing.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
-import { ProjectsService } from './projects.service';
 import { CreateJobComponent } from './create-job/create-job.component';
 
 @NgModule({
