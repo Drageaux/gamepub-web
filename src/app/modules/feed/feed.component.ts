@@ -4,6 +4,7 @@ import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-feed',
@@ -11,6 +12,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./feed.component.scss'],
 })
 export class FeedComponent implements OnInit, OnDestroy {
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
   private subs = new SubSink();
 
   projects$ = new Subject<Project[]>();
@@ -26,8 +28,8 @@ export class FeedComponent implements OnInit, OnDestroy {
   getLink(p: Project): (string | undefined)[] {
     if (!p) return [];
     return p.creator instanceof String
-      ? ['project', p._id]
-      : ['', (p.creator as User).username, 'project', p.name];
+      ? [this.projectsLink, p._id]
+      : ['', (p.creator as User).username, this.projectsLink, p.name];
   }
 
   ngOnDestroy(): void {
