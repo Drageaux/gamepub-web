@@ -8,9 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "heroku-postbuild": "cross-env-shell ng build --configuration=$ENV && npm install -g http-server-spa",
-    "start": "http-server-spa dist/gamepub-web index.html $PORT",
-    "parent": "cross-env GREET=\"Joe\" npm run child",
-    "child": "cross-env-shell \"echo Hello $GREET\""
+    "start": "http-server-spa dist/gamepub-web index.html $PORT"
   },
   "private": true,
   "dependencies": {
