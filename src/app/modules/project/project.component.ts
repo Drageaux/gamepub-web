@@ -25,7 +25,7 @@ import { SubSink } from 'subsink';
 import { Job } from '@classes/job';
 import { JobApiService } from '@services/job-api.service';
 import { ProjectService } from './project.service';
-import { ProjectsRoutesNames } from '@classes/routes.names';
+import { ProfileRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-project',
@@ -39,6 +39,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   projectsLink = `${ProjectsRoutesNames.ROOT}`;
   detailsLink = `${ProjectsRoutesNames.DETAILS}`;
   jobsLink = `${ProjectsRoutesNames.JOBS}`;
+  userParamName = `${ProfileRoutesNames.PROFILEPARAMNAME}`;
+  projectParamName = `${ProjectsRoutesNames.PROJECTPARAMNAME}`;
 
   username!: string;
   project!: Project | null;
@@ -49,18 +51,16 @@ export class ProjectComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
-    private projectApi: ProjectApiService,
-    private jobApi: JobApiService,
     private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.route.params.subscribe((params) => {
-      if (params['projectname'] || params['username']) {
-        this.username = params['username'];
+      if (params[this.userParamName] || params[this.projectParamName]) {
+        this.username = params[this.userParamName];
         this.projectService.changeProject(
-          params['username'],
-          params['projectname']
+          params[this.userParamName],
+          params[this.projectParamName]
         );
         this.ref.markForCheck();
       }

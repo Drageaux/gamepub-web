@@ -4,6 +4,7 @@ export const FeedRoutesNames = {
 
 export const ProfileRoutesNames = {
   PROFILE: ':username',
+  PROFILEPARAMNAME: 'username',
 };
 
 export const JobsRoutesNames = {
@@ -14,6 +15,7 @@ export const ProjectsRoutesNames = {
   NEWPROJECT: 'new-project',
   ROOT: 'project',
   PROJECTPARAM: ':projectname',
+  PROJECTPARAMNAME: 'projectname',
   DETAILS: 'details',
   JOBS: `${JobsRoutesNames.JOBS}`,
   NEWJOB: 'new-job',
