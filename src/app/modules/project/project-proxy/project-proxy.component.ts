@@ -29,17 +29,17 @@ export class ProjectProxyComponent implements OnInit {
         (res) => {
           if (res && res.creator && res.name) {
             this.router.navigate([
-              '/',
+              '',
               (res.creator as User).username,
               this.projectsLink,
               res.name,
             ]);
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['']);
           }
         },
         (err) => {
-          console.error(err), this.router.navigate(['/']);
+          console.error(err), this.router.navigate(['']);
         }
       );
     } else {
