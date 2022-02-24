@@ -37,6 +37,8 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 export class ProjectComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   projectsLink = `${ProjectsRoutesNames.ROOT}`;
+  detailsLink = `${ProjectsRoutesNames.DETAILS}`;
+  jobsLink = `${ProjectsRoutesNames.JOBS}`;
 
   username!: string;
   project!: Project | null;
