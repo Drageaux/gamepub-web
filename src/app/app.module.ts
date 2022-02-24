@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 // Feature Modules
 import { AssetDashboardModule } from '@modules/asset-dashboard/asset-dashboard.module';
 import { ProfileModule } from '@modules/profile/profile.module';
-import { ProjectsModule } from '@modules/project/projects.module';
+import { ProjectsModule } from '@modules/projects/projects.module';
 import { AssetsService } from '@services/assets.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@modules/shared/shared.module';
