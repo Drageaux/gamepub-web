@@ -81,11 +81,15 @@
           "configurations": {
             "production": {
               "browserTarget": "game-comps-repo:build:production",
-              "proxyConfig": "proxy.conf.json"
+              "proxyConfig": "proxy.prod.conf.json"
             },
             "development": {
               "browserTarget": "game-comps-repo:build:development",
-              "proxyConfig": "proxy.conf.json"
+              "proxyConfig": "proxy.dev.conf.json"
+            },
+            "local": {
+              "browserTarget": "game-comps-repo:build:development",
+              "proxyConfig": "proxy.local.conf.json"
             }
           },
           "defaultConfiguration": "development"
