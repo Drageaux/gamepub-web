@@ -101,16 +101,14 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gamepub-web:build:production",
-              "proxyConfig": "proxy.prod.conf.json"
+              "browserTarget": "gamepub-web:build:production"
             },
             "staging": {
-              "browserTarget": "gamepub-web:build:staging",
-              "proxyConfig": "proxy.staging.conf.json"
+              "browserTarget": "gamepub-web:build:staging"
             },
             "development": {
               "browserTarget": "gamepub-web:build:development",
-              "proxyConfig": "proxy.dev.conf.json"
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
