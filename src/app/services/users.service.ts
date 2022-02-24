@@ -10,7 +10,6 @@ import { UsersApiService } from './users-api.service';
   providedIn: 'root',
 })
 export class UsersService {
-  private apiUrl = '/api/users';
   // TODO: use dynamic user ID and implement login
   private _myUsername: string = 'davidtn';
   private _myProfile$!: Observable<User>;

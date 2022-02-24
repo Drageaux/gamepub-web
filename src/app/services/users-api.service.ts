@@ -4,12 +4,14 @@ import { Injectable } from '@angular/core';
 import { User } from '@classes/user';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersApiService {
-  private apiUrl = '/api/users';
+  apiUrl = environment.apiUrl;
+
   // TODO: use dynamic user ID and implement login
 
   constructor(private http: HttpClient) {}
@@ -22,16 +24,18 @@ export class UsersApiService {
   // }
 
   public getUserProfileByUsername(username: string) {
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/${username}`).pipe(
-      shareReplay(1),
-      map((res) => res.data)
-    );
+    return this.http
+      .get<ApiResponse<User>>(`${this.apiUrl}/users/${username}`)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
   // TODO: secure this function
   public createUser(username: string, password: string) {
     return this.http
-      .post<ApiResponse<User>>(`${this.apiUrl}`, {
+      .post<ApiResponse<User>>(`${this.apiUrl}/users`, {
         username,
         password,
         email: username + '@gmail.com',

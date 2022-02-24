@@ -13,13 +13,14 @@ import { UsersService } from './users.service';
 import json from '../../assets/test-data/steam-sample-games-2.json';
 import { User } from '@classes/user';
 import { UsersApiService } from './users-api.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectsApiService {
   // data = testData;
-  prefix = 'api';
+  apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -36,7 +37,7 @@ export class ProjectsApiService {
   ): Observable<Project> {
     return this.http
       .get<ApiResponse<Project>>(
-        `${this.prefix}/users/${username}/projects/${projName}`
+        `${this.apiUrl}/users/${username}/projects/${projName}`
       )
       .pipe(
         shareReplay(10),
@@ -46,7 +47,7 @@ export class ProjectsApiService {
 
   getProjectById(projId: string): Observable<Project> {
     return this.http
-      .get<ApiResponse<Project>>(`${this.prefix}/projects/${projId}`)
+      .get<ApiResponse<Project>>(`${this.apiUrl}/projects/${projId}`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)
@@ -55,7 +56,7 @@ export class ProjectsApiService {
 
   getProjectsByUsername(username: string): Observable<Project[]> {
     return this.http
-      .get<ApiResponse<Project[]>>(`${this.prefix}/users/${username}/projects`)
+      .get<ApiResponse<Project[]>>(`${this.apiUrl}/users/${username}/projects`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)
@@ -64,7 +65,7 @@ export class ProjectsApiService {
 
   getAllProjects(): Observable<Project[]> {
     return this.http
-      .get<ApiResponse<Project[]>>(`${this.prefix}/projects`)
+      .get<ApiResponse<Project[]>>(`${this.apiUrl}/projects`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)
@@ -79,7 +80,7 @@ export class ProjectsApiService {
         let arg = { ...project };
         if (!arg.creator) arg.creator = profile._id; // TODO: intercept or auto fill creator id
         return this.http.post<ApiResponse<Project>>(
-          `${this.prefix}/projects`,
+          `${this.apiUrl}/projects`,
           arg
         );
       }),
@@ -91,7 +92,7 @@ export class ProjectsApiService {
     return this.usersService.myProfile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<null>>(
-          `${this.prefix}/projects/check-name`,
+          `${this.apiUrl}/projects/check-name`,
           {
             name: value,
             creator: profile._id,
@@ -106,7 +107,7 @@ export class ProjectsApiService {
 
   uploadProjectImage(projId: string, file: File | string) {
     return this.http
-      .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
+      .put<ApiResponse<any>>(`${this.apiUrl}/projects/${projId}/image`, {
         image: file,
       })
       .pipe(
@@ -117,7 +118,7 @@ export class ProjectsApiService {
 
   uploadProjectImageByProjectId(projId: string, file: File | string) {
     return this.http
-      .put<ApiResponse<any>>(`${this.prefix}/projects/${projId}/image`, {
+      .put<ApiResponse<any>>(`${this.apiUrl}/projects/${projId}/image`, {
         image: file,
       })
       .pipe(
