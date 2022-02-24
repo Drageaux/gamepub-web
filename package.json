@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "dev": "ng serve --configuration=local",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "heroku-postbuild": "ng build --prod && npm install -g http-server-spa",
+    "start": "http-server-spa dist/game-comps-repo index.html $PORT"
   },
   "private": true,
   "dependencies": {

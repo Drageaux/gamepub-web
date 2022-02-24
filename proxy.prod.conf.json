@@ -24,8 +24,8 @@
     }
   },
   "/api": {
-    "target": "https://gamepub-test.herokuapp.com/",
-    "secure": false,
+    "target": "https://gamepub-api.herokuapp.com/",
+    "secure": true,
     "changeOrigin": true,
     "pathRewrite": {
       "^/api": ""
