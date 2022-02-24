@@ -24,8 +24,8 @@
     }
   },
   "/api": {
-    "target": "https://gamepub-api-staging.herokuapp.com/",
-    "secure": true,
+    "target": "http://localhost:3000/",
+    "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
       "^/api": ""
