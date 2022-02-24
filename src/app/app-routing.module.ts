@@ -48,7 +48,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: `${ProjectsRoutesNames.PROJECTS}/:${ProjectsRoutesNames.PROJECTPARAM}`,
+        path: `${ProjectsRoutesNames.PROJECTS}/${ProjectsRoutesNames.PROJECTPARAM}`,
         component: ProjectComponent,
         children: [
           {

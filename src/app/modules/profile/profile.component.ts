@@ -7,6 +7,7 @@ import { ProjectApiService } from '@services/project-api.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { UserApiService } from '@services/user-api.service';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,9 @@ import { UserApiService } from '@services/user-api.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  newProjectLink = `${ProjectsRoutesNames.NEWPROJECT}`;
+  projectsLink = `${ProjectsRoutesNames.PROJECTS}`;
+
   username$ = new ReplaySubject<string>(1);
   profile$!: Observable<User | null>;
   projects$!: Observable<Project[]>;
