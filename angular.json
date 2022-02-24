@@ -49,7 +49,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -87,9 +87,9 @@
               "browserTarget": "game-comps-repo:build:development",
               "proxyConfig": "proxy.dev.conf.json"
             },
-            "local": {
+            "staging": {
               "browserTarget": "game-comps-repo:build:development",
-              "proxyConfig": "proxy.local.conf.json"
+              "proxyConfig": "proxy.staging.conf.json"
             }
           },
           "defaultConfiguration": "development"
