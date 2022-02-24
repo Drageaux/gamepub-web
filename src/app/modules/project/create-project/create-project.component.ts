@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -45,7 +45,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
     return this.projectForm.get('formattedName');
   }
 
-  constructor(private projectApi: ProjectApiService, private router: Router) {}
+  constructor(private projectApi: ProjectsApiService, private router: Router) {}
 
   ngOnInit(): void {}
 

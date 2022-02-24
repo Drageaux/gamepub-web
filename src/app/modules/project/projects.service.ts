@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Project } from '@classes/project';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { ReplaySubject, Observable } from 'rxjs';
 
 /**
@@ -11,12 +11,12 @@ import { ReplaySubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectService {
+export class ProjectsService {
   private project$ = new ReplaySubject<Project | null>(1);
   private _username = '';
   private _projectname = '';
 
-  constructor(private projectApi: ProjectApiService) {}
+  constructor(private projectsApi: ProjectsApiService) {}
 
   get username() {
     return this._username;
@@ -32,7 +32,7 @@ export class ProjectService {
     } else {
       this._username = username;
       this._projectname = projectName;
-      this.projectApi
+      this.projectsApi
         .getProjectByFullPath(this._username, this._projectname)
         .subscribe((proj) => {
           if (proj) this.project$.next(proj);

@@ -1,7 +1,7 @@
 import { Package } from '@classes/package';
 import { Observable } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
-import { PackageService } from '@services/package.service';
+import { PackagesService } from '@services/packages.service';
 
 @Component({
   selector: 'app-openupm-package-details',
@@ -12,10 +12,10 @@ export class OpenupmPackageDetailsComponent implements OnInit {
   @Input() packageName!: string;
   package$?: Observable<Package>;
 
-  constructor(private pkgService: PackageService) {}
+  constructor(private pkgsService: PackagesService) {}
 
   ngOnInit(): void {
-    this.package$ = this.pkgService.expandOpenUpmPackageInfo(this.packageName);
+    this.package$ = this.pkgsService.expandOpenUpmPackageInfo(this.packageName);
   }
 
   getLatestVersionDetails(pkg: Package) {

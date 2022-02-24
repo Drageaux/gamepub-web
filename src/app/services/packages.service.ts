@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 import { Package } from '@classes/package';
 import { RegistryScope } from '@classes/scoped-registry';
-import { ProjectModule } from '@modules/project/project.module';
 
 @Injectable()
-export class PackageService {
+export class PackagesService {
   // openUpmApiUrl = 'https://api.openupm.com/packages';
   // openUpmPackagesUrl = 'https://package.openupm.com';
   openUpmPackagesUrl = '/registry/openupm';

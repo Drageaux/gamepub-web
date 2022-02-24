@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GithubContents } from '@classes/github-contents';
 import { UnityManifest } from '@classes/unity-manifest';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { ProjectService } from '../project.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-details',
@@ -22,8 +22,8 @@ export class ProjectDetailsComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService,
-    private projectApi: ProjectApiService
+    private projectService: ProjectsService,
+    private projectApi: ProjectsApiService
   ) {}
 
   ngOnInit(): void {

@@ -12,11 +12,11 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, of, Subject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 import { SubSink } from 'subsink';
-import { ProjectService } from '../project.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-overview',
@@ -31,8 +31,8 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    private projectService: ProjectService,
-    private projectApi: ProjectApiService,
+    private projectService: ProjectsService,
+    private projectApi: ProjectsApiService,
     private ref: ChangeDetectorRef
   ) {}
 

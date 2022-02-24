@@ -5,7 +5,7 @@ import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboar
 import { CreateAssetComponent } from '@modules/asset/create-asset/create-asset.component';
 import { CreateProjectComponent } from '@modules/project/create-project/create-project.component';
 import { ProjectProxyComponent } from '@modules/project/project-proxy/project-proxy.component';
-import { ProjectComponent } from '@modules/project/project.component';
+import { ProjectsComponent } from '@modules/project/projects.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
 import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
@@ -49,7 +49,7 @@ const routes: Routes = [
       },
       {
         path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.PROJECTPARAM}`,
-        component: ProjectComponent,
+        component: ProjectsComponent,
         children: [
           {
             path: '',

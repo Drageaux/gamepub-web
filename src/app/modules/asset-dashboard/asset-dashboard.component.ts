@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AssetService } from '@services/asset.service';
+import { AssetsService } from '@services/assets.service';
 
 @Component({
   selector: 'app-asset-dashboard',
@@ -12,11 +12,11 @@ export class AssetDashboardComponent implements OnInit {
     link: new FormControl(''),
   });
 
-  constructor(private assetService: AssetService) {}
+  constructor(private assetsService: AssetsService) {}
 
   ngOnInit(): void {}
 
   onSubmit() {
-    this.assetService.scrapeSite(this.form.get('link')?.value || '');
+    this.assetsService.scrapeSite(this.form.get('link')?.value || '');
   }
 }

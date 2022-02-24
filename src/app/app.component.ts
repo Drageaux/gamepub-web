@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserService } from '@services/user.service';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'game-comps-repo';
   profile$;
 
-  constructor(private userService: UserService) {
-    this.profile$ = userService.myProfile$;
+  constructor(private usersService: UsersService) {
+    this.profile$ = usersService.myProfile$;
   }
 }

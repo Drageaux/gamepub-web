@@ -1,7 +1,7 @@
 import { User } from '@classes/user';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
 
@@ -15,10 +15,10 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   projects$ = new Subject<Project[]>();
 
-  constructor(private projectApi: ProjectApiService) {}
+  constructor(private projectsApi: ProjectsApiService) {}
 
   ngOnInit(): void {
-    this.subs.sink = this.projectApi
+    this.subs.sink = this.projectsApi
       .getAllProjects()
       .subscribe((res) => this.projects$.next(res));
   }

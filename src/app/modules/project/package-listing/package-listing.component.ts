@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { EXCLUDED_PACKAGES } from '@classes/CONSTANTS';
 import { UnityManifest } from '@classes/unity-manifest';
 import { PackageName } from '@classes/package';
@@ -13,7 +13,7 @@ import { ScopedRegistry } from '@classes/scoped-registry';
 export class PackageListingComponent implements OnInit {
   @Input() manifest!: UnityManifest;
 
-  constructor(private projectApi: ProjectApiService) {}
+  constructor(private projectsApi: ProjectsApiService) {}
 
   ngOnInit(): void {}
 

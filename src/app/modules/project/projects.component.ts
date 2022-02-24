@@ -8,7 +8,7 @@ import {
 import { combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 
 import { GithubContents } from '@classes/github-contents';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { UnityManifest } from '@classes/unity-manifest';
 import { Project } from '@classes/project';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,18 +23,18 @@ import {
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { Job } from '@classes/job';
-import { JobApiService } from '@services/job-api.service';
-import { ProjectService } from './project.service';
+import { JobsApiService } from '@services/jobs-api.service';
+import { ProjectsService } from './projects.service';
 import { ProfileRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss'],
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProjectService],
+  providers: [ProjectsService],
 })
-export class ProjectComponent implements OnInit, OnDestroy {
+export class ProjectsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   projectsLink = `${ProjectsRoutesNames.ROOT}`;
   detailsLink = `${ProjectsRoutesNames.DETAILS}`;
@@ -50,7 +50,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService,
+    private projectsService: ProjectsService,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -58,7 +58,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.subs.sink = this.route.params.subscribe((params) => {
       if (params[this.userParamName] || params[this.projectParamName]) {
         this.username = params[this.userParamName];
-        this.projectService.changeProject(
+        this.projectsService.changeProject(
           params[this.userParamName],
           params[this.projectParamName]
         );
@@ -70,7 +70,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       if (hasError) this.router.navigate(['', this.username]);
     });
 
-    this.subs.sink = this.projectService.getProject().subscribe((proj) => {
+    this.subs.sink = this.projectsService.getProject().subscribe((proj) => {
       if (proj) {
         this.project = proj;
         this.ref.markForCheck();

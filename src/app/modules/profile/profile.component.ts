@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { User } from '@classes/user';
-import { UserService } from '@services/user.service';
-import { ProjectApiService } from '@services/project-api.service';
+import { UsersService } from '@services/users.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { UserApiService } from '@services/user-api.service';
+import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
@@ -23,9 +23,9 @@ export class ProfileComponent implements OnInit {
   projects$!: Observable<Project[]>;
 
   constructor(
-    private userService: UserService,
-    private userApi: UserApiService,
-    private projectService: ProjectApiService,
+    private usersService: UsersService,
+    private usersApi: UsersApiService,
+    private projectsService: ProjectsApiService,
     private route: ActivatedRoute
   ) {}
 
@@ -37,20 +37,20 @@ export class ProfileComponent implements OnInit {
     this.profile$ = this.username$.pipe(
       switchMap((username) => {
         if (!username) return of(null);
-        else return this.userApi.getUserProfileByUsername(username);
+        else return this.usersApi.getUserProfileByUsername(username);
       })
     );
     this.projects$ = this.username$.pipe(
       switchMap((username) => {
         if (!username) return of([]);
-        else return this.projectService.getProjectsByUsername(username);
+        else return this.projectsService.getProjectsByUsername(username);
       })
     );
   }
 
   isUser(): Observable<boolean> {
     return this.username$.pipe(
-      switchMap((username) => of(username === this.userService.username))
+      switchMap((username) => of(username === this.usersService.username))
     );
   }
 }

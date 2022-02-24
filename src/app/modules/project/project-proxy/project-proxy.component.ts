@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { User } from '@classes/user';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 
 /**
  * Takes a project ID and redirect user to the appropriate path
@@ -19,7 +19,7 @@ export class ProjectProxyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectApi: ProjectApiService
+    private projectApi: ProjectsApiService
   ) {}
 
   ngOnInit(): void {
