@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "game-comps-repo": {
+    "gamepub-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/game-comps-repo",
+            "outputPath": "dist/gamepub-web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,6 +65,27 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -80,16 +101,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "game-comps-repo:build:production",
+              "browserTarget": "gamepub-web:build:production",
               "proxyConfig": "proxy.prod.conf.json"
             },
-            "development": {
-              "browserTarget": "game-comps-repo:build:development",
-              "proxyConfig": "proxy.dev.conf.json"
-            },
             "staging": {
-              "browserTarget": "game-comps-repo:build:development",
+              "browserTarget": "gamepub-web:build:staging",
               "proxyConfig": "proxy.staging.conf.json"
+            },
+            "development": {
+              "browserTarget": "gamepub-web:build:development",
+              "proxyConfig": "proxy.dev.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -97,7 +118,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "game-comps-repo:build"
+            "browserTarget": "gamepub-web:build"
           }
         },
         "test": {
@@ -116,5 +137,5 @@
       }
     }
   },
-  "defaultProject": "game-comps-repo"
+  "defaultProject": "gamepub-web"
 }

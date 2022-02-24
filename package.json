@@ -1,5 +1,5 @@
 {
-  "name": "game-comps-repo",
+  "name": "gamepub-web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,8 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build && npm install -g http-server-spa",
-    "start": "http-server-spa dist/game-comps-repo index.html $PORT"
+    "heroku-postbuild": "ng build --configuration=production && npm install -g http-server-spa",
+    "start": "http-server-spa dist/gamepub-web index.html $PORT"
   },
   "private": true,
   "dependencies": {
