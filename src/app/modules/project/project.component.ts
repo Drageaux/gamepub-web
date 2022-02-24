@@ -25,6 +25,7 @@ import { SubSink } from 'subsink';
 import { Job } from '@classes/job';
 import { JobApiService } from '@services/job-api.service';
 import { ProjectService } from './project.service';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-project',
@@ -35,6 +36,7 @@ import { ProjectService } from './project.service';
 })
 export class ProjectComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
 
   username!: string;
   project!: Project | null;

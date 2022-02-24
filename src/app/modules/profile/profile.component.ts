@@ -16,7 +16,7 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 })
 export class ProfileComponent implements OnInit {
   newProjectLink = `${ProjectsRoutesNames.NEWPROJECT}`;
-  projectsLink = `${ProjectsRoutesNames.PROJECTS}`;
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
 
   username$ = new ReplaySubject<string>(1);
   profile$!: Observable<User | null>;

@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'new-asset', component: CreateAssetComponent },
   { path: 'dashboard', component: AssetDashboardComponent },
   {
-    path: `${ProjectsRoutesNames.PROJECTS}/:id`,
+    path: `${ProjectsRoutesNames.ROOT}/:id`,
     component: ProjectProxyComponent,
   },
   {
@@ -48,7 +48,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: `${ProjectsRoutesNames.PROJECTS}/${ProjectsRoutesNames.PROJECTPARAM}`,
+        path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.PROJECTPARAM}`,
         component: ProjectComponent,
         children: [
           {
