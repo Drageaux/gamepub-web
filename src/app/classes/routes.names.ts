@@ -18,4 +18,5 @@ export const ProjectsRoutesNames = {
   JOBS: `${JobsRoutesNames.JOBS}`,
   NEWJOB: 'new-job',
   JOBPARAM: ':jobnumber',
+  JOBPARAMNAME: 'jobnumber',
 };
