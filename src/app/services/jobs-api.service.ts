@@ -5,6 +5,7 @@ import { JobComment } from '@classes/job-comment';
 import { Project } from '@classes/project';
 import { Observable } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { ApiResponse } from './api-response';
 
 @Injectable({
@@ -12,10 +13,12 @@ import { ApiResponse } from './api-response';
 })
 export class JobsApiService {
   prefix = 'api';
+  env = environment;
 
   constructor(private http: HttpClient) {}
 
   getAllJobs() {
+    console.log(this.env);
     return this.http.get<ApiResponse<Job[]>>(`${this.prefix}/jobs`).pipe(
       shareReplay(1),
       map((res) => res.data)

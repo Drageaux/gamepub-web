@@ -7,8 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build --configuration=production && npm install -g http-server-spa",
-    "start": "http-server-spa dist/gamepub-web index.html $PORT"
+    "heroku-postbuild": "cross-env-shell ng build --configuration=$ENV && npm install -g http-server-spa",
+    "start": "http-server-spa dist/gamepub-web index.html $PORT",
+    "parent": "cross-env GREET=\"Joe\" npm run child",
+    "child": "cross-env-shell \"echo Hello $GREET\""
   },
   "private": true,
   "dependencies": {
@@ -34,6 +36,7 @@
     "@angular/compiler-cli": "~13.1.2",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
+    "cross-env": "^7.0.3",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
