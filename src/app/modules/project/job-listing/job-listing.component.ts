@@ -2,10 +2,11 @@ import { map, switchMap } from 'rxjs/operators';
 import { Component, Input, OnInit } from '@angular/core';
 import { Job } from '@classes/job';
 import { Project } from '@classes/project';
-import { JobApiService } from '@services/job-api.service';
+import { JobsApiService } from '@services/jobs-api.service';
 import { Observable, of } from 'rxjs';
-import { ProjectService } from '../project.service';
+import { ProjectsService } from '../projects.service';
 import { User } from '@classes/user';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 
 @Component({
   selector: 'app-job-listing',
@@ -13,19 +14,21 @@ import { User } from '@classes/user';
   styleUrls: ['./job-listing.component.scss'],
 })
 export class JobListingComponent implements OnInit {
+  newJobLink = `${ProjectsRoutesNames.NEWJOB}`;
+
   project!: Project;
   jobs$!: Observable<Job[]>;
 
   constructor(
-    private projectService: ProjectService,
-    private jobApi: JobApiService
+    private projectsService: ProjectsService,
+    private jobsApi: JobsApiService
   ) {}
 
   ngOnInit(): void {
-    this.jobs$ = this.projectService.getProject().pipe(
+    this.jobs$ = this.projectsService.getProject().pipe(
       switchMap((project) => {
         if (!project?.name || !(project?.creator as User)?._id) return of([]);
-        return this.jobApi.getJobsByProject(
+        return this.jobsApi.getJobsByProject(
           (project?.creator as User).username,
           project?.name
         );

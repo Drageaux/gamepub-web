@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Job } from '@classes/job';
-import { JobApiService } from '@services/job-api.service';
+import { JobsApiService } from '@services/jobs-api.service';
 import { SubSink } from 'subsink';
-import { ProjectService } from '../project.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-create-job',
@@ -33,8 +33,8 @@ export class CreateJobComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private jobApi: JobApiService,
-    private projectService: ProjectService,
+    private jobApi: JobsApiService,
+    private projectService: ProjectsService,
     private router: Router
   ) {}
 

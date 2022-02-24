@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 import { User } from '@classes/user';
-import { ProjectApiService } from '@services/project-api.service';
+import { ProjectsApiService } from '@services/projects-api.service';
 
 /**
  * Takes a project ID and redirect user to the appropriate path
@@ -13,10 +14,12 @@ import { ProjectApiService } from '@services/project-api.service';
   styleUrls: ['./project-proxy.component.scss'],
 })
 export class ProjectProxyComponent implements OnInit {
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectApi: ProjectApiService
+    private projectApi: ProjectsApiService
   ) {}
 
   ngOnInit(): void {
@@ -25,15 +28,18 @@ export class ProjectProxyComponent implements OnInit {
       this.projectApi.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
-            this.router.navigateByUrl(
-              '/' + (res.creator as User).username + '/project/' + res.name
-            );
+            this.router.navigate([
+              '',
+              (res.creator as User).username,
+              this.projectsLink,
+              res.name,
+            ]);
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['']);
           }
         },
         (err) => {
-          console.error(err), this.router.navigate(['/']);
+          console.error(err), this.router.navigate(['']);
         }
       );
     } else {

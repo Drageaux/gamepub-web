@@ -1,0 +1,34 @@
+{
+  "/registry/unity": {
+    "target": "https://packages.unity.com/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/registry/unity": ""
+    }
+  },
+  "/asset/unity": {
+    "target": "https://assetstore.unity.com/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/asset/unity": ""
+    }
+  },
+  "/registry/openupm": {
+    "target": "https://package.openupm.com/",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/registry/openupm": ""
+    }
+  },
+  "/api": {
+    "target": "https://gamepub-test.herokuapp.com/",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

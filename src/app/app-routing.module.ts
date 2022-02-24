@@ -5,7 +5,7 @@ import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboar
 import { CreateAssetComponent } from '@modules/asset/create-asset/create-asset.component';
 import { CreateProjectComponent } from '@modules/project/create-project/create-project.component';
 import { ProjectProxyComponent } from '@modules/project/project-proxy/project-proxy.component';
-import { ProjectComponent } from '@modules/project/project.component';
+import { ProjectsComponent } from '@modules/project/projects.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
 import { JobDetailsComponent } from '@modules/project/job-details/job-details.component';
@@ -14,17 +14,33 @@ import { ProjectOverviewComponent } from '@modules/project/project-overview/proj
 import { ProjectDetailsComponent } from '@modules/project/project-details/project-details.component';
 import { CreateJobComponent } from '@modules/project/create-job/create-job.component';
 import { JobsComponent } from '@modules/jobs/jobs.component';
+import {
+  FeedRoutesNames,
+  JobsRoutesNames,
+  ProjectsRoutesNames,
+  ProfileRoutesNames,
+} from '@classes/routes.names';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', component: FeedComponent },
-  { path: 'jobs', component: JobsComponent },
+  {
+    path: `${FeedRoutesNames.FEED}`,
+    pathMatch: 'full',
+    component: FeedComponent,
+  },
+  { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'new-project', component: CreateProjectComponent },
+  {
+    path: `${ProjectsRoutesNames.NEWPROJECT}`,
+    component: CreateProjectComponent,
+  },
   { path: 'new-asset', component: CreateAssetComponent },
   { path: 'dashboard', component: AssetDashboardComponent },
-  { path: 'project/:id', component: ProjectProxyComponent },
   {
-    path: ':username',
+    path: `${ProjectsRoutesNames.ROOT}/:id`,
+    component: ProjectProxyComponent,
+  },
+  {
+    path: ProfileRoutesNames.PROFILE,
     children: [
       {
         path: '',
@@ -32,35 +48,40 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        // TODO: check against generated name
-        path: 'project/:projectname',
-        component: ProjectComponent,
+        path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.PROJECTPARAM}`,
+        component: ProjectsComponent,
         children: [
           {
             path: '',
             component: ProjectOverviewComponent,
             pathMatch: 'full',
           },
-          { path: 'details', component: ProjectDetailsComponent },
           {
-            path: 'jobs',
+            path: `${ProjectsRoutesNames.DETAILS}`,
+            component: ProjectDetailsComponent,
+          },
+          {
+            path: `${ProjectsRoutesNames.JOBS}`,
             children: [
               { path: '', component: JobListingComponent, pathMatch: 'full' },
               {
-                path: 'new-job',
+                path: `${ProjectsRoutesNames.NEWJOB}`,
                 component: CreateJobComponent,
                 pathMatch: 'full',
               },
-              { path: ':jobnumber', component: JobDetailsComponent },
+              {
+                path: `${ProjectsRoutesNames.JOBPARAM}`,
+                component: JobDetailsComponent,
+              },
             ],
           },
         ],
       },
-      // { path: '**', redirectTo: ':username' }, // TODO: redirect to user profile
+      { path: '**', redirectTo: '' }, // redirect to user profile
     ],
   },
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // redirect
-  { path: '**', redirectTo: '' }, // Wildcard route for a 404 page
+  { path: '**', redirectTo: '' }, // wildcard route for a 404 page
 ];
 
 @NgModule({

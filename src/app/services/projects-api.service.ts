@@ -8,23 +8,23 @@ import { Project } from '@classes/project';
 
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 
 import json from '../../assets/test-data/steam-sample-games-2.json';
 import { User } from '@classes/user';
-import { UserApiService } from './user-api.service';
+import { UsersApiService } from './users-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectApiService {
+export class ProjectsApiService {
   // data = testData;
   prefix = 'api';
 
   constructor(
     private http: HttpClient,
-    private userService: UserService,
-    private userApi: UserApiService
+    private usersService: UsersService,
+    private usersApi: UsersApiService
   ) {}
 
   /*************************************************************************/
@@ -72,7 +72,7 @@ export class ProjectApiService {
   }
 
   createProject(project: Project): Observable<Project> {
-    return this.userService.myProfile$.pipe(
+    return this.usersService.myProfile$.pipe(
       switchMap((profile) => {
         // TODO: use this profile's id to create only
         // TODO: only admin can decide which profile to add to
@@ -88,7 +88,7 @@ export class ProjectApiService {
   }
 
   isProjectNameTaken(value: string): Observable<boolean> {
-    return this.userService.myProfile$.pipe(
+    return this.usersService.myProfile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<null>>(
           `${this.prefix}/projects/check-name`,
@@ -208,11 +208,11 @@ export class ProjectApiService {
   createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
     return forkJoin(
       games.map((g) =>
-        this.userApi
+        this.usersApi
           .createUser((g.creator as User).username, 'test')
           .pipe(
             catchError((err) =>
-              this.userApi
+              this.usersApi
                 .getUserProfileByUsername((g.creator as User).username)
                 .pipe(catchError((err) => of(null)))
             )
@@ -226,7 +226,7 @@ export class ProjectApiService {
     return forkJoin(
       games.map((g) => {
         if (!g) return of(null);
-        return this.userApi
+        return this.usersApi
           .getUserProfileByUsername((g.creator as User).username)
           .pipe(
             switchMap((user) => {

@@ -9,11 +9,8 @@ import { JobCardComponent } from './components/job-card/job-card.component';
 import { UploadComponent } from '@components/upload/upload.component';
 
 import { FileSizePipe } from './file-size.pipe';
-import { UserService } from '@services/user.service';
+import { UsersService } from '@services/users.service';
 
-import { ProjectApiService } from '@services/project-api.service';
-import { UserApiService } from '@services/user-api.service';
-import { JobApiService } from '@services/job-api.service';
 import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 
 @NgModule({
@@ -34,6 +31,6 @@ import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
     JobCardComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule],
-  providers: [UserService],
+  providers: [UsersService],
 })
 export class SharedModule {}

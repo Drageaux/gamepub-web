@@ -6,7 +6,9 @@
   <div>
     <h3>Create</h3>
     <!-- TODO: Create new Project -->
-    <a class="btn btn-primary" [routerLink]="['/new-project']">New Project</a>
+    <a class="btn btn-primary" [routerLink]="['', newProjectLink]"
+      >New Project</a
+    >
 
     <!-- TODO: Create new Asset -->
     <a class="btn btn-primary" [routerLink]="['/new-asset']">New Asset</a>
@@ -19,7 +21,7 @@
     <h3>Projects</h3>
     <ul>
       <li *ngFor="let p of projs">
-        <a [routerLink]="['', profile.username, 'project', p.name]">{{
+        <a [routerLink]="['', profile.username, projectsLink, p.name]">{{
           p.displayName || p.name
         }}</a>
       </li>

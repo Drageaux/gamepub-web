@@ -12,7 +12,7 @@ import { Package } from '@classes/package';
 @Injectable({
   providedIn: 'root',
 })
-export class AssetService {
+export class AssetsService {
   baseUrl = `https://assetstore.unity.com/`;
   allUrl$ = new BehaviorSubject(this.baseUrl);
   uniqueUrl$ = this.allUrl$.pipe(
