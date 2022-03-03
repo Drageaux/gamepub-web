@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 import { UsersService } from '@services/users.service';
 
 @Component({
@@ -7,10 +9,14 @@ import { UsersService } from '@services/users.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'game-comps-repo';
+  title = 'GamePub';
   profile$;
 
-  constructor(private usersService: UsersService) {
+  constructor(
+    @Inject(DOCUMENT) public document: Document,
+    private usersService: UsersService,
+    public auth: AuthService
+  ) {
     this.profile$ = usersService.myProfile$;
   }
 }

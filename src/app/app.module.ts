@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
+// Import Auth0 module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -25,6 +28,11 @@ import { UsersApiService } from '@services/users-api.service';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    // Import the module into the application, with configuration
+    AuthModule.forRoot({
+      domain: 'gamepub-dev.us.auth0.com',
+      clientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
+    }),
     HttpClientModule,
     AppRoutingModule,
     SharedModule,

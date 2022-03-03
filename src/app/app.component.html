@@ -26,6 +26,20 @@
         <!-- TODO: specific user <a class="nav-link" [routerLink]="['/admin']">Profile</a> -->
         <a class="nav-link" [routerLink]="[profile.username]">Profile</a>
       </li>
+
+      <!-- Authentication -->
+      <li class="nav-item" *ngIf="auth.user$ | async as user; else loginBlock">
+        <a
+          class="nav-link"
+          (click)="auth.logout({ returnTo: document.location.origin })"
+          >Log Out</a
+        >
+      </li>
+      <ng-template #loginBlock>
+        <li class="nav-item">
+          <a class="nav-link" (click)="auth.loginWithRedirect()">Log In</a>
+        </li>
+      </ng-template>
     </ul>
   </div>
 </nav>
