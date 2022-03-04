@@ -1,4 +1,3 @@
-import { User } from '@classes/user';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
@@ -9,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '@auth0/auth0-angular';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';

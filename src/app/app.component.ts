@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { UsersService } from '@services/users.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { UsersService } from '@services/users.service';
 export class AppComponent {
   title = 'GamePub';
   profile$;
+  environment = environment;
 
   constructor(
     @Inject(DOCUMENT) public document: Document,

@@ -1,7 +1,8 @@
+import { AuthService, User } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { AsyncSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '@classes/user';
+import { AuthUser } from '@classes/user';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
 import { UsersApiService } from './users-api.service';
@@ -12,14 +13,14 @@ import { UsersApiService } from './users-api.service';
 export class UsersService {
   // TODO: use dynamic user ID and implement login
   private _myUsername: string = 'davidtn';
-  private _myProfile$!: Observable<User>;
+  private _myProfile$!: Observable<User | null | undefined>;
 
-  constructor(private http: HttpClient, private userApi: UsersApiService) {
-    this._myProfile$ = this.userApi.getUserProfileByUsername(this._myUsername);
-  }
-
-  public get username() {
-    return this._myUsername;
+  constructor(
+    private http: HttpClient,
+    private userApi: UsersApiService,
+    private auth: AuthService
+  ) {
+    this._myProfile$ = this.auth.user$;
   }
 
   public get myProfile$() {

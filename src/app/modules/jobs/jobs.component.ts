@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Job } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
-import { User } from '@classes/user';
+import { AuthUser as User } from '@classes/user';
+
 import { JobsApiService } from '@services/jobs-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';

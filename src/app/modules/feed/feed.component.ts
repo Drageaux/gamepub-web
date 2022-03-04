@@ -1,4 +1,4 @@
-import { User } from '@classes/user';
+import { AuthUser as User } from '@classes/user';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
