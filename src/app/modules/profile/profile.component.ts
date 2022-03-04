@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
-import { Observable, of, ReplaySubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
-import { User } from '@auth0/auth0-angular';
+import { AuthService, User } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
   projects$!: Observable<Project[]>;
 
   constructor(
+    public auth: AuthService,
     private usersService: UsersService,
     private usersApi: UsersApiService,
     private projectsService: ProjectsApiService,
@@ -50,9 +51,13 @@ export class ProfileComponent implements OnInit {
   }
 
   isUser(): Observable<boolean> {
-    return this.username$.pipe(
+    return forkJoin([this.username$, this.auth.user$]).pipe(
       // TODO: check if logged in user is this profile's user
-      switchMap((username) => of(true))
+      map((results) => {
+        const [paramUsername, authUser] = results;
+        console.log(authUser?.preferred_username);
+        return paramUsername == authUser?.preferred_username;
+      })
     );
   }
 }

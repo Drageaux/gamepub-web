@@ -1,9 +1,9 @@
-<ng-container *ngIf="profile$ | async as profile">
+<ng-container *ngIf="auth.user$ | async as user">
   <h1>
-    <strong>{{ profile.username }}</strong>
+    <strong>{{ user.username }}</strong>
   </h1>
 
-  <div>
+  <div *ngIf="isUser() | async">
     <h3>Create</h3>
     <!-- TODO: Create new Project -->
     <a class="btn btn-primary" [routerLink]="['', newProjectLink]"
@@ -21,7 +21,7 @@
     <h3>Projects</h3>
     <ul>
       <li *ngFor="let p of projs">
-        <a [routerLink]="['', profile.username, projectsLink, p.name]">{{
+        <a [routerLink]="['', user.username, projectsLink, p.name]">{{
           p.displayName || p.name
         }}</a>
       </li>
