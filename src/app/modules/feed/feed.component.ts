@@ -1,10 +1,10 @@
-import { AuthUser as User } from '@classes/user';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { User } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-feed',

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
-import { User } from '@classes/user';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { User } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
       this.username$.next(params.get('username') || '');
     });
 
+    // TODO: authorize profile page access
     this.profile$ = this.username$.pipe(
       switchMap((username) => {
         if (!username) return of(null);
@@ -50,7 +51,8 @@ export class ProfileComponent implements OnInit {
 
   isUser(): Observable<boolean> {
     return this.username$.pipe(
-      switchMap((username) => of(username === this.usersService.username))
+      // TODO: check if logged in user is this profile's user
+      switchMap((username) => of(true))
     );
   }
 }

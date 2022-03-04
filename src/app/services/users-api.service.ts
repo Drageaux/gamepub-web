@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { AsyncSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '@classes/user';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { User } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',

@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'api',
+  authDomain: 'gamepub-dev.us.auth0.com',
 };
 
 /*

@@ -75,6 +75,8 @@ export class ProjectsApiService {
   createProject(project: Project): Observable<Project> {
     return this.usersService.myProfile$.pipe(
       switchMap((profile) => {
+        if (!profile)
+          throw new Error('User profile not found. Please log in again');
         // TODO: use this profile's id to create only
         // TODO: only admin can decide which profile to add to
         let arg = { ...project };
@@ -95,7 +97,7 @@ export class ProjectsApiService {
           `${this.apiUrl}/projects/check-name`,
           {
             name: value,
-            creator: profile._id,
+            creator: profile?._id,
           },
           { observe: 'response' }
         );
@@ -206,23 +208,25 @@ export class ProjectsApiService {
     return games;
   }
 
-  createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
+  createNewTestUsers(games: Project[]) {
     return forkJoin(
-      games.map((g) =>
-        this.usersApi
-          .createUser((g.creator as User).username, 'test')
+      games.map((g) => {
+        return this.usersApi
+          .createUser((g.creator as User).username, 'Abcdefg')
           .pipe(
             catchError((err) =>
               this.usersApi
                 .getUserProfileByUsername((g.creator as User).username)
                 .pipe(catchError((err) => of(null)))
             )
-          )
-      )
+          );
+      })
     );
   }
 
-  createNewTestGames(games: Project[]): Observable<(Project | null)[]> {
+  createNewTestGames(
+    games: Project[]
+  ): Observable<(Project | null | undefined)[]> {
     // assume users are created, otherwise manually replace the get with create function
     return forkJoin(
       games.map((g) => {

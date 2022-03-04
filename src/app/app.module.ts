@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Import Auth0 module from the SDK
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,15 +23,41 @@ import { JobsModule } from '@modules/jobs/jobs.module';
 import { JobsApiService } from '@services/jobs-api.service';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { UsersApiService } from '@services/users-api.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     // Import the module into the application, with configuration
+    // Import the module into the application, with configuration
     AuthModule.forRoot({
-      domain: 'gamepub-dev.us.auth0.com',
+      // The domain and clientId were configured in the previous chapter
+      domain: `${environment.authDomain}`,
       clientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
+
+      // Request this audience at user authentication time
+      audience: `https://${environment.authDomain}/api/v2/`,
+
+      // Request this scope at user authentication time
+      scope: 'read:current_user',
+
+      // Specify configuration for the interceptor
+      httpInterceptor: {
+        allowedList: [
+          {
+            // Match any request that starts 'https://gamepub-dev.us.auth0.com/api/v2/' (note the asterisk)
+            uri: `https://${environment.authDomain}/api/v2/*`,
+            tokenOptions: {
+              // The attached token should target this audience
+              audience: `https://${environment.authDomain}/api/v2/`,
+
+              // The attached token should have these scopes
+              scope: 'read:current_user',
+            },
+          },
+        ],
+      },
     }),
     HttpClientModule,
     AppRoutingModule,
@@ -50,6 +76,7 @@ import { UsersApiService } from '@services/users-api.service';
     ProjectsApiService,
     UsersApiService,
     JobsApiService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
