@@ -22,13 +22,16 @@
         <a class="nav-link" [routerLink]="['jobs']">Jobs</a>
       </li>
 
-      <li class="nav-item" *ngIf="profile$ | async as profile">
+      <li class="nav-item" *ngIf="auth.user$ | async as user">
         <!-- TODO: specific user <a class="nav-link" [routerLink]="['/admin']">Profile</a> -->
-        <a class="nav-link" [routerLink]="[profile.username]">Profile</a>
+        <a class="nav-link" [routerLink]="[user.nickname]">Profile</a>
       </li>
 
       <!-- Authentication -->
-      <li class="nav-item" *ngIf="auth.user$ | async as user; else loginBlock">
+      <li
+        class="nav-item"
+        *ngIf="auth.isAuthenticated$ | async; else loginBlock"
+      >
         <a
           class="nav-link"
           (click)="auth.logout({ returnTo: document.location.origin })"
