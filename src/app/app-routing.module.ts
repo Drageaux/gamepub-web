@@ -20,6 +20,8 @@ import {
   ProjectsRoutesNames,
   ProfileRoutesNames,
 } from '@classes/routes.names';
+import { AuthGuard } from '@auth0/auth0-angular';
+import { AuthRoleGuard } from './guards/auth-role.guard';
 
 const routes: Routes = [
   {
@@ -28,7 +30,7 @@ const routes: Routes = [
     component: FeedComponent,
   },
   { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthRoleGuard] },
   {
     path: `${ProjectsRoutesNames.NEWPROJECT}`,
     component: CreateProjectComponent,

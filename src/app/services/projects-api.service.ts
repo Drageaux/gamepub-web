@@ -73,7 +73,7 @@ export class ProjectsApiService {
   }
 
   createProject(project: Project): Observable<Project> {
-    return this.usersService.myProfile$.pipe(
+    return this.usersService.profile$.pipe(
       switchMap((profile) => {
         if (!profile)
           throw new Error('User profile not found. Please log in again');
@@ -91,7 +91,7 @@ export class ProjectsApiService {
   }
 
   isProjectNameTaken(value: string): Observable<boolean> {
-    return this.usersService.myProfile$.pipe(
+    return this.usersService.profile$.pipe(
       switchMap((profile) => {
         return this.http.post<ApiResponse<null>>(
           `${this.apiUrl}/projects/check-name`,

@@ -19,6 +19,6 @@ export class AppComponent {
     private usersService: UsersService,
     public auth: AuthService
   ) {
-    this.profile$ = usersService.myProfile$;
+    this.profile$ = usersService.profile$;
   }
 }
