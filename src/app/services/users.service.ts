@@ -6,6 +6,7 @@ import { ApiResponse } from '@services/api-response';
 import { concatMap, map, pluck, shareReplay, tap } from 'rxjs/operators';
 import { UsersApiService } from './users-api.service';
 import { environment } from 'src/environments/environment';
+import { Profile } from '@classes/profile';
 
 /**
  * Service providing logged in user profile data.
@@ -37,19 +38,19 @@ export class UsersService {
       .subscribe((meta) => this._metadata$.next(meta));
   }
 
-  public get profile$() {
+  public get profile$(): Observable<Profile> {
     return this._metadata$.pipe(
       map((meta) => {
-        const { user_id, username, email } = meta;
-        return { _id: user_id, username, email };
+        const { user_id, username, email, app_metadata, user_metadata } = meta;
+        return { _id: user_id, username, email, app_metadata, user_metadata };
       })
     );
   }
 
-  public get username$() {
+  public get username$(): Observable<string | null | undefined> {
     return this.profile$.pipe(
       map((profile) => {
-        return profile.username;
+        return profile?.username;
       })
     );
   }

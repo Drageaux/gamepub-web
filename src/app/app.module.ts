@@ -30,7 +30,6 @@ import { environment } from 'src/environments/environment';
   imports: [
     BrowserModule,
     // Import the module into the application, with configuration
-    // Import the module into the application, with configuration
     AuthModule.forRoot({
       // The domain and clientId were configured in the previous chapter
       domain: `${environment.authDomain}`,

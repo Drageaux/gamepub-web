@@ -30,7 +30,14 @@ const routes: Routes = [
     component: FeedComponent,
   },
   { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthRoleGuard] },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthRoleGuard],
+    data: {
+      role: 'admin',
+    },
+  },
   {
     path: `${ProjectsRoutesNames.NEWPROJECT}`,
     component: CreateProjectComponent,
