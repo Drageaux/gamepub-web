@@ -27,9 +27,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   getLink(p: Project): (string | undefined)[] {
     if (!p) return [];
-    return p.creator instanceof String
-      ? [this.projectsLink, p._id]
-      : ['', (p.creator as User).username, this.projectsLink, p.name];
+    return ['', p.creator, this.projectsLink, p.name];
   }
 
   ngOnDestroy(): void {

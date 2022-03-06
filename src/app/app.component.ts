@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    private usersService: UsersService,
+    public usersService: UsersService,
     public auth: AuthService
   ) {
     this.profile$ = usersService.profile$;

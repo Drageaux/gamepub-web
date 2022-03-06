@@ -34,9 +34,9 @@ export class JobsComponent implements OnInit, OnDestroy {
     return job.project as Project;
   }
 
-  getUser(project: Project): User | null {
-    if (!project.creator || project.creator instanceof String) return null;
-    return project.creator as User;
+  getUser(project: Project): string | null {
+    if (!project.creator) return null;
+    return project.creator;
   }
 
   ngOnDestroy(): void {

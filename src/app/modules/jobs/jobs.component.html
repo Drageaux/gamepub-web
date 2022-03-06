@@ -8,7 +8,7 @@
             <a
               [routerLink]="[
                 '',
-                user.username,
+                user,
                 projectsLink,
                 project.name,
                 jobsLink,
@@ -29,7 +29,7 @@
               <a
                 [routerLink]="[
                   '',
-                  user.username,
+                  user,
                   projectsLink,
                   project.name,
                   jobsLink,
@@ -42,7 +42,7 @@
               <a
                 [routerLink]="[
                   '',
-                  user.username,
+                  user,
                   projectsLink,
                   project.name,
                   jobsLink,
@@ -53,7 +53,7 @@
                 {{ j.title }}
               </a>
               <br />
-              <a [routerLink]="['', user.username, projectsLink, project.name]">
+              <a [routerLink]="['', user, projectsLink, project.name]">
                 <span class="ml-2 text-muted fw-normal">{{
                   project.name
                 }}</span>

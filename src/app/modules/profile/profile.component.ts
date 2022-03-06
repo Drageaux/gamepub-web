@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '@classes/project';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
@@ -24,10 +24,11 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private usersApi: UsersApiService,
     private projectsService: ProjectsApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -35,13 +36,9 @@ export class ProfileComponent implements OnInit {
       this.username$.next(params.get('username') || '');
     });
 
+    // this.profile$ = this.auth;
+
     // TODO: authorize profile page access
-    this.profile$ = this.username$.pipe(
-      switchMap((username) => {
-        if (!username) return of(null);
-        else return this.usersApi.getUserProfileByUsername(username);
-      })
-    );
     this.projects$ = this.username$.pipe(
       switchMap((username) => {
         if (!username) return of([]);
@@ -51,12 +48,12 @@ export class ProfileComponent implements OnInit {
   }
 
   isUser(): Observable<boolean> {
-    return forkJoin([this.username$, this.auth.user$]).pipe(
+    return forkJoin([this.username$, this.usersService.username$]).pipe(
       // TODO: check if logged in user is this profile's user
       map((results) => {
-        const [paramUsername, authUser] = results;
-        console.log(authUser?.preferred_username);
-        return paramUsername == authUser?.preferred_username;
+        const [paramUsername, currUsername] = results;
+        console.log(currUsername);
+        return paramUsername == currUsername;
       })
     );
   }

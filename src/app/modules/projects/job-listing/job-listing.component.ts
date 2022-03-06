@@ -5,8 +5,8 @@ import { Project } from '@classes/project';
 import { JobsApiService } from '@services/jobs-api.service';
 import { Observable, of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
-import { User } from '@classes/user';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { Profile } from '@classes/profile';
 
 @Component({
   selector: 'app-job-listing',
@@ -27,11 +27,8 @@ export class JobListingComponent implements OnInit {
   ngOnInit(): void {
     this.jobs$ = this.projectsService.getProject().pipe(
       switchMap((project) => {
-        if (!project?.name || !(project?.creator as User)?._id) return of([]);
-        return this.jobsApi.getJobsByProject(
-          (project?.creator as User).username,
-          project?.name
-        );
+        if (!project?.name || !project?.creator) return of([]);
+        return this.jobsApi.getJobsByProject(project.creator, project.name);
       })
     );
 

@@ -11,9 +11,9 @@ import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UsersService } from './users.service';
 
 import json from '../../assets/test-data/steam-sample-games-2.json';
-import { User } from '@classes/user';
 import { UsersApiService } from './users-api.service';
 import { environment } from 'src/environments/environment';
+import { Profile } from '@classes/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -75,12 +75,12 @@ export class ProjectsApiService {
   createProject(project: Project): Observable<Project> {
     return this.usersService.profile$.pipe(
       switchMap((profile) => {
-        if (!profile)
+        if (!profile?.username)
           throw new Error('User profile not found. Please log in again');
         // TODO: use this profile's id to create only
         // TODO: only admin can decide which profile to add to
         let arg = { ...project };
-        if (!arg.creator) arg.creator = profile._id; // TODO: intercept or auto fill creator id
+        if (!arg.creator) arg.creator = profile.username || ''; // TODO: intercept or auto fill creator id
         return this.http.post<ApiResponse<Project>>(
           `${this.apiUrl}/projects`,
           arg
@@ -196,10 +196,7 @@ export class ProjectsApiService {
       games.push({
         name,
         displayName: game.name,
-        creator: {
-          username,
-          email,
-        },
+        creator: username,
         imageUrl: game.header_image,
         tags: game.genres.split(';').map((x) => x.toLocaleLowerCase()),
       } as Project);
@@ -211,12 +208,13 @@ export class ProjectsApiService {
   createNewTestUsers(games: Project[]) {
     return forkJoin(
       games.map((g) => {
+        if (!g?.creator) return of(null);
         return this.usersApi
-          .createUser((g.creator as User).username, 'Abcdefg')
+          .createUser(g.creator, 'Abcdefg')
           .pipe(
             catchError((err) =>
               this.usersApi
-                .getUserProfileByUsername((g.creator as User).username)
+                .getUserProfileByUsername(g.creator)
                 .pipe(catchError((err) => of(null)))
             )
           );
@@ -230,16 +228,14 @@ export class ProjectsApiService {
     // assume users are created, otherwise manually replace the get with create function
     return forkJoin(
       games.map((g) => {
-        if (!g) return of(null);
-        return this.usersApi
-          .getUserProfileByUsername((g.creator as User).username)
-          .pipe(
-            switchMap((user) => {
-              g.creator = user._id;
-              return this.createProject({ ...g });
-            }),
-            catchError((err) => of(null))
-          );
+        if (!g?.creator) return of(null);
+        return this.usersApi.getUserProfileByUsername(g.creator).pipe(
+          switchMap((user) => {
+            g.creator = user._id;
+            return this.createProject({ ...g });
+          }),
+          catchError((err) => of(null))
+        );
       })
     );
   }
