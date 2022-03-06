@@ -56,6 +56,9 @@ import { environment } from 'src/environments/environment';
               scope: 'read:current_user',
             },
           },
+          {
+            uri: `${environment.apiUrl}/*`,
+          },
         ],
       },
     }),
