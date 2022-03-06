@@ -36,7 +36,7 @@ import { environment } from 'src/environments/environment';
       clientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
 
       // Request this audience at user authentication time
-      audience: `https://${environment.authDomain}/api/v2/`,
+      audience: environment.apiUrl,
 
       // Request this scope at user authentication time
       scope: 'read:current_user',
