@@ -22,22 +22,23 @@
         <a class="nav-link" [routerLink]="['jobs']">Jobs</a>
       </li>
 
-      <li class="nav-item" *ngIf="usersService.profile$ | async as user">
-        <!-- TODO: specific user <a class="nav-link" [routerLink]="['/admin']">Profile</a> -->
-        <a class="nav-link" [routerLink]="[user.username]">Profile</a>
-      </li>
-
-      <!-- Authentication -->
-      <li
-        class="nav-item"
-        *ngIf="auth.isAuthenticated$ | async; else loginBlock"
+      <ng-container
+        *ngIf="auth.isAuthenticated$ | async as authed; else loginBlock"
       >
-        <a
-          class="nav-link"
-          (click)="auth.logout({ returnTo: document.location.origin })"
-          >Log Out</a
-        >
-      </li>
+        <li class="nav-item" *ngIf="usersService.profile$ | async as user">
+          <a class="nav-link" [routerLink]="[user.username]">Profile</a>
+        </li>
+
+        <!-- Authentication -->
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            (click)="auth.logout({ returnTo: document.location.origin })"
+            >Log Out</a
+          >
+        </li>
+      </ng-container>
+
       <ng-template #loginBlock>
         <li class="nav-item">
           <a class="nav-link" (click)="auth.loginWithRedirect()">Log In</a>
