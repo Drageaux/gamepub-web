@@ -36,10 +36,10 @@ import { environment } from 'src/environments/environment';
       clientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
 
       // Request this audience at user authentication time
-      audience: environment.apiUrl,
+      audience: `https://${environment.authDomain}/api/v2/`,
 
       // Request this scope at user authentication time
-      scope: 'read:current_user',
+      scope: 'profile read:current_user',
 
       // Specify configuration for the interceptor
       httpInterceptor: {
@@ -52,7 +52,7 @@ import { environment } from 'src/environments/environment';
               audience: `https://${environment.authDomain}/api/v2/`,
 
               // The attached token should have these scopes
-              scope: 'read:current_user',
+              scope: 'profile read:current_user',
             },
           },
           {
