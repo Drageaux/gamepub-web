@@ -57,6 +57,7 @@ import { environment } from 'src/environments/environment';
           },
           {
             uri: `${environment.apiUrl}/*`,
+            allowAnonymous: true,
           },
         ],
       },
