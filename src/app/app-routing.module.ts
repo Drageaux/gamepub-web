@@ -20,7 +20,6 @@ import {
   ProjectsRoutesNames,
   ProfileRoutesNames,
 } from '@classes/routes.names';
-import { AuthGuard } from '@auth0/auth0-angular';
 import { AuthRoleGuard } from './guards/auth-role.guard';
 
 const routes: Routes = [
@@ -32,6 +31,7 @@ const routes: Routes = [
   { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
   {
     path: 'admin',
+    pathMatch: 'full',
     component: AdminComponent,
     canActivate: [AuthRoleGuard],
     data: {
