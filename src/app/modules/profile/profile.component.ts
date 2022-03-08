@@ -36,13 +36,19 @@ export class ProfileComponent implements OnInit {
       this.username$.next(params.get('username') || '');
     });
 
+    this.profile$ = this.username$.pipe(
+      switchMap((username) => {
+        if (!username) return of(null);
+        return this.usersApi.getUserProfileByUsername(username);
+      })
+    );
     // this.profile$ = this.auth;
 
     // TODO: authorize profile page access
-    this.projects$ = this.username$.pipe(
-      switchMap((username) => {
-        if (!username) return of([]);
-        else return this.projectsService.getProjectsByUsername(username);
+    this.projects$ = this.profile$.pipe(
+      switchMap((user) => {
+        if (!user) return of([]);
+        return this.projectsService.getProjectsByUsername(user.username);
       })
     );
   }
