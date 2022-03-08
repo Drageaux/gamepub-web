@@ -1,7 +1,7 @@
 import { AuthService, User } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { AsyncSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ApiResponse } from '@services/api-response';
 import {
   catchError,
@@ -22,7 +22,7 @@ import { SubSink } from 'subsink';
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService implements OnDestroy {
+export class UsersService implements OnInit, OnDestroy {
   private subs = new SubSink();
   private _metadata$ = new ReplaySubject<any>(1); // profile
   private environment = environment;
@@ -31,7 +31,9 @@ export class UsersService implements OnDestroy {
     private http: HttpClient,
     private userApi: UsersApiService,
     private auth: AuthService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     // TODO: don't throw hard error if not logged in
     // TODO: reinit this service if login changes
     this.subs.sink = this.auth.user$
