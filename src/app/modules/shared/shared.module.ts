@@ -9,7 +9,6 @@ import { JobCardComponent } from './components/job-card/job-card.component';
 import { UploadComponent } from '@components/upload/upload.component';
 
 import { FileSizePipe } from './file-size.pipe';
-import { UsersService } from '@services/users.service';
 
 import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 
@@ -31,6 +30,6 @@ import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
     JobCardComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule],
-  providers: [UsersService],
+  providers: [],
 })
 export class SharedModule {}
