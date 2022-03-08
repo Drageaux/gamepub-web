@@ -4,7 +4,7 @@ import { Project } from '@classes/project';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { AuthService, User } from '@auth0/auth0-angular';
@@ -38,8 +38,17 @@ export class ProfileComponent implements OnInit {
 
     this.profile$ = this.username$.pipe(
       switchMap((username) => {
-        if (!username) return of(null);
+        if (!username) throw new Error('Username not provided.');
         return this.usersApi.getUserProfileByUsername(username);
+      }),
+      map((profile) => {
+        if (!!profile) return profile;
+        else throw new Error('User not found.');
+      }),
+      catchError((err) => {
+        console.log(err.message);
+        this.router.navigate(['']);
+        return of(null);
       })
     );
     // this.profile$ = this.auth;
