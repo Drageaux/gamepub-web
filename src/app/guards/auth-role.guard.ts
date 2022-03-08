@@ -1,6 +1,6 @@
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { concatMap, map, pluck, tap } from 'rxjs/operators';
+import { concatMap, map, pluck, tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -14,7 +14,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UsersService } from '@services/users.service';
 import { Profile } from '@classes/profile';
 
@@ -59,24 +59,28 @@ export class AuthRoleGuard implements CanActivate, CanActivateChild {
     route: ActivatedRouteSnapshot,
     url: any
   ): Observable<boolean> {
+    console.log(route);
     return this.usersService.profile$.pipe(
-      map((profile: Profile) => {
+      map((profile) => {
         // login check
         if (!profile) return false;
-        console.log(route.data.role, profile.app_metadata?.roles);
 
         // roles check
         if (!route.data.role) return true;
         else {
-          console.log(profile.app_metadata?.roles?.indexOf(route.data.role));
-
           if (profile.app_metadata?.roles?.indexOf(route.data.role) > -1) {
             return true;
           } else {
+            console.log('ERROR: Unauthorized.');
             this.router.navigate(['']);
             return false;
           }
         }
+      }),
+      catchError((err, caught) => {
+        console.log('Error:', err.message);
+        this.router.navigate(['']);
+        return of(false);
       })
     );
     // if (this.authService.) {
