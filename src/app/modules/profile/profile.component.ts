@@ -51,7 +51,6 @@ export class ProfileComponent implements OnInit {
         return of(null);
       })
     );
-    // this.profile$ = this.auth;
 
     // TODO: authorize profile page access
     this.projects$ = this.profile$.pipe(
