@@ -3,10 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { AsyncSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ApiResponse } from '@services/api-response';
-import { concatMap, map, pluck, shareReplay, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  map,
+  pluck,
+  shareReplay,
+  tap,
+} from 'rxjs/operators';
 import { UsersApiService } from './users-api.service';
 import { environment } from 'src/environments/environment';
 import { Profile } from '@classes/profile';
+import { SubSink } from 'subsink';
 
 /**
  * Service providing logged in user profile data.
@@ -14,7 +22,8 @@ import { Profile } from '@classes/profile';
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class UsersService implements OnDestroy {
+  private subs = new SubSink();
   private _metadata$ = new ReplaySubject<any>(1); // profile
   private environment = environment;
 
@@ -23,17 +32,21 @@ export class UsersService {
     private userApi: UsersApiService,
     private auth: AuthService
   ) {
-    this.auth.user$
+    // TODO: don't throw hard error if not logged in
+    // TODO: reinit this service if login changes
+    this.subs.sink = this.auth
+      .getUser()
       .pipe(
-        concatMap((user) =>
+        concatMap((user) => {
+          if (!user) throw new Error('User not authenticated');
           // Use HttpClient to make the call
-          this.http.get(
+          return this.http.get(
             encodeURI(
               `https://${this.environment.authDomain}/api/v2/users/${user?.sub}`
             )
-          )
-        ),
-        tap(console.log)
+          );
+        }),
+        tap((meta) => console.log(meta))
       )
       .subscribe((meta) => this._metadata$.next(meta));
   }
@@ -41,6 +54,7 @@ export class UsersService {
   public get profile$(): Observable<Profile> {
     return this._metadata$.pipe(
       map((meta) => {
+        if (!meta) throw Error('User not authenticated');
         const { user_id, username, email, app_metadata, user_metadata } = meta;
         return { _id: user_id, username, email, app_metadata, user_metadata };
       })
@@ -65,4 +79,7 @@ export class UsersService {
   //     map((res) => res.data)
   //   );
   // }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }
