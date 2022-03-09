@@ -176,9 +176,29 @@ export class ProjectsApiService {
   }
 
   /*************************************************************************/
+  /************************** ADMIN API ENDPOINTS **************************/
+  /*************************************************************************/
+  adminCreateProject(project: Project): Observable<Project> {
+    return this.usersService.profile$.pipe(
+      switchMap((profile) => {
+        if (!profile?.username)
+          throw new Error('User profile not found. Please log in again');
+        // TODO: use this profile's id to create only
+        // TODO: only admin can decide which profile to add to
+        let arg = { ...project };
+        if (!arg.creator) arg.creator = profile.username || ''; // TODO: intercept or auto fill creator id
+        return this.http.post<ApiResponse<Project>>(
+          `${this.apiUrl}/admin/projects`,
+          arg
+        );
+      }),
+      map((res) => res.data)
+    );
+  }
+
+  /*************************************************************************/
   /************************** IMPORT DATA SCRIPTS **************************/
   /*************************************************************************/
-
   parseSteamStore() {
     const games = [];
     const limit = 250;
