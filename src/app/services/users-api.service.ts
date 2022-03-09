@@ -32,7 +32,20 @@ export class UsersApiService {
       );
   }
 
-  // TODO: secure this function
+  /*************************************************************************/
+  /********************************* ADMIN *********************************/
+  /*************************************************************************/
+  /**
+   * Get all users with username starting with d-
+   * @returns
+   */
+  public getTestUsers() {
+    const encodeQuery = encodeURI('username:d-');
+    return this.http
+      .get<ApiResponse<User[]>>(`${this.apiUrl}/users?q=${encodeQuery}*`)
+      .pipe(map((res) => res.data));
+  }
+
   public createUser(username: string, password: string) {
     return this.http
       .post<ApiResponse<User>>(`${this.apiUrl}/users`, {

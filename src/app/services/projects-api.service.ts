@@ -10,7 +10,6 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UsersService } from './users.service';
 
-import json from '../../assets/test-data/steam-sample-games-2.json';
 import { UsersApiService } from './users-api.service';
 import { environment } from 'src/environments/environment';
 import { Profile } from '@classes/profile';
@@ -40,7 +39,7 @@ export class ProjectsApiService {
         `${this.apiUrl}/users/${username}/projects/${projName}`
       )
       .pipe(
-        shareReplay(10),
+        shareReplay(1),
         map((res) => res.data)
       );
   }
@@ -173,40 +172,5 @@ export class ProjectsApiService {
       );
     // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
-  }
-
-  /**
-   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
-   *
-   * @param val
-   * @returns
-   */
-  removeIllegalCharacters(val: string) {
-    const result = val
-      .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
-      .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
-
-    return result;
-  }
-
-  /**
-   * Turn normal text into kebab-case name.
-   *
-   * @param rawName
-   * @returns
-   */
-  public generateUniformProjectName(rawName: string) {
-    const result = rawName
-      .trim()
-      .toLocaleLowerCase()
-      .split(/\s+/)
-      .reduce((prev, curr, index) => {
-        let res = '';
-        if (index > 0) {
-          res += '-';
-        }
-        return prev + res + curr;
-      }, '');
-    return result;
   }
 }

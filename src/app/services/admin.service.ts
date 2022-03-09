@@ -1,10 +1,32 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Project } from '@classes/project';
+import { Observable, forkJoin, of, throwError, concat, scheduled } from 'rxjs';
+import {
+  switchMap,
+  map,
+  catchError,
+  delay,
+  toArray,
+  concatMap,
+} from 'rxjs/operators';
+import { ApiResponse } from './api-response';
+import { UsersApiService } from './users-api.service';
+import { UsersService } from './users.service';
+import json from '../../assets/test-data/steam-sample-games-2.json';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  constructor() {}
+  apiUrl = environment.apiUrl;
+
+  constructor(
+    private http: HttpClient,
+    private usersService: UsersService,
+    private usersApi: UsersApiService
+  ) {}
 
   /*************************************************************************/
   /************************** ADMIN API ENDPOINTS **************************/
@@ -12,12 +34,9 @@ export class AdminService {
   adminCreateProject(project: Project): Observable<Project> {
     return this.usersService.profile$.pipe(
       switchMap((profile) => {
-        if (!profile?.username)
-          throw new Error('User profile not found. Please log in again');
-        // TODO: use this profile's id to create only
         // TODO: only admin can decide which profile to add to
         let arg = { ...project };
-        if (!arg.creator) arg.creator = profile.username || ''; // TODO: intercept or auto fill creator id
+        if (!arg.creator) throw new Error('No creator provided');
         return this.http.post<ApiResponse<Project>>(
           `${this.apiUrl}/admin/projects`,
           arg
@@ -29,7 +48,7 @@ export class AdminService {
 
   parseSteamStore() {
     const games = [];
-    const limit = 250;
+    const limit = 100;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
       const name = this.generateUniformProjectName(
@@ -47,6 +66,7 @@ export class AdminService {
         creator: username,
         imageUrl: game.header_image,
         tags: game.genres.split(';').map((x) => x.toLocaleLowerCase()),
+        private: i % 2 === 0,
       } as Project);
       console.log(games[i]);
     }
@@ -54,20 +74,23 @@ export class AdminService {
   }
 
   createNewTestUsers(games: Project[]) {
-    return forkJoin(
-      games.map((g) => {
-        if (!g?.creator) return of(null);
-        return this.usersApi
-          .createUser(g.creator, 'Abcdefg')
-          .pipe(
-            catchError((err) =>
-              this.usersApi
+    const requests = games.map((g) => {
+      if (g?.creator)
+        return this.usersApi.createUser(g.creator, 'Abcdefg1234').pipe(
+          catchError((err) => {
+            if (err.status == 409)
+              return this.usersApi
                 .getUserProfileByUsername(g.creator)
-                .pipe(catchError((err) => of(null)))
-            )
-          );
-      })
-    );
+                .pipe(catchError((err) => of(null)));
+            else return throwError(err);
+          }),
+          map(() => g),
+          delay(1000)
+        );
+      else return of(null);
+    });
+
+    return concat(...requests);
   }
 
   createNewTestGames(
@@ -86,5 +109,45 @@ export class AdminService {
         );
       })
     );
+  }
+
+  createNewTestGame(game: Project): Observable<Project | null | undefined> {
+    // assume users are created, otherwise manually replace the get with create function
+    return this.adminCreateProject({ ...game });
+  }
+
+  /**
+   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
+   *
+   * @param val
+   * @returns
+   */
+  removeIllegalCharacters(val: string) {
+    const result = val
+      .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
+      .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
+
+    return result;
+  }
+
+  /**
+   * Turn normal text into kebab-case name.
+   *
+   * @param rawName
+   * @returns
+   */
+  public generateUniformProjectName(rawName: string) {
+    const result = rawName
+      .trim()
+      .toLocaleLowerCase()
+      .split(/\s+/)
+      .reduce((prev, curr, index) => {
+        let res = '';
+        if (index > 0) {
+          res += '-';
+        }
+        return prev + res + curr;
+      }, '');
+    return result;
   }
 }
