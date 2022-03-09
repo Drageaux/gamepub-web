@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Project } from '@classes/project';
+import { AdminService } from '@services/admin.service';
 import { ProjectsApiService } from '@services/projects-api.service';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { UsersApiService } from '@services/users-api.service';
+import { UsersService } from '@services/users.service';
+import { of } from 'rxjs';
+import { catchError, map, switchMap, filter, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin',
@@ -8,20 +13,27 @@ import { catchError, map, switchMap } from 'rxjs/operators';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  games!: any;
-  constructor(private projectsApi: ProjectsApiService) {}
+  games!: Project[];
+  constructor(
+    private adminService: AdminService,
+    private usersApi: UsersApiService
+  ) {}
 
   ngOnInit(): void {
-    this.games = this.projectsApi.parseSteamStore();
+    this.games = this.adminService.parseSteamStore();
   }
 
   generateProjects() {
-    this.projectsApi
+    this.adminService
       .createNewTestUsers(this.games)
       .pipe(
-        switchMap((users) => {
-          console.log(users);
-          return this.projectsApi.createNewTestGames(this.games);
+        switchMap((res) => {
+          console.log(res);
+          if (res)
+            return this.adminService
+              .createNewTestGame(res)
+              .pipe(catchError((err) => of(null)));
+          else return of(null);
         })
       )
       .subscribe(console.log, console.error);
