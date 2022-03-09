@@ -12,4 +12,5 @@ export interface Project {
   tags?: string[];
   githubRepo?: string;
   description?: string;
+  private?: boolean;
 }

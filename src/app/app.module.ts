@@ -75,10 +75,6 @@ import { environment } from 'src/environments/environment';
   ],
   exports: [],
   providers: [
-    AssetsService,
-    ProjectsApiService,
-    UsersApiService,
-    JobsApiService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
