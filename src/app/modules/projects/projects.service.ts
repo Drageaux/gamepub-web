@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
-import { ReplaySubject, Observable } from 'rxjs';
+import { ReplaySubject, Observable, pipe } from 'rxjs';
 
 /**
  * Share data among the ProjectComponent and its children.
@@ -34,9 +34,10 @@ export class ProjectsService {
       this._projectname = projectName;
       this.projectsApi
         .getProjectByFullPath(this._username, this._projectname)
-        .subscribe((proj) => {
-          if (proj) this.project$.next(proj);
-        });
+        .subscribe(
+          (proj) => this.project$.next(proj),
+          (err) => this.project$.next(null)
+        );
     }
   }
 
