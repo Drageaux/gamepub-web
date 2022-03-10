@@ -9,6 +9,7 @@ import {
   delay,
   toArray,
   concatMap,
+  shareReplay,
 } from 'rxjs/operators';
 import { ApiResponse } from './api-response';
 import { UsersApiService } from './users-api.service';
@@ -32,18 +33,15 @@ export class AdminService {
   /************************** ADMIN API ENDPOINTS **************************/
   /*************************************************************************/
   adminCreateProject(project: Project): Observable<Project> {
-    return this.usersService.profile$.pipe(
-      switchMap((profile) => {
-        // TODO: only admin can decide which profile to add to
-        let arg = { ...project };
-        if (!arg.creator) throw new Error('No creator provided');
-        return this.http.post<ApiResponse<Project>>(
-          `${this.apiUrl}/admin/projects`,
-          arg
-        );
-      }),
-      map((res) => res.data)
-    );
+    // TODO: only admin can decide which profile to add to
+    let arg = { ...project };
+    if (!arg.creator) throw new Error('No creator provided');
+    return this.http
+      .post<ApiResponse<Project>>(`${this.apiUrl}/admin/projects`, arg)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
   parseSteamStore() {
