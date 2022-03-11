@@ -32,8 +32,8 @@ import { environment } from 'src/environments/environment';
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       // The domain and clientId were configured in the previous chapter
-      domain: `${environment.authDomain}`,
-      clientId: '',
+      domain: environment.authDomain,
+      clientId: environment.authClientId,
 
       // Request this audience at user authentication time
       audience: `https://${environment.authDomain}/api/v2/`,
