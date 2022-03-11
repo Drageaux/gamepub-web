@@ -28,7 +28,10 @@ const routes: Routes = [
     pathMatch: 'full',
     component: FeedComponent,
   },
-  { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
+  {
+    path: `${JobsRoutesNames.JOBS}`,
+    component: JobsComponent,
+  },
   {
     path: 'admin',
     pathMatch: 'full',
@@ -42,8 +45,14 @@ const routes: Routes = [
     path: `${ProjectsRoutesNames.NEWPROJECT}`,
     component: CreateProjectComponent,
   },
-  { path: 'new-asset', component: CreateAssetComponent },
-  { path: 'dashboard', component: AssetDashboardComponent },
+  {
+    path: 'new-asset',
+    component: CreateAssetComponent,
+  },
+  {
+    path: 'dashboard',
+    component: AssetDashboardComponent,
+  },
   {
     path: `${ProjectsRoutesNames.ROOT}/:id`,
     component: ProjectProxyComponent,
