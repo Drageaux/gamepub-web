@@ -3,8 +3,9 @@ import { Project } from './project';
 
 export interface JobComment {
   _id?: string;
-  project: string | Project;
-  job: string | Job;
+  user: string;
+  project?: string | Project;
+  job?: string | Job;
   body: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
