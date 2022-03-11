@@ -33,7 +33,7 @@ import { environment } from 'src/environments/environment';
     AuthModule.forRoot({
       // The domain and clientId were configured in the previous chapter
       domain: `${environment.authDomain}`,
-      clientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
+      clientId: '',
 
       // Request this audience at user authentication time
       audience: `https://${environment.authDomain}/api/v2/`,
