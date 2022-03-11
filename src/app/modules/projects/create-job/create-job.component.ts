@@ -53,12 +53,13 @@ export class CreateJobComponent implements OnInit, OnDestroy {
       .createJob(username, projectname, { title, body })
       .subscribe(
         (res: Job) => {
-          const proj = res?.project as Project;
-          if (proj?.creator && proj?.name) {
+          if (res) {
+            // keep the navigation requirements at a minimum
+            // reuse username and projectname so the backend query doesn't need to populate
             this.router.navigate([
-              proj.creator,
+              username,
               this.projectsLink,
-              proj.name,
+              projectname,
               this.jobsLink,
               res.jobNumber,
             ]);
