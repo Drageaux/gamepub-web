@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://gamepub-api-staging.herokuapp.com',
+  authDomain: 'gamepub-staging.us.auth0.com',
 };
 
 /*
