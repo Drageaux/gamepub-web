@@ -100,6 +100,7 @@ export class AdminService {
         if (!g?.creator) return of(null);
         return this.usersApi.getUserProfileByUsername(g.creator).pipe(
           switchMap((user) => {
+            if (!user) throw new Error('No user found');
             g.creator = user._id;
             return this.adminCreateProject({ ...g });
           }),

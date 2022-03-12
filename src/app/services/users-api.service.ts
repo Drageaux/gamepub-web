@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AsyncSubject, Observable } from 'rxjs';
+import { AsyncSubject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class UsersApiService {
   // }
 
   public getUserProfileByUsername(username: string) {
+    if (!username) throw new Error('No username provided');
     return this.http
       .get<ApiResponse<User>>(`${this.apiUrl}/users/${username}`)
       .pipe(
