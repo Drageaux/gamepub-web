@@ -22,7 +22,9 @@
           ></ng-container
         >
         <ng-template #anonBlock> <b>[Anonymous]</b></ng-template
-        >&nbsp;<span class="text-muted"
+        >&nbsp;<span
+          class="text-muted"
+          title="{{ c.createdAt | date: 'medium' }}"
           >commented {{ c.createdAt | dateAgo }}</span
         >
       </div>
