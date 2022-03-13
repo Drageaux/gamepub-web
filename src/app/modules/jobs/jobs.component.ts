@@ -14,8 +14,8 @@ import { SubSink } from 'subsink';
   styleUrls: ['./jobs.component.scss'],
 })
 export class JobsComponent implements OnInit, OnDestroy {
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
-  jobsLink = `${ProjectsRoutesNames.JOBS}`;
+  projectsLink = ProjectsRoutesNames.ROOT;
+  jobsLink = ProjectsRoutesNames.JOBS;
 
   private subs = new SubSink();
   jobs$ = new Subject<Job[]>();

@@ -14,7 +14,7 @@ import { Profile } from '@classes/profile';
   styleUrls: ['./job-listing.component.scss'],
 })
 export class JobListingComponent implements OnInit {
-  newJobLink = `${ProjectsRoutesNames.NEWJOB}`;
+  newJobLink = ProjectsRoutesNames.NEWJOB;
 
   project!: Project;
   jobs$!: Observable<Job[]>;

@@ -18,8 +18,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   private projectname!: string;
   private jobnumber!: number | string;
 
-  newJobLink = `${ProjectsRoutesNames.NEWJOB}`;
-  jobParamName = `${ProjectsRoutesNames.JOBPARAMNAME}`;
+  newJobLink = ProjectsRoutesNames.NEWJOB;
+  jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
 
   job!: Job;
   comments!: JobComment[];

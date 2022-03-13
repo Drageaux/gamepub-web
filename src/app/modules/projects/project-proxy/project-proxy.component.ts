@@ -14,7 +14,7 @@ import { ProjectsApiService } from '@services/projects-api.service';
   styleUrls: ['./project-proxy.component.scss'],
 })
 export class ProjectProxyComponent implements OnInit {
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+  projectsLink = ProjectsRoutesNames.ROOT;
 
   constructor(
     private route: ActivatedRoute,

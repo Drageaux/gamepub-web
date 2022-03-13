@@ -31,8 +31,8 @@ import { SubSink } from 'subsink';
 export class ProfileComponent implements OnInit, OnChanges, OnDestroy {
   private subs = new SubSink();
 
-  newProjectLink = `${ProjectsRoutesNames.NEWPROJECT}`;
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+  newProjectLink = ProjectsRoutesNames.NEWPROJECT;
+  projectsLink = ProjectsRoutesNames.ROOT;
 
   username$ = new ReplaySubject<string>(1);
   profile$ = new ReplaySubject<User | null>();
