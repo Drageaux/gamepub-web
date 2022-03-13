@@ -87,7 +87,9 @@
               "outputHashing": "all",
               "buildOptimizer": false,
               "optimization": false,
-              "sourceMap": true
+              "vendorChunk": true,
+              "sourceMap": true,
+              "namedChunks": true
             },
             "development": {
               "buildOptimizer": false,
