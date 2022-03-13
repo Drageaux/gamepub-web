@@ -4,7 +4,7 @@ import { Project } from '@classes/project';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { AuthService, User } from '@auth0/auth0-angular';
@@ -41,6 +41,7 @@ export class ProfileComponent implements OnInit {
         if (!username) throw new Error('Username not provided.');
         return this.usersApi.getUserProfileByUsername(username);
       }),
+      shareReplay(1), // switchMap re-wires the API call and does not share replay like in service
       map((profile) => {
         if (!!profile) return profile;
         else throw new Error('User not found.');
