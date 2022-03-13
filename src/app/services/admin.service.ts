@@ -10,6 +10,7 @@ import {
   toArray,
   concatMap,
   shareReplay,
+  tap,
 } from 'rxjs/operators';
 import { ApiResponse } from './api-response';
 import { UsersApiService } from './users-api.service';
@@ -32,6 +33,17 @@ export class AdminService {
   /*************************************************************************/
   /************************** ADMIN API ENDPOINTS **************************/
   /*************************************************************************/
+  checkIsAdmin(): Observable<boolean> {
+    return this.http
+      .get<ApiResponse<null>>(`${this.apiUrl}/admin`, {
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => response.status === 200),
+        catchError(() => of(false))
+      );
+  }
+
   adminCreateProject(project: Project): Observable<Project> {
     // TODO: only admin can decide which profile to add to
     let arg = { ...project };

@@ -17,6 +17,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Observable, of } from 'rxjs';
 import { UsersService } from '@services/users.service';
 import { Profile } from '@classes/profile';
+import { AdminService } from '@services/admin.service';
 
 /**
  * Credit: https://medium.com/echohub/angular-role-based-routing-access-with-angular-guard-dbecaf6cd685
@@ -28,6 +29,7 @@ export class AuthRoleGuard implements CanActivate, CanActivateChild {
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
+    private adminService: AdminService,
     private router: Router,
     private http: HttpClient
   ) {}
@@ -59,40 +61,6 @@ export class AuthRoleGuard implements CanActivate, CanActivateChild {
     route: ActivatedRouteSnapshot,
     url: any
   ): Observable<boolean> {
-    console.log(route);
-    return this.usersService.profile$.pipe(
-      map((profile) => {
-        // login check
-        if (!profile) return false;
-
-        // roles check
-        if (!route.data.role) return true;
-        else {
-          if (profile.app_metadata?.roles?.indexOf(route.data.role) > -1) {
-            return true;
-          } else {
-            console.log('ERROR: Unauthorized.');
-            this.router.navigate(['']);
-            return false;
-          }
-        }
-      }),
-      catchError((err, caught) => {
-        console.log('Error:', err.message);
-        this.router.navigate(['']);
-        return of(false);
-      })
-    );
-    // if (this.authService.) {
-    //   const userRole = this.authService.getRole();
-    //   if (route.data.role && route.data.role.indexOf(userRole) === -1) {
-    //     this.router.navigate(['/home']);
-    //     return false;
-    //   }
-    //   return true;
-    // }
-
-    // this.router.navigate(['/home']);
-    // return false;
+    return this.adminService.checkIsAdmin();
   }
 }
