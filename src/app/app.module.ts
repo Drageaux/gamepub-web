@@ -45,7 +45,7 @@ import { environment } from 'src/environments/environment';
       httpInterceptor: {
         allowedList: [
           {
-            // Match any request that starts 'https://gamepub-dev.us.auth0.com/api/v2/' (note the asterisk)
+            // Match any request that starts e.g. 'https://gamepub-dev.us.auth0.com/api/v2/' (note the asterisk)
             uri: `https://${environment.authDomain}/api/v2/*`,
             tokenOptions: {
               // The attached token should target this audience

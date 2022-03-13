@@ -84,7 +84,10 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true
             },
             "development": {
               "buildOptimizer": false,
