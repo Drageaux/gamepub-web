@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { User } from '@auth0/auth0-angular';
 import { Project } from '@classes/project';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -22,6 +23,7 @@ import { SubSink } from 'subsink';
 })
 export class CreateProjectComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
+  projectsLink = ProjectsRoutesNames.ROOT;
 
   projectForm = new FormGroup({
     formattedName: new FormControl(
@@ -63,9 +65,14 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
           console.log(res);
           if (!res?.creator) {
             // TODO: needs testing
-            this.router.navigate(['project', res._id]);
+            this.router.navigate([this.projectsLink, res._id]);
           } else {
-            this.router.navigate(['', res.creator, 'project', res.name]);
+            this.router.navigate([
+              '',
+              res.creator,
+              this.projectsLink,
+              res.name,
+            ]);
           }
         },
         (err) => {
