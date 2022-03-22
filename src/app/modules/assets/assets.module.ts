@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AssetComponent } from './asset.component';
+import { AssetsComponent } from './assets.component';
 import { CreateAssetComponent } from './create-asset/create-asset.component';
 
 
 
 @NgModule({
   declarations: [
-    AssetComponent,
+    AssetsComponent,
     CreateAssetComponent
   ],
   imports: [
     CommonModule
   ]
 })
-export class AssetModule { }
+export class AssetsModule { }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from '@modules/admin/admin.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
-import { CreateAssetComponent } from '@modules/asset/create-asset/create-asset.component';
 import { CreateProjectComponent } from '@modules/projects/create-project/create-project.component';
 import { ProjectProxyComponent } from '@modules/projects/project-proxy/project-proxy.component';
 import { ProjectsComponent } from '@modules/projects/projects.component';
@@ -13,6 +12,7 @@ import { JobListingComponent } from '@modules/projects/job-listing/job-listing.c
 import { ProjectOverviewComponent } from '@modules/projects/project-overview/project-overview.component';
 import { ProjectDetailsComponent } from '@modules/projects/project-details/project-details.component';
 import { CreateJobComponent } from '@modules/projects/create-job/create-job.component';
+import { CreateAssetComponent } from '@modules/assets/create-asset/create-asset.component';
 import { JobsComponent } from '@modules/jobs/jobs.component';
 import {
   FeedRoutesNames,
