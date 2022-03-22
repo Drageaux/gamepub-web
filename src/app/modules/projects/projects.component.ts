@@ -70,12 +70,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       if (hasError) this.router.navigate(['', this.username]);
     });
 
-    this.subs.sink = this.projectsService.getProject().subscribe((proj) => {
-      if (proj) {
-        this.project = proj;
-        this.ref.markForCheck();
-      } else this.noProjectError$.next(true);
-    });
+    this.subs.sink = this.projectsService.getProject().subscribe(
+      (proj) => {
+        if (proj) {
+          this.project = proj;
+          this.ref.markForCheck();
+        } else this.noProjectError$.next(true);
+      },
+      (err) => this.noProjectError$.next(true)
+    );
   }
 
   // unsubscribe when the component dies

@@ -1,56 +1,101 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '@classes/project';
-import { User } from '@classes/user';
 import { UsersService } from '@services/users.service';
 import { ProjectsApiService } from '@services/projects-api.service';
-import { Observable, of, ReplaySubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {
+  forkJoin,
+  Observable,
+  of,
+  ReplaySubject,
+  zip,
+  combineLatest,
+} from 'rxjs';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { AuthService, User } from '@auth0/auth0-angular';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
-  newProjectLink = `${ProjectsRoutesNames.NEWPROJECT}`;
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+export class ProfileComponent implements OnInit, OnChanges, OnDestroy {
+  private subs = new SubSink();
+
+  newProjectLink = ProjectsRoutesNames.NEWPROJECT;
+  projectsLink = ProjectsRoutesNames.ROOT;
 
   username$ = new ReplaySubject<string>(1);
-  profile$!: Observable<User | null>;
+  profile$ = new ReplaySubject<User | null>();
   projects$!: Observable<Project[]>;
 
   constructor(
-    private usersService: UsersService,
+    public auth: AuthService,
+    public usersService: UsersService,
     private usersApi: UsersApiService,
     private projectsService: ProjectsApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
-
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.subs.sink = this.route.paramMap.subscribe((params) => {
       this.username$.next(params.get('username') || '');
     });
 
-    this.profile$ = this.username$.pipe(
-      switchMap((username) => {
-        if (!username) return of(null);
-        else return this.usersApi.getUserProfileByUsername(username);
-      })
-    );
-    this.projects$ = this.username$.pipe(
-      switchMap((username) => {
-        if (!username) return of([]);
-        else return this.projectsService.getProjectsByUsername(username);
+    this.subs.sink = this.username$
+      .pipe(
+        switchMap((username) => {
+          console.log({ username });
+          if (!username) throw new Error('Username not provided.');
+          return this.usersApi.getUserProfileByUsername(username);
+        }),
+        shareReplay(1), // switchMap re-wires the API call and does not share replay like in service
+        map((profile) => {
+          console.log({ profile });
+          if (!!profile) return profile;
+          else throw new Error('User not found.');
+        }),
+        catchError((err) => {
+          console.log(err.message);
+          this.router.navigate(['']);
+          return of(null);
+        })
+      )
+      .subscribe((profile) => this.profile$.next(profile));
+
+    // TODO: authorize profile page access
+    this.projects$ = this.profile$.pipe(
+      switchMap((user) => {
+        if (!user) return of([]);
+        return this.projectsService.getProjectsByUsername(user.username);
       })
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
   isUser(): Observable<boolean> {
-    return this.username$.pipe(
-      switchMap((username) => of(username === this.usersService.username))
+    return combineLatest([this.username$, this.usersService.username$]).pipe(
+      // TODO: check if logged in user is this profile's user
+      map((results) => {
+        const [paramUsername, currUsername] = results;
+        return paramUsername == currUsername;
+      })
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

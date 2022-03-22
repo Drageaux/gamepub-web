@@ -1,10 +1,10 @@
-import { User } from '@classes/user';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { User } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-feed',
@@ -27,9 +27,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   getLink(p: Project): (string | undefined)[] {
     if (!p) return [];
-    return p.creator instanceof String
-      ? [this.projectsLink, p._id]
-      : ['', (p.creator as User).username, this.projectsLink, p.name];
+    return ['', p.creator, this.projectsLink, p.name];
   }
 
   ngOnDestroy(): void {

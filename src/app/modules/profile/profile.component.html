@@ -1,32 +1,29 @@
-<ng-container *ngIf="profile$ | async as profile">
-  <h1>
-    <strong>{{ profile.username }}</strong>
-  </h1>
+<h1 *ngIf="profile$ | async as prof">
+  <strong>{{ prof.username }}</strong>
+</h1>
 
-  <div>
-    <h3>Create</h3>
-    <!-- TODO: Create new Project -->
-    <a class="btn btn-primary" [routerLink]="['', newProjectLink]"
-      >New Project</a
-    >
+<div *ngIf="isUser() | async">
+  <h3>Create</h3>
+  <!-- TODO: Create new Project -->
+  <a class="btn btn-primary" [routerLink]="['', newProjectLink]">New Project</a>
 
-    <!-- TODO: Create new Asset -->
-    <a class="btn btn-primary" [routerLink]="['/new-asset']">New Asset</a>
-  </div>
+  <!-- TODO: Create new Asset -->
+  <a class="btn btn-primary" [routerLink]="['/new-asset']">New Asset</a>
+</div>
 
-  <!-- TODO: List 2-3 top project contributions -->
+<!-- TODO: List 2-3 top project contributions -->
 
-  <!-- TODO: List projects -->
-  <div *ngIf="projects$ | async as projs">
-    <h3>Projects</h3>
-    <ul>
-      <li *ngFor="let p of projs">
-        <a [routerLink]="['', profile.username, projectsLink, p.name]">{{
-          p.displayName || p.name
-        }}</a>
-      </li>
-    </ul>
-  </div>
+<!-- TODO: List projects -->
+<div>
+  <h3>Projects</h3>
+  <ul *ngIf="projects$ | async as projs">
+    <li *ngFor="let p of projs">
+      <a [routerLink]="['', p.creator, projectsLink, p.name]">{{
+        p.displayName || p.name
+      }}</a
+      ><span *ngIf="p.private">&nbsp;(private)</span>
+    </li>
+  </ul>
+</div>
 
-  <!-- TODO: List assets like gallery style -->
-</ng-container>
+<!-- TODO: List assets like gallery style -->

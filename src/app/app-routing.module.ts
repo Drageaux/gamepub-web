@@ -20,23 +20,41 @@ import {
   ProjectsRoutesNames,
   ProfileRoutesNames,
 } from '@classes/routes.names';
+import { AuthRoleGuard } from './guards/auth-role.guard';
 
 const routes: Routes = [
   {
-    path: `${FeedRoutesNames.FEED}`,
+    path: FeedRoutesNames.FEED,
     pathMatch: 'full',
     component: FeedComponent,
   },
-  { path: `${JobsRoutesNames.JOBS}`, component: JobsComponent },
-  { path: 'admin', component: AdminComponent },
   {
-    path: `${ProjectsRoutesNames.NEWPROJECT}`,
+    path: JobsRoutesNames.JOBS,
+    component: JobsComponent,
+  },
+  {
+    path: 'admin',
+    pathMatch: 'full',
+    component: AdminComponent,
+    canActivate: [AuthRoleGuard],
+    data: {
+      role: 'admin',
+    },
+  },
+  {
+    path: ProjectsRoutesNames.NEWPROJECT,
     component: CreateProjectComponent,
   },
-  { path: 'new-asset', component: CreateAssetComponent },
-  { path: 'dashboard', component: AssetDashboardComponent },
   {
-    path: `${ProjectsRoutesNames.ROOT}/:id`,
+    path: 'new-asset',
+    component: CreateAssetComponent,
+  },
+  {
+    path: 'dashboard',
+    component: AssetDashboardComponent,
+  },
+  {
+    path: ProjectsRoutesNames.ROOT,
     component: ProjectProxyComponent,
   },
   {
@@ -57,20 +75,20 @@ const routes: Routes = [
             pathMatch: 'full',
           },
           {
-            path: `${ProjectsRoutesNames.DETAILS}`,
+            path: ProjectsRoutesNames.DETAILS,
             component: ProjectDetailsComponent,
           },
           {
-            path: `${ProjectsRoutesNames.JOBS}`,
+            path: ProjectsRoutesNames.JOBS,
             children: [
               { path: '', component: JobListingComponent, pathMatch: 'full' },
               {
-                path: `${ProjectsRoutesNames.NEWJOB}`,
+                path: ProjectsRoutesNames.NEWJOB,
                 component: CreateJobComponent,
                 pathMatch: 'full',
               },
               {
-                path: `${ProjectsRoutesNames.JOBPARAM}`,
+                path: ProjectsRoutesNames.JOBPARAM,
                 component: JobDetailsComponent,
               },
             ],

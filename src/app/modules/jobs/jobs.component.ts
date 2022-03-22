@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { User } from '@auth0/auth0-angular';
 import { Job } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
-import { User } from '@classes/user';
+
 import { JobsApiService } from '@services/jobs-api.service';
 import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
@@ -13,8 +14,8 @@ import { SubSink } from 'subsink';
   styleUrls: ['./jobs.component.scss'],
 })
 export class JobsComponent implements OnInit, OnDestroy {
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
-  jobsLink = `${ProjectsRoutesNames.JOBS}`;
+  projectsLink = ProjectsRoutesNames.ROOT;
+  jobsLink = ProjectsRoutesNames.JOBS;
 
   private subs = new SubSink();
   jobs$ = new Subject<Job[]>();
@@ -33,9 +34,9 @@ export class JobsComponent implements OnInit, OnDestroy {
     return job.project as Project;
   }
 
-  getUser(project: Project): User | null {
-    if (!project.creator || project.creator instanceof String) return null;
-    return project.creator as User;
+  getUser(project: Project): string | null {
+    if (!project.creator) return null;
+    return project.creator;
   }
 
   ngOnDestroy(): void {

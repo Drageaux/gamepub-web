@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'api',
+  apiUrl: 'http://localhost:4200/api',
+  authDomain: 'gamepub-dev.us.auth0.com',
+  authClientId: 'BjaRXkzA3yLCGdwL0aVXnj7DVyijZAoj',
 };
 
 /*

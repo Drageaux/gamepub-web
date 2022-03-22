@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Job } from '@classes/job';
+import { Project } from '@classes/project';
+import { JobsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { SubSink } from 'subsink';
 import { ProjectsService } from '../projects.service';
@@ -13,7 +15,6 @@ import { ProjectsService } from '../projects.service';
 })
 export class CreateJobComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-
   jobForm = new FormGroup({
     title: new FormControl('', [
       Validators.required,
@@ -23,6 +24,9 @@ export class CreateJobComponent implements OnInit, OnDestroy {
     body: new FormControl(''),
   });
   @ViewChild('form') form!: NgForm;
+
+  projectsLink = `${ProjectsRoutesNames.ROOT}`;
+  jobsLink = `${JobsRoutesNames.JOBS}`;
 
   get title() {
     return this.jobForm.get('title');
@@ -49,13 +53,21 @@ export class CreateJobComponent implements OnInit, OnDestroy {
       .createJob(username, projectname, { title, body })
       .subscribe(
         (res: Job) => {
-          this.router.navigate([
-            username,
-            'project',
-            projectname,
-            'jobs',
-            res.jobNumber,
-          ]);
+          if (res) {
+            // keep the navigation requirements at a minimum
+            // reuse username and projectname so the backend query doesn't need to populate
+            this.router.navigate([
+              username,
+              this.projectsLink,
+              projectname,
+              this.jobsLink,
+              res.jobNumber,
+            ]);
+          } else {
+            // resetForm also resets the submitted status, while reset() doesn't
+            this.form.resetForm(this.jobForm.value);
+            console.error({ project: res });
+          }
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { AsyncSubject, Observable } from 'rxjs';
+import { AsyncSubject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '@classes/user';
 import { ApiResponse } from '@services/api-response';
 import { map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { User } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,7 @@ export class UsersApiService {
   // }
 
   public getUserProfileByUsername(username: string) {
+    if (!username) throw new Error('No username provided');
     return this.http
       .get<ApiResponse<User>>(`${this.apiUrl}/users/${username}`)
       .pipe(
@@ -32,7 +33,20 @@ export class UsersApiService {
       );
   }
 
-  // TODO: secure this function
+  /*************************************************************************/
+  /********************************* ADMIN *********************************/
+  /*************************************************************************/
+  /**
+   * Get all users with username starting with d-
+   * @returns
+   */
+  public getTestUsers() {
+    const encodeQuery = encodeURI('username:d-');
+    return this.http
+      .get<ApiResponse<User[]>>(`${this.apiUrl}/users?q=${encodeQuery}*`)
+      .pipe(map((res) => res.data));
+  }
+
   public createUser(username: string, password: string) {
     return this.http
       .post<ApiResponse<User>>(`${this.apiUrl}/users`, {

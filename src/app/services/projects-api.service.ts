@@ -10,10 +10,9 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap, map, shareReplay } from 'rxjs/operators';
 import { UsersService } from './users.service';
 
-import json from '../../assets/test-data/steam-sample-games-2.json';
-import { User } from '@classes/user';
 import { UsersApiService } from './users-api.service';
 import { environment } from 'src/environments/environment';
+import { Profile } from '@classes/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +39,7 @@ export class ProjectsApiService {
         `${this.apiUrl}/users/${username}/projects/${projName}`
       )
       .pipe(
-        shareReplay(10),
+        shareReplay(1),
         map((res) => res.data)
       );
   }
@@ -73,36 +72,26 @@ export class ProjectsApiService {
   }
 
   createProject(project: Project): Observable<Project> {
-    return this.usersService.myProfile$.pipe(
-      switchMap((profile) => {
-        // TODO: use this profile's id to create only
-        // TODO: only admin can decide which profile to add to
-        let arg = { ...project };
-        if (!arg.creator) arg.creator = profile._id; // TODO: intercept or auto fill creator id
-        return this.http.post<ApiResponse<Project>>(
-          `${this.apiUrl}/projects`,
-          arg
-        );
-      }),
-      map((res) => res.data)
-    );
+    let body = { ...project };
+    return this.http
+      .post<ApiResponse<Project>>(`${this.apiUrl}/projects`, body)
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 
-  isProjectNameTaken(value: string): Observable<boolean> {
-    return this.usersService.myProfile$.pipe(
-      switchMap((profile) => {
-        return this.http.post<ApiResponse<null>>(
-          `${this.apiUrl}/projects/check-name`,
-          {
-            name: value,
-            creator: profile._id,
-          },
-          { observe: 'response' }
-        );
-      }),
-      map((response) => response.status != 200),
-      catchError(() => of(true))
-    );
+  isProjectNameTaken(name: string): Observable<boolean> {
+    return this.http
+      .post<ApiResponse<null>>(
+        `${this.apiUrl}/projects/check-name`,
+        { name },
+        { observe: 'response' }
+      )
+      .pipe(
+        map((response) => response.status != 200),
+        catchError(() => of(true))
+      );
   }
 
   uploadProjectImage(projId: string, file: File | string) {
@@ -171,107 +160,5 @@ export class ProjectsApiService {
       );
     // // uncomment below for test on custom file
     // return this.http.get<UnityManifest>('./assets/test-data/manifest.json');
-  }
-
-  /*************************************************************************/
-  /************************** IMPORT DATA SCRIPTS **************************/
-  /*************************************************************************/
-
-  parseSteamStore() {
-    const games = [];
-    const limit = 250;
-    for (let i = 0; i < Math.min(limit, json.length); i++) {
-      const game = json[i];
-      const name = this.generateUniformProjectName(
-        this.removeIllegalCharacters(`-${game.name}-`)
-      );
-      const username =
-        'd-' +
-        this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.developer}---`)
-        );
-      const email = username + '@gmail.com';
-      games.push({
-        name,
-        displayName: game.name,
-        creator: {
-          username,
-          email,
-        },
-        imageUrl: game.header_image,
-        tags: game.genres.split(';').map((x) => x.toLocaleLowerCase()),
-      } as Project);
-      console.log(games[i]);
-    }
-    return games;
-  }
-
-  createNewTestUsers(games: Project[]): Observable<(string | User | null)[]> {
-    return forkJoin(
-      games.map((g) =>
-        this.usersApi
-          .createUser((g.creator as User).username, 'test')
-          .pipe(
-            catchError((err) =>
-              this.usersApi
-                .getUserProfileByUsername((g.creator as User).username)
-                .pipe(catchError((err) => of(null)))
-            )
-          )
-      )
-    );
-  }
-
-  createNewTestGames(games: Project[]): Observable<(Project | null)[]> {
-    // assume users are created, otherwise manually replace the get with create function
-    return forkJoin(
-      games.map((g) => {
-        if (!g) return of(null);
-        return this.usersApi
-          .getUserProfileByUsername((g.creator as User).username)
-          .pipe(
-            switchMap((user) => {
-              g.creator = user._id;
-              return this.createProject({ ...g });
-            }),
-            catchError((err) => of(null))
-          );
-      })
-    );
-  }
-
-  /**
-   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
-   *
-   * @param val
-   * @returns
-   */
-  removeIllegalCharacters(val: string) {
-    const result = val
-      .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
-      .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
-
-    return result;
-  }
-
-  /**
-   * Turn normal text into kebab-case name.
-   *
-   * @param rawName
-   * @returns
-   */
-  public generateUniformProjectName(rawName: string) {
-    const result = rawName
-      .trim()
-      .toLocaleLowerCase()
-      .split(/\s+/)
-      .reduce((prev, curr, index) => {
-        let res = '';
-        if (index > 0) {
-          res += '-';
-        }
-        return prev + res + curr;
-      }, '');
-    return result;
   }
 }
