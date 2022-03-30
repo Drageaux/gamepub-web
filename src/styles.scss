@@ -46,9 +46,20 @@
 @import "utilities/api";
 
 // Custom
-.form-group label.required:after {
-  color: red;
-  content: "*";
+.form-group {
+  label.required:after {
+    color: red;
+    content: "*";
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+
+  label:not(:first-child) {
+    margin-top: 1rem;
+  }
 }
 
 body {

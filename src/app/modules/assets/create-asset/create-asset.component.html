@@ -8,7 +8,7 @@
     #form="ngForm"
     (ngSubmit)="onSubmit()"
   >
-    <label for="github-repo">GitHub Repo</label>
+    <label for="github-repo required" required>GitHub Repo</label>
     <div class="input-group mb-2">
       <div class="input-group-prepend">
         <div class="input-group-text">github.com/</div>
@@ -22,7 +22,7 @@
       />
     </div>
     <small id="github-repo-help" class="form-text text-muted"
-      >Link your asset's source code repository from GitHub.</small
+      >Link your asset's source code from a GitHub repository.</small
     >
     <hr />
     <button
