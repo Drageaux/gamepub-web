@@ -1,1 +1,37 @@
-<p>create-asset works!</p>
+<div class="container">
+  <h1>Share assets<br /></h1>
+  <p>Showcase your asset on your profile.</p>
+
+  <form
+    class="form-group"
+    [formGroup]="assetForm"
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <label for="github-repo">GitHub Repo</label>
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">github.com/</div>
+      </div>
+      <input
+        id="github-repo"
+        type="text"
+        formControlName="githubRepo"
+        class="form-control"
+        placeholder="owner/project-name"
+      />
+    </div>
+    <small id="github-repo-help" class="form-text text-muted"
+      >Link your asset's source code repository from GitHub.</small
+    >
+    <hr />
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="assetForm.invalid || form.submitted"
+    >
+      {{ !form.submitted ? "Create asset" : "Creating asset..." }}
+    </button>
+  </form>
+  -->
+</div>
