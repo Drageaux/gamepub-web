@@ -61,8 +61,6 @@ import { environment } from 'src/environments/environment';
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    ReactiveFormsModule,
-    AssetDashboardModule,
   ],
   exports: [],
   providers: [
