@@ -39,6 +39,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   });
   @ViewChild('form') form!: NgForm;
 
+  /*************************************************************************/
+  /******************************** GETTERS ********************************/
+  /*************************************************************************/
   get displayName() {
     return this.projectForm.get('displayName');
   }
@@ -47,10 +50,20 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
     return this.projectForm.get('formattedName');
   }
 
+  /*************************************************************************/
+  /************************** COMPONENT LIFECYCLE **************************/
+  /*************************************************************************/
   constructor(private projectApi: ProjectsApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
+  /*************************************************************************/
+  /********************************** FORM *********************************/
+  /*************************************************************************/
   onSubmit() {
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
@@ -62,6 +75,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
       } as Project)
       .subscribe(
         (res: Project) => {
+          // navigate
           console.log(res);
           if (!res?.creator) {
             // TODO: needs testing
@@ -93,9 +107,5 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
           .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
       )
     );
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
   }
 }

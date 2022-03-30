@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
+import { Asset } from '@classes/asset';
 import { ProjectsRoutesNames } from '@classes/routes.names';
+import { AssetsApiService } from '@services/assets-api.service';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -17,9 +19,25 @@ export class CreateAssetComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor() {}
+  constructor(private apiService: AssetsApiService) {}
 
   ngOnInit(): void {}
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    const { githubRepo } = this.assetForm.value;
+    this.subs.sink = this.apiService
+      .create({
+        githubRepo: githubRepo.trim(),
+      } as Asset)
+      .subscribe(
+        (res: Asset) => {
+          // navigate
+        },
+        (err) => {
+          // resetForm also resets the submitted status, while reset() doesn't
+          this.form.resetForm(this.assetForm.value);
+          console.error(err);
+        }
+      );
+  }
 }

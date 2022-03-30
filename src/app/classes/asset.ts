@@ -1,1 +1,3 @@
-export interface Asset {}
+export interface Asset {
+  githubRepo: string;
+}
