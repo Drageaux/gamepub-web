@@ -19,8 +19,10 @@ import {
   JobsRoutesNames,
   ProjectsRoutesNames,
   ProfileRoutesNames,
+  AssetsRoutesNames,
 } from '@classes/routes.names';
 import { AuthRoleGuard } from './guards/auth-role.guard';
+import { AssetsComponent } from '@modules/assets/assets.component';
 
 const routes: Routes = [
   {
@@ -94,6 +96,10 @@ const routes: Routes = [
             ],
           },
         ],
+      },
+      {
+        path: `${AssetsRoutesNames.ROOT}/${AssetsRoutesNames.ASSETPARAM}/${AssetsRoutesNames.SLUGPARAM}`,
+        component: AssetsComponent,
       },
       { path: '**', redirectTo: '' }, // redirect to user profile
     ],

@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Asset } from '@classes/asset';
-import { ProjectsRoutesNames } from '@classes/routes.names';
+import { AssetsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { AssetsApiService } from '@services/assets-api.service';
 import { SubSink } from 'subsink';
 
@@ -12,14 +13,14 @@ import { SubSink } from 'subsink';
 })
 export class CreateAssetComponent implements OnInit {
   private subs = new SubSink();
-  projectsLink = ProjectsRoutesNames.ROOT;
+  assetsLink = AssetsRoutesNames.ROOT;
 
   assetForm = new FormGroup({
     githubRepo: new FormControl(''),
   });
   @ViewChild('form') form!: NgForm;
 
-  constructor(private apiService: AssetsApiService) {}
+  constructor(private apiService: AssetsApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -32,6 +33,12 @@ export class CreateAssetComponent implements OnInit {
       .subscribe(
         (res: Asset) => {
           // navigate
+          const { creator, puid, slug } = res;
+          if (res && creator && puid && slug) {
+            this.router.navigate(['', creator, this.assetsLink, puid, slug]);
+          } else {
+            this.router.navigate(['', this.assetsLink, res?.puid]);
+          }
         },
         (err) => {
           // resetForm also resets the submitted status, while reset() doesn't

@@ -27,6 +27,8 @@ export const ProjectsRoutesNames = {
 export const AssetsRoutesNames = {
   ROOT: 'assets',
   ASSETS: 'assets',
-  ASSETPARAM: ':assetid',
-  ASSETPARAMNAME: 'assetid',
+  ASSETPARAM: ':assetpuid',
+  ASSETPARAMNAME: 'assetpuid',
+  SLUGPARAM: ':slug',
+  SLUGPARAMNAME: 'slug',
 };
