@@ -19,9 +19,11 @@ import {
 } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { UsersApiService } from '@services/users-api.service';
-import { ProjectsRoutesNames } from '@classes/routes.names';
+import { AssetsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { AuthService, User } from '@auth0/auth0-angular';
 import { SubSink } from 'subsink';
+import { Asset } from '@classes/asset';
+import { AssetsApiService } from '@services/assets-api.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,19 +35,27 @@ export class ProfileComponent implements OnInit, OnChanges, OnDestroy {
 
   newProjectLink = ProjectsRoutesNames.NEWPROJECT;
   projectsLink = ProjectsRoutesNames.ROOT;
+  assetsLink = AssetsRoutesNames.ROOT;
 
   username$ = new ReplaySubject<string>(1);
   profile$ = new ReplaySubject<User | null>();
   projects$!: Observable<Project[]>;
+  assets$!: Observable<Asset[]>;
 
   constructor(
     public auth: AuthService,
     public usersService: UsersService,
     private usersApi: UsersApiService,
-    private projectsService: ProjectsApiService,
+    private projectsApi: ProjectsApiService,
+    private assetsApi: AssetsApiService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  /**
+   * Get information assuming that this is not the current logged in user.
+   * Instead, the isUser() method down below will perform that check.
+   */
   ngOnInit(): void {
     this.subs.sink = this.route.paramMap.subscribe((params) => {
       this.username$.next(params.get('username') || '');
@@ -54,7 +64,7 @@ export class ProfileComponent implements OnInit, OnChanges, OnDestroy {
     this.subs.sink = this.username$
       .pipe(
         switchMap((username) => {
-          console.log({ username });
+          // console.log({ username });
           if (!username) throw new Error('Username not provided.');
           return this.usersApi.getUserProfileByUsername(username);
         }),
@@ -76,7 +86,14 @@ export class ProfileComponent implements OnInit, OnChanges, OnDestroy {
     this.projects$ = this.profile$.pipe(
       switchMap((user) => {
         if (!user) return of([]);
-        return this.projectsService.getProjectsByUsername(user.username);
+        return this.projectsApi.getProjectsByUsername(user.username);
+      })
+    );
+
+    this.assets$ = this.profile$.pipe(
+      switchMap((user) => {
+        if (!user) return of([]);
+        return this.assetsApi.getAssetsByUsername(user.username);
       })
     );
   }

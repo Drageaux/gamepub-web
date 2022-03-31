@@ -27,3 +27,13 @@
 </div>
 
 <!-- TODO: List assets like gallery style -->
+<div>
+  <h3>Assets</h3>
+  <ul *ngIf="assets$ | async as assets">
+    <li *ngFor="let a of assets">
+      <a [routerLink]="['', a.creator, assetsLink, a.puid, a.slug || '']">{{
+        a.displayName
+      }}</a>
+    </li>
+  </ul>
+</div>
