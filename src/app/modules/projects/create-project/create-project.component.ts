@@ -76,17 +76,15 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: Project) => {
           // navigate
-          console.log(res);
-          if (!res?.creator) {
-            // TODO: needs testing
-            this.router.navigate([this.projectsLink, res._id]);
-          } else {
+          if (res?.creator) {
             this.router.navigate([
               '',
               res.creator,
               this.projectsLink,
               res.name,
             ]);
+          } else {
+            this.router.navigate([this.projectsLink, res._id]);
           }
         },
         (err) => {

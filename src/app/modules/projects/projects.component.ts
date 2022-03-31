@@ -27,6 +27,9 @@ import { JobsApiService } from '@services/jobs-api.service';
 import { ProjectsService } from './projects.service';
 import { ProfileRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 
+/**
+ * Project page.
+ */
 @Component({
   selector: 'app-project',
   templateUrl: './projects.component.html',
