@@ -61,14 +61,8 @@ export class AdminService {
     const limit = 100;
     for (let i = 0; i < Math.min(limit, json.length); i++) {
       const game = json[i];
-      const name = this.generateUniformProjectName(
-        this.removeIllegalCharacters(`-${game.name}-`)
-      );
-      const username =
-        'd-' +
-        this.generateUniformProjectName(
-          this.removeIllegalCharacters(`-${game.developer}---`)
-        );
+      const name = this.slugify(`-${game.name}-`, 35);
+      const username = this.slugify(`--d-${game.developer}---`, 100);
       const email = username + '@gmail.com';
       games.push({
         name,
@@ -127,38 +121,12 @@ export class AdminService {
     return this.adminCreateProject({ ...game });
   }
 
-  /**
-   * Only allow alphanumeric, as well as single hyphens but not at the start nor end.
-   *
-   * @param val
-   * @returns
-   */
-  removeIllegalCharacters(val: string) {
-    const result = val
+  slugify(text: string, size = 70) {
+    return text
+      .toLocaleLowerCase()
+      .replace(/\s+/g, '-') // convert to single space
+      .slice(0, size) // truncate
       .replace(/(^-+)|[^a-zA-Z0-9- ]|(-+$)/g, '') // remove all leading and trailling hyphens
       .replace(/^-+|-+$|-+/g, '-'); // only get single hyphens
-
-    return result;
-  }
-
-  /**
-   * Turn normal text into kebab-case name.
-   *
-   * @param rawName
-   * @returns
-   */
-  public generateUniformProjectName(rawName: string) {
-    const result = rawName
-      .trim()
-      .toLocaleLowerCase()
-      .split(/\s+/)
-      .reduce((prev, curr, index) => {
-        let res = '';
-        if (index > 0) {
-          res += '-';
-        }
-        return prev + res + curr;
-      }, '');
-    return result;
   }
 }
