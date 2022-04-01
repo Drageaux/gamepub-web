@@ -26,9 +26,9 @@ export class AssetsApiService {
   /*************************************************************************/
   /****************************** API REQUESTS *****************************/
   /*************************************************************************/
-  getAssetById(projId: string): Observable<Asset> {
+  getAssetByPuid(puid: string): Observable<Asset> {
     return this.http
-      .get<ApiResponse<Asset>>(`${this.apiUrl}/assets/${projId}`)
+      .get<ApiResponse<Asset>>(`${this.apiUrl}/assets/${puid}`)
       .pipe(
         shareReplay(1),
         map((res) => res.data)

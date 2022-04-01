@@ -27,9 +27,7 @@ export class CreateAssetComponent implements OnInit {
   onSubmit(): void {
     const { githubRepo } = this.assetForm.value;
     this.subs.sink = this.apiService
-      .create({
-        githubRepo: githubRepo.trim(),
-      } as Asset)
+      .create({ githubRepo: githubRepo.trim() } as Asset)
       .subscribe(
         (res: Asset) => {
           // navigate
