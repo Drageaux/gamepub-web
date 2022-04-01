@@ -31,18 +31,16 @@ export class ProjectsService implements OnDestroy {
   }
 
   changeProject(username: string, projectName: string) {
-    if (username === this._username && projectName === this._username) {
-      return;
-    } else {
-      this._username = username;
-      this._projectname = projectName;
-      this.subs.sink = this.projectsApi
-        .getProjectByFullPath(this._username, this._projectname)
-        .subscribe(
-          (proj) => this.project$.next(proj),
-          (err) => this.project$.next(null)
-        );
-    }
+    if (username === this._username && projectName === this._username) return;
+
+    this._username = username;
+    this._projectname = projectName;
+    this.subs.sink = this.projectsApi
+      .getProjectByFullPath(this._username, this._projectname)
+      .subscribe(
+        (proj) => this.project$.next(proj),
+        (err) => this.project$.next(null)
+      );
   }
 
   getProject(): Observable<Project | null> {
