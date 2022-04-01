@@ -28,7 +28,7 @@ import { ProjectsService } from './projects.service';
 import { ProfileRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 
 /**
- * Project page.
+ * Main page for a single Project.
  */
 @Component({
   selector: 'app-project',
@@ -58,19 +58,24 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // handle error
+    this.subs.sink = this.noProjectError$.subscribe((hasError) => {
+      if (hasError) this.router.navigate(['', this.username]);
+    });
+
+    // watch route change
     this.subs.sink = this.route.params.subscribe((params) => {
-      if (params[this.userParamName] || params[this.projectParamName]) {
+      if (params[this.userParamName] && params[this.projectParamName]) {
         this.username = params[this.userParamName];
         this.projectsService.changeProject(
           params[this.userParamName],
           params[this.projectParamName]
         );
         this.ref.markForCheck();
+      } else {
+        // missing username or project name
+        this.noProjectError$.next(true);
       }
-    });
-
-    this.subs.sink = this.noProjectError$.subscribe((hasError) => {
-      if (hasError) this.router.navigate(['', this.username]);
     });
 
     this.subs.sink = this.projectsService.getProject().subscribe(

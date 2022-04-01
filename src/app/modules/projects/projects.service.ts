@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
+import { SubSink } from 'subsink';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { ReplaySubject, Observable, pipe } from 'rxjs';
 
 /**
- * Share data among the ProjectComponent and its children.
+ * Share project data among the ProjectComponent and its children.
+ * Useful for routing and "caching" project received from API.
  *
- * @service ProjectService
+ * @service ProjectsService
  */
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectsService {
+export class ProjectsService implements OnDestroy {
+  private subs = new SubSink();
+
   private project$ = new ReplaySubject<Project | null>(1);
   private _username = '';
   private _projectname = '';
@@ -32,7 +36,7 @@ export class ProjectsService {
     } else {
       this._username = username;
       this._projectname = projectName;
-      this.projectsApi
+      this.subs.sink = this.projectsApi
         .getProjectByFullPath(this._username, this._projectname)
         .subscribe(
           (proj) => this.project$.next(proj),
@@ -43,5 +47,9 @@ export class ProjectsService {
 
   getProject(): Observable<Project | null> {
     return this.project$.asObservable();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

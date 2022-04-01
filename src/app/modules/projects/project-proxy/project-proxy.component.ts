@@ -15,17 +15,19 @@ import { ProjectsApiService } from '@services/projects-api.service';
 })
 export class ProjectProxyComponent implements OnInit {
   projectsLink = ProjectsRoutesNames.ROOT;
+  projectProxyParamName = ProjectsRoutesNames.ROOTPROXYPARAMNAME;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectApi: ProjectsApiService
+    private projectsApi: ProjectsApiService
   ) {}
 
   ngOnInit(): void {
-    let id = this.route.snapshot.paramMap.get('id');
+    let id = this.route.snapshot.paramMap.get(this.projectProxyParamName);
+
     if (id) {
-      this.projectApi.getProjectById(id).subscribe(
+      this.projectsApi.getProjectById(id).subscribe(
         (res) => {
           if (res && res.creator && res.name) {
             this.router.navigate([
@@ -43,7 +45,7 @@ export class ProjectProxyComponent implements OnInit {
         }
       );
     } else {
-      this.router.navigate(['/']);
+      this.router.navigate(['']);
     }
   }
 }
