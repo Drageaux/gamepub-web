@@ -23,6 +23,7 @@ import {
 } from '@classes/routes.names';
 import { AuthRoleGuard } from './guards/auth-role.guard';
 import { AssetsComponent } from '@modules/assets/assets.component';
+import { AssetProxyComponent } from '@modules/assets/asset-proxy/asset-proxy.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,7 @@ const routes: Routes = [
     component: CreateProjectComponent,
   },
   {
-    path: 'new-asset',
+    path: AssetsRoutesNames.NEWASSET,
     component: CreateAssetComponent,
   },
   {
@@ -56,8 +57,12 @@ const routes: Routes = [
     component: AssetDashboardComponent,
   },
   {
-    path: ProjectsRoutesNames.ROOT,
+    path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.ROOTPROXYPARAM}`,
     component: ProjectProxyComponent,
+  },
+  {
+    path: `${AssetsRoutesNames.ROOT}/${AssetsRoutesNames.ROOTPROXYPARAM}`,
+    component: AssetProxyComponent,
   },
   {
     path: ProfileRoutesNames.PROFILE,
