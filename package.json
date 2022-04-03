@@ -1,6 +1,7 @@
 {
   "name": "gamepub-web",
   "version": "0.0.0",
+  "author": "David Thong Nguyen",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
