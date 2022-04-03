@@ -2,16 +2,21 @@ import { Injectable } from '@angular/core';
 import { Asset } from '@classes/asset';
 import { AssetsApiService } from '@services/assets-api.service';
 import { BehaviorSubject, of, ReplaySubject, Subject, throwError } from 'rxjs';
-import { distinctUntilChanged, catchError, tap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  catchError,
+  tap,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssetsService {
-  private asset$ = new ReplaySubject<Asset | null>(1);
+  private asset$ = new BehaviorSubject<Asset | null>(null);
   private _puid = '';
   counter = 0;
-  private loading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private assetsApi: AssetsApiService) {}
 
@@ -19,15 +24,25 @@ export class AssetsService {
     this.counter++;
     console.log({ counter: this.counter });
     console.log('service current id', puid);
-    // if (puid === this._puid) return of(null);
+    // only update data if null or route actually changed
+    if (puid === this._puid) return this.asset$;
 
-    this.loading$.next(true);
-    return this.assetsApi
-      .getAssetByPuid(puid)
-      .pipe(tap((asset) => this.asset$.next(asset)));
+    return this.assetsApi.getAssetByPuid(puid).pipe(
+      switchMap((asset) => {
+        this.asset$.next(asset);
+        if (asset) {
+          this._puid = puid;
+          return this.getAsset();
+        } else {
+          // TODO: reset asset
+          this._puid = '';
+          throw new Error('Asset not found');
+        }
+      })
+    );
   }
 
   getAsset() {
-    return this.asset$;
+    return this.asset$.asObservable();
   }
 }
