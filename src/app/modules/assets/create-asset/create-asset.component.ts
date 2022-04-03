@@ -16,18 +16,30 @@ export class CreateAssetComponent implements OnInit {
   assetsLink = AssetsRoutesNames.ROOT;
 
   assetForm = new FormGroup({
-    githubRepo: new FormControl(''),
+    displayName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(100),
+    ]),
+    githubRepo: new FormControl('', [Validators.required]),
   });
   @ViewChild('form') form!: NgForm;
+
+  get displayName() {
+    return this.assetForm.get('displayName');
+  }
 
   constructor(private apiService: AssetsApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
   onSubmit(): void {
-    const { githubRepo } = this.assetForm.value;
+    const { displayName, githubRepo } = this.assetForm.value;
     this.subs.sink = this.apiService
-      .create({ githubRepo: githubRepo.trim() } as Asset)
+      .create({
+        displayName: displayName.trim(),
+        githubRepo: githubRepo.trim(),
+      } as Asset)
       .subscribe(
         (res: Asset) => {
           // navigate

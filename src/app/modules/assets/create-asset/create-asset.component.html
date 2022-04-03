@@ -8,7 +8,33 @@
     #form="ngForm"
     (ngSubmit)="onSubmit()"
   >
-    <label for="github-repo required" required>GitHub Repo</label>
+    <label for="display-name" class="required">Display Name</label>
+    <input
+      id="display-name"
+      type="text"
+      formControlName="displayName"
+      class="form-control"
+      placeholder="(e.g. 3D Fantasy Character)"
+      required
+    />
+    <small id="display-name-help" class="form-text text-muted"
+      >Give a clear descriptive name between 3-100 characters.
+    </small>
+    <div
+      *ngIf="
+        displayName?.invalid && (displayName?.dirty || displayName?.touched)
+      "
+      class="text-danger"
+    >
+      <div *ngIf="displayName?.errors?.['minlength']">
+        Display name must be at least 3 characters long.
+      </div>
+      <div *ngIf="displayName?.errors?.['max length']">
+        Display name must be at most 100 characters long.
+      </div>
+    </div>
+
+    <label for="github-repo" class="required">GitHub Repo</label>
     <div class="input-group mb-2">
       <div class="input-group-prepend">
         <div class="input-group-text">github.com/</div>
@@ -19,11 +45,13 @@
         formControlName="githubRepo"
         class="form-control"
         placeholder="owner/project-name"
+        required
       />
     </div>
     <small id="github-repo-help" class="form-text text-muted"
       >Link your asset's source code from a GitHub repository.</small
     >
+
     <hr />
     <button
       class="btn btn-success"
