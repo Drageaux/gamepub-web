@@ -65,6 +65,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   /********************************** FORM *********************************/
   /*************************************************************************/
   onSubmit() {
+    // TODO: catch error when submitted before checkName validator finishes
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
     this.subs.sink = this.projectApi
@@ -88,6 +89,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
           }
         },
         (err) => {
+          // TODO: display error after submitting, but reset the submit button
           // resetForm also resets the submitted status, while reset() doesn't
           this.form.resetForm(this.projectForm.value);
           console.error(err);
