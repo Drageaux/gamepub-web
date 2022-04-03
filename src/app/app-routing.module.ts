@@ -56,10 +56,12 @@ const routes: Routes = [
     path: 'dashboard',
     component: AssetDashboardComponent,
   },
+  // redirect to {username}/projects/{project-name}
   {
     path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.ROOTPROXYPARAM}`,
     component: ProjectProxyComponent,
   },
+  // redirect to {username}/assets/{asset-puid}/{slug}
   {
     path: `${AssetsRoutesNames.ROOT}/${AssetsRoutesNames.ROOTPROXYPARAM}`,
     component: AssetProxyComponent,
@@ -73,7 +75,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: `${ProjectsRoutesNames.ROOT}/${ProjectsRoutesNames.PROJECTPARAM}`,
+        path: `${ProjectsRoutesNames.PROJECTS}/${ProjectsRoutesNames.PROJECTPARAM}`,
         component: ProjectsComponent,
         children: [
           {
@@ -102,9 +104,15 @@ const routes: Routes = [
           },
         ],
       },
+      // redirect to path with slug
       {
-        path: `${AssetsRoutesNames.ROOT}/${AssetsRoutesNames.ASSETPARAM}/${AssetsRoutesNames.SLUGPARAM}`,
-        component: AssetsComponent,
+        path: `${AssetsRoutesNames.ASSETS}/${AssetsRoutesNames.ASSETPARAM}`,
+        children: [
+          {
+            path: AssetsRoutesNames.SLUGPARAM,
+            component: AssetsComponent,
+          },
+        ],
       },
       { path: '**', redirectTo: '' }, // redirect to user profile
     ],

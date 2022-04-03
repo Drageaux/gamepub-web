@@ -34,6 +34,6 @@ export const AssetsRoutesNames = {
   ASSETS: 'assets',
   ASSETPARAM: ':assetpuid',
   ASSETPARAMNAME: 'assetpuid',
-  SLUGPARAM: ':slug',
-  SLUGPARAMNAME: 'slug',
+  SLUGPARAM: ':assetslug',
+  SLUGPARAMNAME: 'assetslug',
 };
