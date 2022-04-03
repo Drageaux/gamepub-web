@@ -61,10 +61,15 @@
     margin-top: 1rem;
   }
 
-  label + * + small {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+  .help-texts {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
     display: block;
+
+    small {
+      display: inline-block;
+      margin: 0;
+    }
   }
 }
 

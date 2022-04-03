@@ -17,25 +17,27 @@
       placeholder="(e.g. 3D Fantasy Character)"
       required
     />
-    <small id="display-name-help" class="form-text text-muted"
-      >Give a clear descriptive name between 3-100 characters.
-    </small>
-    <div
-      *ngIf="
-        displayName?.invalid && (displayName?.dirty || displayName?.touched)
-      "
-      class="text-danger"
-    >
-      <div *ngIf="displayName?.errors?.['minlength']">
-        Display name must be at least 3 characters long.
+    <div class="help-texts">
+      <div
+        *ngIf="
+          displayName?.invalid && (displayName?.dirty || displayName?.touched)
+        "
+        class="text-danger"
+      >
+        <div *ngIf="displayName?.errors?.['minlength']">
+          Display name must be at least 3 characters long.
+        </div>
+        <div *ngIf="displayName?.errors?.['maxlength']">
+          Display name must be at most 100 characters long.
+        </div>
       </div>
-      <div *ngIf="displayName?.errors?.['max length']">
-        Display name must be at most 100 characters long.
-      </div>
+      <small id="display-name-help" class="form-text text-muted"
+        >Give a clear descriptive name between 3-100 characters.
+      </small>
     </div>
 
     <label for="github-repo" class="required">GitHub Repo</label>
-    <div class="input-group mb-2">
+    <div class="input-group">
       <div class="input-group-prepend">
         <div class="input-group-text">github.com/</div>
       </div>
@@ -48,9 +50,11 @@
         required
       />
     </div>
-    <small id="github-repo-help" class="form-text text-muted"
-      >Link your asset's source code from a GitHub repository.</small
-    >
+    <div class="help-texts">
+      <small id="github-repo-help" class="form-text text-muted"
+        >Link your asset's source code from a GitHub repository.</small
+      >
+    </div>
 
     <hr />
     <button
