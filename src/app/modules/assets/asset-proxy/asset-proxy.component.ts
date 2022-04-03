@@ -28,34 +28,25 @@ export class AssetProxyComponent implements OnInit, OnDestroy {
     console.log('proxying:', puid);
 
     if (puid) {
-      this.assetsService
-        .changeAsset(puid)
-        .pipe(
-          skipWhile((res) => {
-            console.log(res);
-            return res === true;
-          }),
-          switchMap(() => this.assetsService.getAsset())
-        )
-        .subscribe(
-          (res) => {
-            if (res && res.creator && res.slug) {
-              console.log(this.router.url);
-              this.router.navigate([
-                '',
-                res.creator,
-                this.assetsLink,
-                res.puid,
-                res.slug,
-              ]);
-            } else {
-              this.router.navigate(['']);
-            }
-          },
-          (err) => {
-            console.error(err), this.router.navigate(['']);
+      this.assetsService.changeAsset(puid).subscribe(
+        (res) => {
+          if (res && res.creator && res.slug) {
+            this.router.navigate([
+              '',
+              res.creator,
+              this.assetsLink,
+              res.puid,
+              res.slug,
+            ]);
+          } else {
+            this.router.navigate(['']);
           }
-        );
+        },
+        (err) => {
+          console.error(err);
+          this.router.navigate(['']);
+        }
+      );
     }
   }
 

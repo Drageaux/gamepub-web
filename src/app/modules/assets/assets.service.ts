@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Asset } from '@classes/asset';
 import { AssetsApiService } from '@services/assets-api.service';
 import { BehaviorSubject, of, ReplaySubject, Subject, throwError } from 'rxjs';
-import { distinctUntilChanged, catchError } from 'rxjs/operators';
+import { distinctUntilChanged, catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -22,25 +22,9 @@ export class AssetsService {
     // if (puid === this._puid) return of(null);
 
     this.loading$.next(true);
-    this.assetsApi.getAssetByPuid(puid).subscribe(
-      (res) => {
-        if (res) {
-          this._puid = puid;
-          this.asset$.next(res);
-        } else {
-          this._puid = '';
-          this.asset$.next(null);
-        }
-        this.loading$.next(false);
-      },
-      (err) => {
-        this._puid = '';
-        this.asset$.next(null);
-        this.loading$.next(false);
-      }
-    );
-
-    return this.loading$.asObservable();
+    return this.assetsApi
+      .getAssetByPuid(puid)
+      .pipe(tap((asset) => this.asset$.next(asset)));
   }
 
   getAsset() {

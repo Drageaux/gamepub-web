@@ -109,6 +109,11 @@ const routes: Routes = [
         path: `${AssetsRoutesNames.ASSETS}/${AssetsRoutesNames.ASSETPARAM}`,
         children: [
           {
+            path: '',
+            pathMatch: 'full',
+            component: AssetProxyComponent,
+          },
+          {
             path: AssetsRoutesNames.SLUGPARAM,
             component: AssetsComponent,
           },

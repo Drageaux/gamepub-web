@@ -3,8 +3,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Asset } from '@classes/asset';
 import { AssetsRoutesNames, ProfileRoutesNames } from '@classes/routes.names';
-import { Subject, combineLatest } from 'rxjs';
-import { map, skipWhile, switchMap, tap } from 'rxjs/operators';
+import { Subject, combineLatest, throwError } from 'rxjs';
+import {
+  catchError,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  map,
+  skipWhile,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { AssetsService } from './assets.service';
 
 @Component({
@@ -31,35 +40,17 @@ export class AssetsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subs.sink = combineLatest([
-      this.assetsService.getAsset(),
-      this.route.params,
-    ])
+    this.route.params
       .pipe(
-        tap(([asset, params]) => {
-          this.assetsService.changeAsset(params[this.assetParamName]);
-          // .subscribe(
-          //   (asset) => {
-          //     if (asset) {
-          //       this.asset = asset;
-          //     } else this.noAssetError$.next(true);
-          //   },
-          //   (err) => this.noAssetError$.next(true)
-          // );
-          // missing asset param
-          // return this.noAssetError$.next(true);
+        distinctUntilKeyChanged(this.assetParamName),
+        switchMap((params) => {
+          return this.assetsService.changeAsset(params[this.assetParamName]);
         })
       )
-      .subscribe(
-        ([asset, params]) => {
-          this.asset = asset;
-          this.username = params[this.userParamName];
-          const routePuid = params[this.assetParamName];
-        },
-        (error) => {
-          this;
-        }
-      );
+      .subscribe((asset) => {
+        if (asset) this.asset = asset;
+        else this.noAssetError$.next(true);
+      });
 
     // handle error
     this.subs.sink = this.noAssetError$.subscribe((hasError) => {
@@ -68,7 +59,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('assets page on destroy');
     this.subs.unsubscribe();
   }
 }
