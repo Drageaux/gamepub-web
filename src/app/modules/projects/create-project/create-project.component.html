@@ -1,6 +1,7 @@
 <div class="container">
   <h1>Create a new project<br /></h1>
   <p>Have an idea? Start here.</p>
+  <hr />
 
   <form
     class="form-group"
@@ -9,14 +10,13 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="row">
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <label for="formatted-name" class="required">Name</label>
         <input
           id="formatted-name"
           type="text"
           formControlName="formattedName"
           class="form-control"
-          placeholder="(e.g. fantasy-world)"
           required
         />
 
@@ -52,13 +52,14 @@
             {{ formattedName?.value }} is available.
           </div>
           <small class="form-text text-muted"
-            >3-100 characters long, alphanumeric, single hyphens, and cannot
-            start or end with hyphens</small
+            >Give a unique name 3-100 characters long, alphanumeric, single
+            hyphens, and cannot start or end with hyphens. Example:
+            <b>fantasy-world</b>.</small
           >
         </div>
       </div>
 
-      <div class="col">
+      <div class="col-12 col-sm-6 mt-2 mt-sm-0">
         <label for="display-name"
           >Display Name <small class="text-muted">(Optional)</small></label
         >
@@ -67,7 +68,6 @@
           type="text"
           formControlName="displayName"
           class="form-control"
-          placeholder="(e.g. Fantasy World)"
         />
 
         <div class="help-texts">
@@ -85,6 +85,10 @@
               Display name must be at most 100 characters long.
             </div>
           </div>
+
+          <small class="form-text text-muted"
+            >Example: <b>Fantasy World</b>.</small
+          >
         </div>
       </div>
     </div>
