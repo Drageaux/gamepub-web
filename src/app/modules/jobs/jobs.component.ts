@@ -5,7 +5,8 @@ import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 
 import { JobsApiService } from '@services/jobs-api.service';
-import { Subject } from 'rxjs';
+import { UsersService } from '@services/users.service';
+import { forkJoin, Subject } from 'rxjs';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -20,7 +21,10 @@ export class JobsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   jobs$ = new Subject<Job[]>();
 
-  constructor(private jobsApi: JobsApiService) {}
+  constructor(
+    private jobsApi: JobsApiService,
+    private usersService: UsersService
+  ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.jobsApi.getAllJobs().subscribe((jobs) => {
@@ -37,6 +41,26 @@ export class JobsComponent implements OnInit, OnDestroy {
   getUser(project: Project): string | null {
     if (!project.creator) return null;
     return project.creator;
+  }
+
+  subscribeToJob(job: Job) {
+    const project = this.getProject(job);
+
+    if (project?.creator && project?.name && job?.jobNumber) {
+      forkJoin([
+        this.jobs$,
+        this.jobsApi.subscribeToJobByJobNumber(
+          project.creator,
+          project.name,
+          job.jobNumber
+        ),
+      ]).subscribe(([jobs, res]) => {
+        let jobToUpdate = jobs.find((x) => x._id === res._id);
+        jobToUpdate = res;
+        this.jobs$.next(jobs);
+        console.log(jobs);
+      });
+    }
   }
 
   ngOnDestroy(): void {

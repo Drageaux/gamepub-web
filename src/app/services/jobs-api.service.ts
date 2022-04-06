@@ -65,17 +65,15 @@ export class JobsApiService {
     username: string,
     projName: string,
     jobNumber: number | string
-  ): Observable<boolean> {
+  ): Observable<Job> {
     return this.http
-      .put<ApiResponse<null>>(
+      .put<ApiResponse<Job>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}`,
-        {},
-        { observe: 'response' }
+        {}
       )
       .pipe(
         shareReplay(1),
-        map((response) => response.status >= 200 && response.status < 300),
-        catchError(() => of(false))
+        map((res) => res.data)
       );
   }
 

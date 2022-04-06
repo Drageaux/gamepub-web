@@ -3,10 +3,11 @@ import { Project } from './project';
 
 export interface Job {
   _id?: string;
-  jobNumber?: number;
   project?: string | Project;
+  jobNumber?: number;
   title: string;
   body?: string;
   imageUrl?: string;
   comments?: JobComment[];
+  subscribers?: string[];
 }
