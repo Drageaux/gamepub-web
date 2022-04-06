@@ -66,13 +66,19 @@
         </ng-container>
       </td>
 
-      <td class="d-none d-md-table-cell">
+      <td class="d-none d-md-table-cell" *ngIf="currUsername">
         <!-- TODO: subscribe action -->
-        <a class="text-success" (click)="subscribeToJob(j)"
-          ><i class="far fa-bell"></i>&nbsp;Subscribe</a
+        <ng-container *ngIf="isSubscribed(j); else toSubscribeBlock">
+          <!-- subscribed -->
+          <a class="text-success"
+            ><i class="fas fa-check"></i>&nbsp;Subscribed</a
+          >
+        </ng-container>
+        <ng-template #toSubscribeBlock>
+          <a class="text-primary" (click)="subscribeToJob(j)"
+            ><i class="far fa-bell"></i>&nbsp;Subscribe</a
+          ></ng-template
         >
-        <!-- TODO: subscribing -->
-        <!-- <a class="text-success"><i class="fas fa-check"></i>&nbsp;Subscribing</a> -->
       </td>
     </tr>
   </tbody>
