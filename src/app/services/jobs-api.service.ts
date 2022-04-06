@@ -68,7 +68,7 @@ export class JobsApiService {
   ): Observable<Job> {
     return this.http
       .put<ApiResponse<Job>>(
-        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}`,
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/subscribe`,
         {}
       )
       .pipe(
