@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '@auth0/auth0-angular';
 import { Job } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
-import { forkJoin, Subject } from 'rxjs';
+import { ReplaySubject, combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -19,22 +19,26 @@ export class JobsComponent implements OnInit, OnDestroy {
   jobsLink = ProjectsRoutesNames.JOBS;
 
   private subs = new SubSink();
-  jobs$ = new Subject<Job[]>();
+  jobs$ = new ReplaySubject<Job[]>(1);
+  currUsername = '';
 
   constructor(
     private jobsApi: JobsApiService,
-    private usersService: UsersService
+    public usersService: UsersService
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.jobsApi.getAllJobs().subscribe((jobs) => {
       this.jobs$.next(jobs);
     });
+
+    this.subs.sink = this.usersService.username$.subscribe(
+      (name) => (this.currUsername = name || '')
+    );
   }
 
   getProject(job: Job): Project | null {
     if (!job.project || job.project instanceof String) return null;
-
     return job.project as Project;
   }
 
@@ -47,20 +51,23 @@ export class JobsComponent implements OnInit, OnDestroy {
     const project = this.getProject(job);
 
     if (project?.creator && project?.name && job?.jobNumber) {
-      forkJoin([
-        this.jobs$,
-        this.jobsApi.subscribeToJobByJobNumber(
-          project.creator,
-          project.name,
-          job.jobNumber
-        ),
-      ]).subscribe(([jobs, res]) => {
-        let jobToUpdate = jobs.find((x) => x._id === res._id);
-        jobToUpdate = res;
-        this.jobs$.next(jobs);
-        console.log(jobs);
-      });
+      const updateSubscription = this.jobsApi
+        .subscribeToJobByJobNumber(project.creator, project.name, job.jobNumber)
+        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+        .subscribe(([res, jobs]) => {
+          updateSubscription.unsubscribe();
+          let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
+          jobs[indexToUpdate] = res;
+          this.jobs$.next(jobs);
+        });
     }
+  }
+
+  isSubscribed(job: Job) {
+    if (job?.subscribers?.length) {
+      return job.subscribers.findIndex((x) => x === this.currUsername) !== -1;
+    }
+    return false;
   }
 
   ngOnDestroy(): void {
