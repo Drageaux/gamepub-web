@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
 import { Project } from '@classes/project';
-import { Observable } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { shareReplay, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from './api-response';
 
@@ -58,6 +58,24 @@ export class JobsApiService {
       .pipe(
         shareReplay(1),
         map((res) => res.data)
+      );
+  }
+
+  subscribeToJobByJobNumber(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<boolean> {
+    return this.http
+      .put<ApiResponse<null>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}`,
+        {},
+        { observe: 'response' }
+      )
+      .pipe(
+        shareReplay(1),
+        map((response) => response.status >= 200 && response.status < 300),
+        catchError(() => of(false))
       );
   }
 
