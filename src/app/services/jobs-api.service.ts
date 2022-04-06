@@ -77,6 +77,22 @@ export class JobsApiService {
       );
   }
 
+  unsubscribeFromJobByJobNumber(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<Job> {
+    return this.http
+      .put<ApiResponse<Job>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/unsubscribe`,
+        {}
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   getJobComments(
     username: string,
     projName: string,

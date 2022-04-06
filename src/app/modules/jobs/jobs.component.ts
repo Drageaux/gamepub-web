@@ -20,7 +20,8 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
   jobs$ = new ReplaySubject<Job[]>(1);
-  currUsername = '';
+  private loading = false;
+  currUsername = ''; // only needed to compare subscribed status in UI
 
   constructor(
     private jobsApi: JobsApiService,
@@ -32,9 +33,9 @@ export class JobsComponent implements OnInit, OnDestroy {
       this.jobs$.next(jobs);
     });
 
-    this.subs.sink = this.usersService.username$.subscribe(
-      (name) => (this.currUsername = name || '')
-    );
+    this.subs.sink = this.usersService.username$.subscribe((name) => {
+      this.currUsername = name || '';
+    });
   }
 
   getProject(job: Job): Project | null {
@@ -47,27 +48,59 @@ export class JobsComponent implements OnInit, OnDestroy {
     return project.creator;
   }
 
-  subscribeToJob(job: Job) {
-    const project = this.getProject(job);
-
-    if (project?.creator && project?.name && job?.jobNumber) {
-      const updateSubscription = this.jobsApi
-        .subscribeToJobByJobNumber(project.creator, project.name, job.jobNumber)
-        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-        .subscribe(([res, jobs]) => {
-          updateSubscription.unsubscribe();
-          let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
-          jobs[indexToUpdate] = res;
-          this.jobs$.next(jobs);
-        });
-    }
-  }
-
   isSubscribed(job: Job) {
     if (job?.subscribers?.length) {
       return job.subscribers.findIndex((x) => x === this.currUsername) !== -1;
     }
     return false;
+  }
+
+  /*************************************************************************/
+  /******************************* API CALLS *******************************/
+  /*************************************************************************/
+  subscribeToJob(job: Job) {
+    const project = this.getProject(job);
+
+    if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
+      this.loading = true;
+      const subs = this.jobsApi
+        .subscribeToJobByJobNumber(project.creator, project.name, job.jobNumber)
+        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+        .subscribe(
+          ([res, jobs]) => {
+            subs.unsubscribe();
+            let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
+            jobs[indexToUpdate] = res;
+            this.jobs$.next(jobs);
+            this.loading = false;
+          },
+          (err) => (this.loading = false)
+        );
+    }
+  }
+
+  unsubscribeFromJob(job: Job) {
+    const project = this.getProject(job);
+
+    if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
+      const subs = this.jobsApi
+        .unsubscribeFromJobByJobNumber(
+          project.creator,
+          project.name,
+          job.jobNumber
+        )
+        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+        .subscribe(
+          ([res, jobs]) => {
+            subs.unsubscribe();
+            let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
+            jobs[indexToUpdate] = res;
+            this.jobs$.next(jobs);
+            this.loading = false;
+          },
+          (err) => (this.loading = false)
+        );
+    }
   }
 
   ngOnDestroy(): void {
