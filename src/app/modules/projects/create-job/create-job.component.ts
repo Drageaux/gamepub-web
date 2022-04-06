@@ -5,6 +5,7 @@ import { Job } from '@classes/job';
 import { Project } from '@classes/project';
 import { JobsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
+import { noWhitespaceValidator } from '@utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
 import { ProjectsService } from '../projects.service';
 
@@ -17,6 +18,7 @@ export class CreateJobComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   jobForm = new FormGroup({
     title: new FormControl('', [
+      noWhitespaceValidator,
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(100),

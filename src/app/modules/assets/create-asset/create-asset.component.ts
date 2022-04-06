@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Asset } from '@classes/asset';
 import { AssetsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { AssetsApiService } from '@services/assets-api.service';
+import { noWhitespaceValidator } from 'src/app/utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -17,6 +18,7 @@ export class CreateAssetComponent implements OnInit {
 
   assetForm = new FormGroup({
     displayName: new FormControl('', [
+      noWhitespaceValidator,
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(100),

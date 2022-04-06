@@ -14,6 +14,7 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { noWhitespaceValidator } from 'src/app/utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -28,7 +29,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+      [
+        noWhitespaceValidator,
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+      ],
       [this.validateUniqueProjectName.bind(this)]
     ),
     displayName: new FormControl('', [
