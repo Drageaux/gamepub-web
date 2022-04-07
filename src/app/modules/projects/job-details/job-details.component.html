@@ -1,107 +1,107 @@
-<div class="container py-3">
-  <div *ngIf="job">
-    <!-- Header -->
-    <div class="d-flex flex-row justify-content-between mb-3">
-      <h2>
-        {{ job.title }}&nbsp;<span class="text-muted fw-normal"
-          >#{{ job.jobNumber }}</span
-        >
-      </h2>
-      <!-- <a [routerLink]="['../', newJobLink]"
+<div class="container" *ngIf="job">
+  <!-- Header -->
+  <div class="d-flex flex-row justify-content-between mb-3">
+    <h2>
+      {{ job.title }}&nbsp;<span class="text-muted fw-normal"
+        >#{{ job.jobNumber }}</span
+      >
+    </h2>
+    <!-- <a [routerLink]="['../', newJobLink]"
       ><button class="btn btn-primary">New Job</button></a
       > -->
-    </div>
-    <hr />
+  </div>
+  <hr />
 
-    <div class="row">
-      <div class="col-12 col-sm-8">
-        <!-- New Comment -->
-        <div class="form-group pb-3">
-          <input
-            type="textarea"
-            class="form-control mb-2"
-            [(ngModel)]="newComment"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Add a new comment..."
-          />
-          <div class="btn-group">
-            <button
-              [disabled]="submitting || newComment === ''"
-              class="btn btn-success ml-2"
-              (click)="postComment()"
+  <div class="row">
+    <div class="col-12 col-sm-8">
+      <!-- New Comment -->
+      <div class="form-group pb-3">
+        <input
+          type="textarea"
+          class="form-control mb-2"
+          [(ngModel)]="newComment"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Add a new comment..."
+        />
+        <div class="btn-group">
+          <button
+            [disabled]="submitting || newComment === ''"
+            class="btn btn-success ml-2"
+            (click)="postComment()"
+          >
+            <ng-container *ngIf="submitting; else elseBlock"
+              >Commenting...</ng-container
             >
-              <ng-container *ngIf="submitting; else elseBlock"
-                >Commenting...</ng-container
-              >
-              <ng-template #elseBlock>Comment</ng-template>
-            </button>
+            <ng-template #elseBlock>Comment</ng-template>
+          </button>
 
-            <button class="btn btn-secondary mr-2" (click)="newComment = ''">
-              Cancel
-            </button>
-          </div>
-          <div class="clearfix"></div>
+          <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+            Cancel
+          </button>
         </div>
+        <div class="clearfix"></div>
+      </div>
 
-        <!-- Comments -->
-        <div
-          *ngFor="let c of comments"
-          class="comment bg-white lift-1 p-2 mb-2 border border-1 rounded"
-        >
-          <div>
-            <ng-container *ngIf="c?.user; else anonBlock">
-              <a [routerLink]="['', c.user]"
-                ><b>{{ c.user }}</b></a
-              ></ng-container
-            >
-            <ng-template #anonBlock> <b>[Anonymous]</b></ng-template
-            >&nbsp;<span
-              class="text-muted"
-              title="{{ c.createdAt | date: 'medium' }}"
-              >commented {{ c.createdAt | dateAgo }}</span
-            >
-          </div>
-          <div>
-            {{ c.body }}
-          </div>
+      <!-- Comments -->
+      <div
+        *ngFor="let c of comments"
+        class="comment bg-white lift-1 p-2 mb-2 border border-1 rounded"
+      >
+        <div>
+          <ng-container *ngIf="c?.user; else anonBlock">
+            <a [routerLink]="['', c.user]"
+              ><b>{{ c.user }}</b></a
+            ></ng-container
+          >
+          <ng-template #anonBlock> <b>[Anonymous]</b></ng-template
+          >&nbsp;<span
+            class="text-muted"
+            title="{{ c.createdAt | date: 'medium' }}"
+            >commented {{ c.createdAt | dateAgo }}</span
+          >
         </div>
-
-        <!-- Have a comment input down below for convenience -->
-        <div class="form-group pb-3" *ngIf="comments && comments.length >= 10">
-          <input
-            type="textarea"
-            class="form-control mb-2"
-            [(ngModel)]="newComment"
-            [ngModelOptions]="{ standalone: true }"
-            placeholder="Add a new comment..."
-          />
-          <div class="btn-group">
-            <button
-              [disabled]="submitting || newComment === ''"
-              class="btn btn-success ml-2"
-              (click)="postComment()"
-            >
-              <ng-container *ngIf="submitting; else elseBlock"
-                >Commenting...</ng-container
-              >
-              <ng-template #elseBlock>Comment</ng-template>
-            </button>
-
-            <button class="btn btn-secondary mr-2" (click)="newComment = ''">
-              Cancel
-            </button>
-          </div>
-          <div class="clearfix"></div>
+        <div>
+          {{ c.body }}
         </div>
       </div>
 
-      <div class="col-12 col-sm-4">
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Have a submission?</h5>
-            <p class="card-text">Send your work to the job creator.</p>
-            <a href="#" class="btn btn-success">Submission Page</a>
-          </div>
+      <!-- Have a comment input down below for convenience -->
+      <div class="form-group pb-3" *ngIf="comments && comments.length >= 10">
+        <input
+          type="textarea"
+          class="form-control mb-2"
+          [(ngModel)]="newComment"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Add a new comment..."
+        />
+        <div class="btn-group">
+          <button
+            [disabled]="submitting || newComment === ''"
+            class="btn btn-success ml-2"
+            (click)="postComment()"
+          >
+            <ng-container *ngIf="submitting; else elseBlock"
+              >Commenting...</ng-container
+            >
+            <ng-template #elseBlock>Comment</ng-template>
+          </button>
+
+          <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+            Cancel
+          </button>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Have a submission?</h5>
+          <p class="card-text">Send your work to the job creator.</p>
+          <a [routerLink]="['./', 'submit']" class="btn btn-success"
+            >Submission Page</a
+          >
         </div>
       </div>
     </div>
