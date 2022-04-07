@@ -5,7 +5,7 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
-import { ReplaySubject, combineLatest } from 'rxjs';
+import { ReplaySubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -58,24 +58,35 @@ export class JobsComponent implements OnInit, OnDestroy {
   /*************************************************************************/
   /******************************* API CALLS *******************************/
   /*************************************************************************/
+  updateJobsOnApiResult(obs: Observable<[Job, Job[]]>): Subscription {
+    const subscription = obs.subscribe(
+      ([res, jobs]) => {
+        subscription.unsubscribe();
+        let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
+        jobs[indexToUpdate] = res;
+        this.jobs$.next(jobs);
+        this.loading = false;
+      },
+      (err) => (this.loading = false)
+    );
+
+    return subscription;
+  }
+
   subscribeToJob(job: Job) {
     const project = this.getProject(job);
 
     if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
       this.loading = true;
-      const subs = this.jobsApi
-        .subscribeToJobByJobNumber(project.creator, project.name, job.jobNumber)
-        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-        .subscribe(
-          ([res, jobs]) => {
-            subs.unsubscribe();
-            let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
-            jobs[indexToUpdate] = res;
-            this.jobs$.next(jobs);
-            this.loading = false;
-          },
-          (err) => (this.loading = false)
-        );
+      this.subs.sink = this.updateJobsOnApiResult(
+        this.jobsApi
+          .subscribeToJobByJobNumber(
+            project.creator,
+            project.name,
+            job.jobNumber
+          )
+          .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+      );
     }
   }
 
@@ -83,23 +94,16 @@ export class JobsComponent implements OnInit, OnDestroy {
     const project = this.getProject(job);
 
     if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
-      const subs = this.jobsApi
-        .unsubscribeFromJobByJobNumber(
-          project.creator,
-          project.name,
-          job.jobNumber
-        )
-        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-        .subscribe(
-          ([res, jobs]) => {
-            subs.unsubscribe();
-            let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
-            jobs[indexToUpdate] = res;
-            this.jobs$.next(jobs);
-            this.loading = false;
-          },
-          (err) => (this.loading = false)
-        );
+      this.loading = true;
+      this.subs.sink = this.updateJobsOnApiResult(
+        this.jobsApi
+          .unsubscribeFromJobByJobNumber(
+            project.creator,
+            project.name,
+            job.jobNumber
+          )
+          .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+      );
     }
   }
 

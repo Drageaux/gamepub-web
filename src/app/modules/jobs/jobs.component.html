@@ -70,15 +70,15 @@
         <!-- TODO: subscribe action -->
         <ng-container *ngIf="isSubscribed(j); else toSubscribeBlock">
           <!-- subscribed -->
-          <a class="text-success" (click)="unsubscribeFromJob(j)"
-            ><i class="fas fa-check"></i>&nbsp;Subscribed</a
-          >
+          <a class="text-success" (click)="unsubscribeFromJob(j)">
+            <i class="fas fa-check"></i>&nbsp;Subscribed
+          </a>
         </ng-container>
         <ng-template #toSubscribeBlock>
           <a class="text-primary" (click)="subscribeToJob(j)"
-            ><i class="far fa-bell"></i>&nbsp;Subscribe</a
-          ></ng-template
-        >
+            ><i class="far fa-bell"></i>&nbsp;Subscribe
+          </a>
+        </ng-template>
       </td>
     </tr>
   </tbody>
