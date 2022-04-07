@@ -24,6 +24,7 @@ import {
 import { AuthRoleGuard } from './guards/auth-role.guard';
 import { AssetsComponent } from '@modules/assets/assets.component';
 import { AssetProxyComponent } from '@modules/assets/asset-proxy/asset-proxy.component';
+import { SubmitJobComponent } from '@modules/projects/submit-job/submit-job.component';
 
 const routes: Routes = [
   {
@@ -99,6 +100,10 @@ const routes: Routes = [
               {
                 path: ProjectsRoutesNames.JOBPARAM,
                 component: JobDetailsComponent,
+              },
+              {
+                path: `${ProjectsRoutesNames.JOBPARAM}/submit`,
+                component: SubmitJobComponent,
               },
             ],
           },

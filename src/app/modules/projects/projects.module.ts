@@ -15,6 +15,7 @@ import { JobListingComponent } from './job-listing/job-listing.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { CreateJobComponent } from './create-job/create-job.component';
+import { SubmitJobComponent } from './submit-job/submit-job.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CreateJobComponent } from './create-job/create-job.component';
     JobDetailsComponent,
     ProjectDetailsComponent,
     CreateJobComponent,
+    SubmitJobComponent,
   ],
   imports: [
     CommonModule,
