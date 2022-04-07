@@ -20,7 +20,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
   jobs$ = new ReplaySubject<Job[]>(1);
-  private loading = false;
+  private loading = false; // prevent spamming subscribe buttons
   currUsername = ''; // only needed to compare subscribed status in UI
 
   constructor(
