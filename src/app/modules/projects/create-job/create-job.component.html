@@ -14,7 +14,8 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="row">
-      <div class="col-12 col-md-8">
+      <!-- <div class="col-12 col-md-8"> -->
+      <div class="col">
         <label for="job-title" class="required">Title</label>
         <input
           id="job-title"
@@ -31,7 +32,7 @@
           <div *ngIf="title?.errors?.['required']">Title is required.</div>
         </div>
       </div>
-      <div class="col-12 col-md-4"></div>
+      <!-- <div class="col-12 col-md-4"></div> -->
     </div>
 
     <hr />
