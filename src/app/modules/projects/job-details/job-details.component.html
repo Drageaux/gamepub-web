@@ -7,11 +7,12 @@
           >#{{ job.jobNumber }}</span
         >
       </h2>
-      <a [routerLink]="['../', newJobLink]"
-        ><button class="btn btn-primary">New Job</button></a
-      >
+      <!-- <a [routerLink]="['../', newJobLink]"
+      ><button class="btn btn-primary">New Job</button></a
+      > -->
     </div>
     <hr />
+
     <div class="row">
       <div class="col-12 col-sm-8">
         <!-- New Comment -->
@@ -23,10 +24,7 @@
             [ngModelOptions]="{ standalone: true }"
             placeholder="Add a new comment..."
           />
-          <div class="btn-group float-end">
-            <button class="btn btn-secondary mr-2" (click)="newComment = ''">
-              Cancel
-            </button>
+          <div class="btn-group">
             <button
               [disabled]="submitting || newComment === ''"
               class="btn btn-success ml-2"
@@ -36,6 +34,10 @@
                 >Commenting...</ng-container
               >
               <ng-template #elseBlock>Comment</ng-template>
+            </button>
+
+            <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+              Cancel
             </button>
           </div>
           <div class="clearfix"></div>
@@ -63,9 +65,45 @@
             {{ c.body }}
           </div>
         </div>
+
+        <!-- Have a comment input down below for convenience -->
+        <div class="form-group pb-3" *ngIf="comments && comments.length >= 10">
+          <input
+            type="textarea"
+            class="form-control mb-2"
+            [(ngModel)]="newComment"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="Add a new comment..."
+          />
+          <div class="btn-group">
+            <button
+              [disabled]="submitting || newComment === ''"
+              class="btn btn-success ml-2"
+              (click)="postComment()"
+            >
+              <ng-container *ngIf="submitting; else elseBlock"
+                >Commenting...</ng-container
+              >
+              <ng-template #elseBlock>Comment</ng-template>
+            </button>
+
+            <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+              Cancel
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
       </div>
 
-      <div class="col-12 col-sm-4">Have a submission?</div>
+      <div class="col-12 col-sm-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Have a submission?</h5>
+            <p class="card-text">Send your work to the job creator.</p>
+            <a href="#" class="btn btn-success">Submission Page</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
