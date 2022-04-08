@@ -54,11 +54,13 @@
 
   label {
     font-weight: bold;
+    margin-top: 0.25rem;
     margin-bottom: 0.25rem;
-  }
 
-  label:not(:first-child) {
-    margin-top: 1rem;
+    .text-muted,
+    small {
+      font-weight: 500;
+    }
   }
 
   .help-texts {
