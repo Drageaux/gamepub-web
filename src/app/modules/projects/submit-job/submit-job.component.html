@@ -4,5 +4,22 @@
     <p>If the owner approves, your submission included in the project.</p>
   </div>
 
-  <form></form>
+  <form class="form-group">
+    <div class="mb-3">
+      <label for="github-repo" class="required">GitHub Repo</label>
+      <input
+        id="github-repo"
+        type="text"
+        class="form-control"
+        placeholder="owner/project-name"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">
+        Description&nbsp;<small class="text-muted">(Optional)</small>
+      </label>
+      <textarea class="form-control" id="description" rows="3"></textarea>
+    </div>
+  </form>
 </div>
