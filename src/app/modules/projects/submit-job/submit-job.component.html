@@ -29,8 +29,7 @@
       </div>
       <div class="help-texts">
         <small id="github-repo-help" class="form-text text-muted"
-          >Link your project's source code repository from GitHub to help others
-          see the progress and join your cause.</small
+          >Submit your asset or package source code from a GitHub repo.</small
         >
       </div>
     </div>
@@ -56,7 +55,9 @@
             Display name must be at most 400 characters long.
           </div>
         </div>
-        <small class="form-text text-muted">Character limit: 400</small>
+        <small class="form-text text-muted"
+          >Character limit: <b>{{ body?.value.length || 0 }}/400</b></small
+        >
       </div>
     </div>
 
