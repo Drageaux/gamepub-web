@@ -74,8 +74,6 @@ export class SubmitJobComponent implements OnInit {
               this.projectname,
               this.jobsLink,
               this.jobnumber,
-              this.submissionsLink,
-              res.submissionNumber,
             ]);
           } else {
             // resetForm also resets the submitted status, while reset() doesn't
