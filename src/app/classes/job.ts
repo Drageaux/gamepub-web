@@ -10,4 +10,6 @@ export interface Job {
   imageUrl?: string;
   comments?: JobComment[];
   subscribers?: string[];
+
+  submissionsCount?: number;
 }

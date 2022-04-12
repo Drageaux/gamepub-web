@@ -13,4 +13,6 @@ export interface Project {
   githubRepo?: string;
   description?: string;
   private?: boolean;
+
+  jobsCount?: number;
 }
