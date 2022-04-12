@@ -1,25 +1,74 @@
 <div class="container">
   <div class="text-center my-4 border-bottom">
     <h4>Submit your work</h4>
-    <p>If the owner approves, your submission included in the project.</p>
+    <p>
+      If the owner approves, your submission will be included in the project.
+    </p>
   </div>
 
-  <form class="form-group">
+  <form
+    class="form-group"
+    [formGroup]="jobSubmissionForm"
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+  >
     <div class="mb-3">
-      <label for="github-repo" class="required">GitHub Repo</label>
-      <input
-        id="github-repo"
-        type="text"
-        class="form-control"
-        placeholder="owner/project-name"
-        required
-      />
+      <label for="github-repo" class="required">GitHub Repo </label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">github.com/</div>
+        </div>
+        <input
+          id="github-repo"
+          type="text"
+          formControlName="githubRepo"
+          class="form-control"
+          placeholder="owner/project-name"
+          required
+        />
+      </div>
+      <div class="help-texts">
+        <small id="github-repo-help" class="form-text text-muted"
+          >Link your project's source code repository from GitHub to help others
+          see the progress and join your cause.</small
+        >
+      </div>
     </div>
+
     <div class="mb-3">
       <label for="description" class="form-label">
         Description&nbsp;<small class="text-muted">(Optional)</small>
       </label>
-      <textarea class="form-control" id="description" rows="3"></textarea>
+      <textarea
+        class="form-control"
+        id="body"
+        rows="3"
+        maxlength="400"
+        formControlName="body"
+      ></textarea>
+
+      <div class="help-texts">
+        <div
+          *ngIf="body?.invalid && (body?.dirty || body?.touched)"
+          class="text-danger"
+        >
+          <div *ngIf="body?.errors?.['maxlength']">
+            Display name must be at most 400 characters long.
+          </div>
+        </div>
+        <small class="form-text text-muted">Character limit: 400</small>
+      </div>
     </div>
+
+    <hr />
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="
+        jobSubmissionForm.invalid || jobSubmissionForm.pending || form.submitted
+      "
+    >
+      {{ !form.submitted ? "Send Submission" : "Sending..." }}
+    </button>
   </form>
 </div>

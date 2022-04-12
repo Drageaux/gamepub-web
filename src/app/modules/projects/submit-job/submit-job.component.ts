@@ -57,12 +57,9 @@ export class SubmitJobComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    const username = this.projectService.username;
-    const projectname = this.projectService.projectname;
-
     const { githubRepo, body } = this.jobSubmissionForm.value;
     this.subs.sink = this.jobsApi
-      .postJobSubmission(username, projectname, this.jobnumber, {
+      .postJobSubmission(this.username, this.projectname, this.jobnumber, {
         githubRepo: githubRepo.trim(),
         body: body.trim(),
       } as JobSubmission)
@@ -72,9 +69,9 @@ export class SubmitJobComponent implements OnInit {
             // keep the navigation requirements at a minimum);
             // reuse username and projectname so the backend query doesn't need to populate
             this.router.navigate([
-              username,
+              this.username,
               this.projectsLink,
-              projectname,
+              this.projectname,
               this.jobsLink,
               this.jobnumber,
               this.submissionsLink,
