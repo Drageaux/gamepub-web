@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
+import { JobSubmission } from '@classes/job-submission';
 import { Project } from '@classes/project';
 import { Observable, of } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
@@ -118,6 +119,23 @@ export class JobsApiService {
       .post<ApiResponse<JobComment>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/comments`,
         { body }
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  postJobSubmission(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    body: JobSubmission
+  ): Observable<JobSubmission> {
+    return this.http
+      .post<ApiResponse<JobSubmission>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions`,
+        body
       )
       .pipe(
         shareReplay(1),
