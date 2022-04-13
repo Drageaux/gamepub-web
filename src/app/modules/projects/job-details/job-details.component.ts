@@ -16,9 +16,9 @@ import { UsersService } from '@services/users.service';
 })
 export class JobDetailsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-  private username!: string;
-  private projectname!: string;
-  private jobnumber!: number | string;
+  private _username!: string;
+  private _projectname!: string;
+  private _jobnumber!: number | string;
 
   newJobLink = ProjectsRoutesNames.NEWJOB;
   jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
@@ -32,6 +32,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   newComment = '';
   submitting = false;
 
+  get username() {
+    return this._username;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
@@ -41,30 +45,30 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.username = this.projectsService.username;
-    this.projectname = this.projectsService.projectname;
-    this.jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
+    this._username = this.projectsService.username;
+    this._projectname = this.projectsService.projectname;
+    this._jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
 
     this.subs.sink = this.usersService.username$.subscribe(
       (username) => (this.currUsername = username || '')
     );
 
     this.subs.sink = this.jobsApi
-      .getJobByJobNumber(this.username, this.projectname, this.jobnumber)
+      .getJobByJobNumber(this._username, this._projectname, this._jobnumber)
       .subscribe((job) => {
         this.job = job;
         this.ref.markForCheck();
       });
 
     this.subs.sink = this.jobsApi
-      .getJobComments(this.username, this.projectname, this.jobnumber)
+      .getJobComments(this._username, this._projectname, this._jobnumber)
       .subscribe((comments) => {
         this.comments = comments;
         this.ref.markForCheck();
       });
 
     this.subs.sink = this.jobsApi
-      .getJobSubmissions(this.username, this.projectname, this.jobnumber)
+      .getJobSubmissions(this._username, this._projectname, this._jobnumber)
       .subscribe((submissions) => {
         this.submissions = submissions.sort(
           (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
@@ -79,9 +83,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.submitting = true;
     this.subs.sink = this.jobsApi
       .postJobComment(
-        this.username,
-        this.projectname,
-        this.jobnumber,
+        this._username,
+        this._projectname,
+        this._jobnumber,
         this.newComment
       )
       .subscribe(

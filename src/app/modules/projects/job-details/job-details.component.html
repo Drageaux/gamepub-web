@@ -31,8 +31,8 @@
       >
         <div>
           <ng-container *ngIf="c?.user; else anonBlock">
-            <a [routerLink]="['', c.user]"
-              ><b>{{ c.user }}</b></a
+            <b
+              ><a [routerLink]="['', c.user]">{{ c.user }}</a></b
             ></ng-container
           >
           <ng-template #anonBlock> <b>[Anonymous]</b></ng-template
@@ -40,6 +40,9 @@
             class="text-muted"
             title="{{ c.createdAt | date: 'medium' }}"
             >commented {{ c.createdAt | dateAgo }}</span
+          >
+          <span class="badge bg-secondary float-end" *ngIf="c.user === username"
+            >Owner</span
           >
         </div>
         <div>
