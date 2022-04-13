@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Job } from '@classes/job';
+import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
 import { JobSubmission } from '@classes/job-submission';
+import { JobSubscription } from '@classes/job-subscription';
 import { Project } from '@classes/project';
 import { Observable, of } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
@@ -62,15 +63,34 @@ export class JobsApiService {
       );
   }
 
+  patchJobByJobNumber(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    changes: Partial<Job>
+  ): Observable<Job> {
+    return this.http
+      .patch<ApiResponse<Job>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}`,
+        changes
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   subscribeToJobByJobNumber(
     username: string,
     projName: string,
-    jobNumber: number | string
-  ): Observable<Job> {
+    jobNumber: number | string,
+    accepted = true,
+    notified = true
+  ): Observable<JobWithSubscriptionStatus> {
     return this.http
-      .put<ApiResponse<Job>>(
-        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/subscribe`,
-        {}
+      .put<ApiResponse<JobWithSubscriptionStatus>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/subscription`,
+        { accepted, notified }
       )
       .pipe(
         shareReplay(1),
@@ -82,15 +102,15 @@ export class JobsApiService {
     username: string,
     projName: string,
     jobNumber: number | string
-  ): Observable<Job> {
+  ): Observable<boolean> {
     return this.http
-      .put<ApiResponse<Job>>(
-        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/unsubscribe`,
-        {}
+      .delete<ApiResponse<null>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/subscription`,
+        { observe: 'response' }
       )
       .pipe(
         shareReplay(1),
-        map((res) => res.data)
+        map((response) => response.status >= 200 && response.status < 300)
       );
   }
 
