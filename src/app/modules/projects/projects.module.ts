@@ -18,6 +18,8 @@ import { CreateJobComponent } from './create-job/create-job.component';
 import { SubmitJobComponent } from './submit-job/submit-job.component';
 import { CreateCommentComponent } from './create-comment/create-comment.component';
 import { SubmissionDetailsComponent } from './submission-details/submission-details.component';
+import { JobPageComponent } from './job-details/job-page/job-page.component';
+import { JobCommentsComponent } from './job-page/job-comments/job-comments.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { SubmissionDetailsComponent } from './submission-details/submission-deta
     SubmitJobComponent,
     CreateCommentComponent,
     SubmissionDetailsComponent,
+    JobPageComponent,
+    JobCommentsComponent,
   ],
   imports: [
     CommonModule,
