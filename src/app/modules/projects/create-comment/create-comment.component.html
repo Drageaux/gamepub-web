@@ -1,0 +1,39 @@
+<div class="form-group">
+  <div class="position-relative">
+    <textarea
+      type="textarea"
+      class="form-control mb-2 pe-5"
+      [(ngModel)]="commentText"
+      (ngModelChange)="onTypeEvent.emit($event)"
+      placeholder="Add a new comment..."
+      maxLength="400"
+      #commentInput
+      rows="3"
+    ></textarea>
+    <small
+      class="position-absolute"
+      [style]="{
+        right: '1rem',
+        bottom: '0.5rem'
+      }"
+      ><b>{{ 400 - commentText.length }}</b></small
+    >
+  </div>
+
+  <div class="float-start">
+    <button
+      [disabled]="submitting || commentText === ''"
+      class="btn btn-success me-2"
+      (click)="onSubmit(commentInput.value)"
+    >
+      <ng-container *ngIf="submitting; else elseBlock"
+        >Commenting...</ng-container
+      >
+      <ng-template #elseBlock>Comment</ng-template>
+    </button>
+  </div>
+  <button class="btn btn-secondary" (click)="commentText = ''">Clear</button>
+
+  <div class="help-texts text-muted float-end me-3"></div>
+  <div class="clearfix"></div>
+</div>

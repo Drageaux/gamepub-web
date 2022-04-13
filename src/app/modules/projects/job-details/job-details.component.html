@@ -13,34 +13,15 @@
   <hr />
 
   <div class="row">
-    <div class="col-12 col-sm-8">
+    <div class="col-12 order-2 col-sm-8 order-sm-1">
       <!-- New Comment -->
-      <div class="form-group pb-3">
-        <input
-          type="textarea"
-          class="form-control mb-2"
-          [(ngModel)]="newComment"
-          [ngModelOptions]="{ standalone: true }"
-          placeholder="Add a new comment..."
-        />
-        <div>
-          <button
-            [disabled]="submitting || newComment === ''"
-            class="btn btn-success me-2"
-            (click)="postComment()"
-          >
-            <ng-container *ngIf="submitting; else elseBlock"
-              >Commenting...</ng-container
-            >
-            <ng-template #elseBlock>Comment</ng-template>
-          </button>
-
-          <button class="btn btn-secondary" (click)="newComment = ''">
-            Cancel
-          </button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
+      <app-create-comment
+        class="mb-3 d-block"
+        [commentText]="newComment"
+        (onTypeEvent)="newComment = $event"
+        (onSubmitEvent)="postComment()"
+        [submitting]="submitting"
+      ></app-create-comment>
 
       <!-- Comments -->
       <div
@@ -66,35 +47,18 @@
       </div>
 
       <!-- Have a comment input down below for convenience -->
-      <div class="form-group pb-3" *ngIf="comments && comments.length >= 10">
-        <input
-          type="textarea"
-          class="form-control mb-2"
-          [(ngModel)]="newComment"
-          [ngModelOptions]="{ standalone: true }"
-          placeholder="Add a new comment..."
-        />
-        <div>
-          <button
-            [disabled]="submitting || newComment === ''"
-            class="btn btn-success me-2"
-            (click)="postComment()"
-          >
-            <ng-container *ngIf="submitting; else elseBlock"
-              >Commenting...</ng-container
-            >
-            <ng-template #elseBlock>Comment</ng-template>
-          </button>
-
-          <button class="btn btn-secondary" (click)="newComment = ''">
-            Cancel
-          </button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
+      <ng-container *ngIf="comments && comments.length >= 10">
+        <app-create-comment
+          class="mb-3 d-block"
+          [commentText]="newComment"
+          (onTypeEvent)="newComment = $event"
+          (onSubmitEvent)="postComment()"
+          [submitting]="submitting"
+        ></app-create-comment
+      ></ng-container>
     </div>
 
-    <div class="col-12 col-sm-4">
+    <div class="col-12 order-1 col-sm-4 order-sm-2 sticky-sm-top mb-5">
       <div class="card text-left">
         <div class="card-body">
           <h5 class="card-title">

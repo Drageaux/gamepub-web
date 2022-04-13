@@ -36,7 +36,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private jobsApi: JobsApiService,
     private projectsService: ProjectsService,
     private usersService: UsersService,
-    private ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -84,13 +84,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.newComment = '';
           this.submitting = false;
           // TODO: push new comment to array
-          this.ref.markForCheck();
+          this.ref.detectChanges();
         },
         (err) => {
           // TODO: display error message
           console.error(err);
           this.submitting = false;
-          this.ref.markForCheck();
+          this.ref.detectChanges();
         }
       );
   }
