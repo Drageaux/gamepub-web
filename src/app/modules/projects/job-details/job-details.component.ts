@@ -23,6 +23,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   newJobLink = ProjectsRoutesNames.NEWJOB;
   jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
 
+  currUsername = '';
   job!: Job;
   comments!: JobComment[];
   submissions!: JobSubmission[];
@@ -43,6 +44,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.username = this.projectsService.username;
     this.projectname = this.projectsService.projectname;
     this.jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
+
+    this.subs.sink = this.usersService.username$.subscribe(
+      (username) => (this.currUsername = username || '')
+    );
 
     this.subs.sink = this.jobsApi
       .getJobByJobNumber(this.username, this.projectname, this.jobnumber)

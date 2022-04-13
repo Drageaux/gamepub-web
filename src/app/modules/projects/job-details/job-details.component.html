@@ -16,6 +16,7 @@
     <div class="col-12 order-2 col-sm-8 order-sm-1">
       <!-- New Comment -->
       <app-create-comment
+        *ngIf="currUsername !== ''"
         class="mb-3 d-block"
         [commentText]="newComment"
         (onTypeEvent)="newComment = $event"
@@ -47,15 +48,14 @@
       </div>
 
       <!-- Have a comment input down below for convenience -->
-      <ng-container *ngIf="comments && comments.length >= 10">
-        <app-create-comment
-          class="mb-3 d-block"
-          [commentText]="newComment"
-          (onTypeEvent)="newComment = $event"
-          (onSubmitEvent)="postComment()"
-          [submitting]="submitting"
-        ></app-create-comment
-      ></ng-container>
+      <app-create-comment
+        *ngIf="comments && comments.length >= 10 && currUsername !== ''"
+        class="mb-3 d-block"
+        [commentText]="newComment"
+        (onTypeEvent)="newComment = $event"
+        (onSubmitEvent)="postComment()"
+        [submitting]="submitting"
+      ></app-create-comment>
     </div>
 
     <div class="col-12 order-1 col-sm-4 order-sm-2 sticky-sm-top mb-5">
