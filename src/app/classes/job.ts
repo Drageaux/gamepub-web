@@ -10,6 +10,14 @@ export interface Job {
   imageUrl?: string;
   comments?: JobComment[];
   subscribers?: string[];
+  closed?: boolean;
 
   submissionsCount?: number;
+}
+
+export interface JobWithSubscriptionStatus extends Job {
+  subscription?: {
+    notified?: boolean;
+    accepted?: boolean;
+  };
 }
