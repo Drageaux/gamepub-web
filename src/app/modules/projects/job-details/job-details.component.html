@@ -97,22 +97,25 @@
     <div class="col-12 col-sm-4">
       <div class="card text-left">
         <div class="card-body">
-          <h5 class="card-title">Submissions</h5>
-          <div *ngIf="submissions">
-            <div *ngFor="let s of submissions | slice: 0:submissionsLimit">
+          <h5 class="card-title">
+            Submissions
+            <small class="text-muted">{{ submissions?.length || 0 }}</small>
+          </h5>
+          <ol *ngIf="submissions">
+            <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
               <a
                 target="_blank"
                 [href]="'https://www.github.com/' + s.githubRepo"
                 >{{ s.githubRepo }}</a
               >
-            </div>
+            </li>
 
             <a
               *ngIf="submissionsLimit < submissions.length"
               (click)="submissionsLimit = submissionsLimit + 5"
-              >See more</a
+              ><b>See more</b></a
             >
-          </div>
+          </ol>
           <hr />
           <h5>Got your own submission?</h5>
           <p class="card-text">Send it to the job creator.</p>

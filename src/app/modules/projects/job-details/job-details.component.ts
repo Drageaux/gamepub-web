@@ -7,6 +7,7 @@ import { JobComment } from '@classes/job-comment';
 import { Job } from '@classes/job';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobSubmission } from '@classes/job-submission';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'app-job-details',
@@ -34,6 +35,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
     private projectsService: ProjectsService,
+    private usersService: UsersService,
     private ref: ChangeDetectorRef
   ) {}
 
@@ -59,7 +61,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.subs.sink = this.jobsApi
       .getJobSubmissions(this.username, this.projectname, this.jobnumber)
       .subscribe((submissions) => {
-        this.submissions = submissions;
+        this.submissions = submissions.sort(
+          (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
+        );
         this.ref.markForCheck();
       });
   }
