@@ -13,7 +13,42 @@
   <hr />
 
   <div class="row">
-    <div class="col-12 order-2 col-sm-8 order-sm-1">
+    <div class="col-12 col-sm-4 sticky-sm-top mb-5">
+      <div class="card text-left">
+        <div class="card-body">
+          <h5 class="card-title">
+            Submissions
+            <small class="text-muted">{{ submissions?.length || 0 }}</small>
+          </h5>
+          <ol *ngIf="submissions">
+            <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
+              <!-- <a
+                target="_blank"
+                [href]="'https://www.github.com/' + s.githubRepo"
+                >{{ s.githubRepo }}</a
+              > -->
+              <a [routerLink]="['./', submissionsLink, s.submissionNumber]">{{
+                s.user
+              }}</a>
+            </li>
+
+            <a
+              *ngIf="submissionsLimit < submissions.length"
+              (click)="submissionsLimit = submissionsLimit + 5"
+              ><b>See more</b></a
+            >
+          </ol>
+          <hr />
+          <h5>Got your own submission?</h5>
+          <p class="card-text">Send it to the job creator.</p>
+          <a [routerLink]="['./', 'submit']" class="btn btn-success"
+            >Submission Page</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-8">
       <!-- New Comment -->
       <app-create-comment
         *ngIf="currUsername !== ''"
@@ -59,41 +94,6 @@
         (onSubmitEvent)="postComment()"
         [submitting]="submitting"
       ></app-create-comment>
-    </div>
-
-    <div class="col-12 order-1 col-sm-4 order-sm-2 sticky-sm-top mb-5">
-      <div class="card text-left">
-        <div class="card-body">
-          <h5 class="card-title">
-            Submissions
-            <small class="text-muted">{{ submissions?.length || 0 }}</small>
-          </h5>
-          <ol *ngIf="submissions">
-            <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
-              <!-- <a
-                target="_blank"
-                [href]="'https://www.github.com/' + s.githubRepo"
-                >{{ s.githubRepo }}</a
-              > -->
-              <a [routerLink]="['./', submissionsLink, s.submissionNumber]">{{
-                s.user
-              }}</a>
-            </li>
-
-            <a
-              *ngIf="submissionsLimit < submissions.length"
-              (click)="submissionsLimit = submissionsLimit + 5"
-              ><b>See more</b></a
-            >
-          </ol>
-          <hr />
-          <h5>Got your own submission?</h5>
-          <p class="card-text">Send it to the job creator.</p>
-          <a [routerLink]="['./', 'submit']" class="btn btn-success"
-            >Submission Page</a
-          >
-        </div>
-      </div>
     </div>
   </div>
 </div>
