@@ -95,10 +95,27 @@
     </div>
 
     <div class="col-12 col-sm-4">
-      <div class="card text-center">
+      <div class="card text-left">
         <div class="card-body">
-          <h5 class="card-title">Have a submission?</h5>
-          <p class="card-text">Send your work to the job creator.</p>
+          <h5 class="card-title">Submissions</h5>
+          <div *ngIf="submissions">
+            <div *ngFor="let s of submissions | slice: 0:submissionsLimit">
+              <a
+                target="_blank"
+                [href]="'https://www.github.com/' + s.githubRepo"
+                >{{ s.githubRepo }}</a
+              >
+            </div>
+
+            <a
+              *ngIf="submissionsLimit < submissions.length"
+              (click)="submissionsLimit = submissionsLimit + 5"
+              >See more</a
+            >
+          </div>
+          <hr />
+          <h5>Got your own submission?</h5>
+          <p class="card-text">Send it to the job creator.</p>
           <a [routerLink]="['./', 'submit']" class="btn btn-success"
             >Submission Page</a
           >
