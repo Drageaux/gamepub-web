@@ -67,16 +67,27 @@
       </td>
 
       <td class="d-none d-md-table-cell" *ngIf="currUsername">
-        <!-- TODO: subscribe action -->
-        <ng-container *ngIf="j.subscription?.accepted; else toSubscribeBlock">
-          <!-- subscribed -->
-          <a class="text-success" (click)="unsubscribeFromJob(j)">
-            <i class="fas fa-check"></i>&nbsp;Subscribed
+        <ng-container *ngIf="j.subscription?.accepted; else toAcceptBlock">
+          <!-- accepted/subscribed -->
+          <a class="text-success" (click)="unacceptJob(j)">
+            <i class="fas fa-check"></i>&nbsp;Accepted
           </a>
         </ng-container>
-        <ng-template #toSubscribeBlock>
-          <a class="text-primary" (click)="subscribeToJob(j)"
-            ><i class="far fa-bell"></i>&nbsp;Subscribe
+        <ng-template #toAcceptBlock>
+          <a class="text-primary" (click)="acceptJob(j)"
+            ><i class="fas fa-handshake"></i>&nbsp;Accept
+          </a>
+        </ng-template>
+        &nbsp;
+        <ng-container *ngIf="j.subscription?.notified; else toNotifyBlock">
+          <!-- notified -->
+          <a class="text-success" (click)="stopGettingNotificationsAboutJob(j)">
+            <i class="fas fa-bell"></i>&nbsp;Notified
+          </a>
+        </ng-container>
+        <ng-template #toNotifyBlock>
+          <a class="text-primary" (click)="getNotificationsAboutJob(j)"
+            ><i class="far fa-bell"></i>&nbsp;Notify
           </a>
         </ng-template>
       </td>

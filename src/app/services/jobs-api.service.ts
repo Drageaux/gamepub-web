@@ -84,13 +84,12 @@ export class JobsApiService {
     username: string,
     projName: string,
     jobNumber: number | string,
-    accepted = true,
-    notified = true
+    body: { accepted?: boolean; notified?: boolean }
   ): Observable<JobWithSubscriptionStatus> {
     return this.http
       .put<ApiResponse<JobWithSubscriptionStatus>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/subscription`,
-        { accepted, notified }
+        { ...body }
       )
       .pipe(
         shareReplay(1),

@@ -56,9 +56,31 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /*************************************************************************/
+  /***************************** EVENT HANDLERS ****************************/
+  /*************************************************************************/
+  acceptJob(job: JobWithSubscriptionStatus) {
+    this.updateSubscription(job, { accepted: true, notified: true });
+  }
+
+  unacceptJob(job: JobWithSubscriptionStatus) {
+    this.updateSubscription(job, { accepted: false, notified: false });
+  }
+
+  getNotificationsAboutJob(job: JobWithSubscriptionStatus) {
+    this.updateSubscription(job, { notified: true });
+  }
+
+  stopGettingNotificationsAboutJob(job: JobWithSubscriptionStatus) {
+    this.updateSubscription(job, { notified: false });
+  }
+
+  /*************************************************************************/
   /******************************* API CALLS *******************************/
   /*************************************************************************/
-  subscribeToJob(job: JobWithSubscriptionStatus) {
+  updateSubscription(
+    job: JobWithSubscriptionStatus,
+    body: { accepted?: boolean; notified?: boolean }
+  ) {
     const project = this.getProject(job);
 
     if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
@@ -68,8 +90,7 @@ export class JobsComponent implements OnInit, OnDestroy {
           project.creator,
           project.name,
           job.jobNumber,
-          true,
-          true
+          body
         )
         .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
         .subscribe(
