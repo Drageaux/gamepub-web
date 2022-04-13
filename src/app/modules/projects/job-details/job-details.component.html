@@ -23,10 +23,10 @@
           [ngModelOptions]="{ standalone: true }"
           placeholder="Add a new comment..."
         />
-        <div class="btn-group">
+        <div>
           <button
             [disabled]="submitting || newComment === ''"
-            class="btn btn-success ml-2"
+            class="btn btn-success me-2"
             (click)="postComment()"
           >
             <ng-container *ngIf="submitting; else elseBlock"
@@ -35,7 +35,7 @@
             <ng-template #elseBlock>Comment</ng-template>
           </button>
 
-          <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+          <button class="btn btn-secondary" (click)="newComment = ''">
             Cancel
           </button>
         </div>
@@ -74,10 +74,10 @@
           [ngModelOptions]="{ standalone: true }"
           placeholder="Add a new comment..."
         />
-        <div class="btn-group">
+        <div>
           <button
             [disabled]="submitting || newComment === ''"
-            class="btn btn-success ml-2"
+            class="btn btn-success me-2"
             (click)="postComment()"
           >
             <ng-container *ngIf="submitting; else elseBlock"
@@ -86,7 +86,7 @@
             <ng-template #elseBlock>Comment</ng-template>
           </button>
 
-          <button class="btn btn-secondary mr-2" (click)="newComment = ''">
+          <button class="btn btn-secondary" (click)="newComment = ''">
             Cancel
           </button>
         </div>
