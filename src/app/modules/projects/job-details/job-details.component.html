@@ -41,8 +41,8 @@
             title="{{ c.createdAt | date: 'medium' }}"
             >commented {{ c.createdAt | dateAgo }}</span
           >
-          <span class="badge bg-secondary float-end" *ngIf="c.user === username"
-            >Owner</span
+          <span class="badge bg-secondary float-end" *ngIf="isCreator()"
+            >Creator</span
           >
         </div>
         <div>

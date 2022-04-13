@@ -104,6 +104,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       );
   }
 
+  isCreator() {
+    return this._username === this.currUsername;
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
