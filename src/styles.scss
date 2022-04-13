@@ -46,6 +46,10 @@
 @import "utilities/api";
 
 // Custom
+a {
+  cursor: pointer;
+}
+
 .form-group {
   label.required:after {
     color: red;
