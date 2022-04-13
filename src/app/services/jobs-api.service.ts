@@ -126,6 +126,21 @@ export class JobsApiService {
       );
   }
 
+  getJobSubmissions(
+    username: string,
+    projName: string,
+    jobNumber: number | string
+  ): Observable<JobSubmission[]> {
+    return this.http
+      .get<ApiResponse<JobSubmission[]>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
   postJobSubmission(
     username: string,
     projName: string,
