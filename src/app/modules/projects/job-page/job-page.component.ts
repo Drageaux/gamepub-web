@@ -16,7 +16,7 @@ import { ProjectsService } from '../projects.service';
 })
 export class JobPageComponent implements OnInit {
   private subs = new SubSink();
-  private _username!: string;
+  private _creator!: string;
   private _projectname!: string;
   private _jobnumber!: number | string;
 
@@ -31,11 +31,16 @@ export class JobPageComponent implements OnInit {
   submissions!: JobSubmission[];
   submissionsLimit = 5;
 
-  newComment = '';
-  submitting = false;
+  get creator() {
+    return this._creator;
+  }
 
-  get username() {
-    return this._username;
+  get projectName() {
+    return this._projectname;
+  }
+
+  get jobNumber() {
+    return this._jobnumber;
   }
 
   constructor(
@@ -47,67 +52,25 @@ export class JobPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._username = this.projectsService.username;
+    this._creator = this.projectsService.username;
     this._projectname = this.projectsService.projectname;
     this._jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
 
-    this.subs.sink = this.usersService.username$.subscribe(
-      (username) => (this.currUsername = username || '')
-    );
-
     this.subs.sink = this.jobsApi
-      .getJobByJobNumber(this._username, this._projectname, this._jobnumber)
+      .getJobByJobNumber(this._creator, this._projectname, this._jobnumber)
       .subscribe((job) => {
         this.job = job;
         this.ref.markForCheck();
       });
 
     this.subs.sink = this.jobsApi
-      .getJobComments(this._username, this._projectname, this._jobnumber)
-      .subscribe((comments) => {
-        this.comments = comments;
-        this.ref.markForCheck();
-      });
-
-    this.subs.sink = this.jobsApi
-      .getJobSubmissions(this._username, this._projectname, this._jobnumber)
+      .getJobSubmissions(this._creator, this._projectname, this._jobnumber)
       .subscribe((submissions) => {
         this.submissions = submissions.sort(
           (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
         );
         this.ref.markForCheck();
       });
-  }
-
-  postComment() {
-    if (!this.newComment) return;
-
-    this.submitting = true;
-    this.subs.sink = this.jobsApi
-      .postJobComment(
-        this._username,
-        this._projectname,
-        this._jobnumber,
-        this.newComment
-      )
-      .subscribe(
-        (comment) => {
-          this.newComment = '';
-          this.submitting = false;
-          // TODO: push new comment to array
-          this.ref.detectChanges();
-        },
-        (err) => {
-          // TODO: display error message
-          console.error(err);
-          this.submitting = false;
-          this.ref.detectChanges();
-        }
-      );
-  }
-
-  isCreator() {
-    return this._username === this.currUsername;
   }
 
   ngOnDestroy(): void {

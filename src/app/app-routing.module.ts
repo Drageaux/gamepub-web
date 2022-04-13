@@ -26,6 +26,7 @@ import { AssetsComponent } from '@modules/assets/assets.component';
 import { AssetProxyComponent } from '@modules/assets/asset-proxy/asset-proxy.component';
 import { SubmitJobComponent } from '@modules/projects/submit-job/submit-job.component';
 import { SubmissionDetailsComponent } from '@modules/projects/submission-details/submission-details.component';
+import { SubmissionListingComponent } from '@modules/projects/submission-listing/submission-listing.component';
 
 const routes: Routes = [
   {
@@ -100,16 +101,27 @@ const routes: Routes = [
               },
               {
                 path: ProjectsRoutesNames.JOBPARAM,
-                component: JobDetailsComponent,
-              },
-              {
-                path: `${ProjectsRoutesNames.JOBPARAM}/submit`,
-                pathMatch: 'full',
-                component: SubmitJobComponent,
-              },
-              {
-                path: `${ProjectsRoutesNames.JOBPARAM}/${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,
-                component: SubmissionDetailsComponent,
+                children: [
+                  {
+                    path: '',
+                    component: JobDetailsComponent,
+                    pathMatch: 'full',
+                  },
+                  {
+                    path: `submit`,
+                    pathMatch: 'full',
+                    component: SubmitJobComponent,
+                  },
+                  {
+                    path: `${ProjectsRoutesNames.JOBPARAM}/${ProjectsRoutesNames.JOBSUBMISSIONS}`,
+                    pathMatch: 'full',
+                    component: SubmissionListingComponent,
+                  },
+                  {
+                    path: `${ProjectsRoutesNames.JOBPARAM}/${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,
+                    component: SubmissionDetailsComponent,
+                  },
+                ],
               },
             ],
           },

@@ -10,7 +10,17 @@ export class JobCommentsComponent implements OnInit {
   @Input()
   comments: JobComment[] = [];
 
+  @Input()
+  creator = '';
+
+  @Input()
+  currUsername = '';
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  isCreator() {
+    return this.creator === this.currUsername;
+  }
 }

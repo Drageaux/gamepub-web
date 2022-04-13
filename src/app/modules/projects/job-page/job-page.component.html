@@ -51,27 +51,7 @@
     </div>
 
     <div class="col-12 col-sm-8">
-      <!-- New Comment -->
-      <app-create-comment
-        *ngIf="currUsername !== ''"
-        class="mb-3 d-block"
-        [commentText]="newComment"
-        (onTypeEvent)="newComment = $event"
-        (onSubmitEvent)="postComment()"
-        [submitting]="submitting"
-      ></app-create-comment>
-
-      <app-job-comments [comments]="comments"></app-job-comments>
-
-      <!-- Have a comment input down below for convenience -->
-      <app-create-comment
-        *ngIf="comments && comments.length >= 10 && currUsername !== ''"
-        class="mb-3 d-block"
-        [commentText]="newComment"
-        (onTypeEvent)="newComment = $event"
-        (onSubmitEvent)="postComment()"
-        [submitting]="submitting"
-      ></app-create-comment>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

@@ -1,101 +1,25 @@
-<div class="container" *ngIf="job">
-  <!-- Header -->
-  <div class="d-flex flex-row justify-content-between mb-3">
-    <h2 class="m-0">
-      {{ job.title }}&nbsp;<span class="text-muted fw-normal"
-        >#{{ job.jobNumber }}</span
-      >
-    </h2>
-    <!-- <a [routerLink]="['../', newJobLink]"
-      ><button class="btn btn-primary">New Job</button></a
-      > -->
-  </div>
-  <hr />
+<!-- New Comment -->
+<app-create-comment
+  *ngIf="currUsername !== ''"
+  class="mb-3 d-block"
+  [commentText]="newComment"
+  (onTypeEvent)="newComment = $event"
+  (onSubmitEvent)="postComment()"
+  [submitting]="submitting"
+></app-create-comment>
 
-  <div class="row">
-    <div class="col-12 col-sm-4 mb-5 position-relative">
-      <div class="sticky-top" [style]="{ top: '1rem' }">
-        <div class="card text-left">
-          <div class="card-body">
-            <h5 class="card-title">
-              Submissions
-              <small class="text-muted">{{ submissions?.length || 0 }}</small>
-            </h5>
-            <ol *ngIf="submissions">
-              <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
-                <!-- <a
-                target="_blank"
-                [href]="'https://www.github.com/' + s.githubRepo"
-                >{{ s.githubRepo }}</a
-              > -->
-                <a [routerLink]="['./', submissionsLink, s.submissionNumber]">{{
-                  s.user
-                }}</a>
-              </li>
+<app-job-comments
+  [comments]="comments"
+  [creator]="creator"
+  [currUsername]="currUsername"
+></app-job-comments>
 
-              <a
-                *ngIf="submissionsLimit < submissions.length"
-                (click)="submissionsLimit = submissionsLimit + 5"
-                ><b>See more</b></a
-              >
-            </ol>
-            <hr />
-            <h5>Got your own submission?</h5>
-            <p class="card-text">Send it to the job creator.</p>
-            <a [routerLink]="['./', 'submit']" class="btn btn-success"
-              >Submission Page</a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-sm-8">
-      <!-- New Comment -->
-      <app-create-comment
-        *ngIf="currUsername !== ''"
-        class="mb-3 d-block"
-        [commentText]="newComment"
-        (onTypeEvent)="newComment = $event"
-        (onSubmitEvent)="postComment()"
-        [submitting]="submitting"
-      ></app-create-comment>
-
-      <!-- Comments -->
-      <div
-        *ngFor="let c of comments | sort: 'createdAt':-1"
-        class="comment bg-white lift-1 p-2 mb-2 border border-1 rounded"
-      >
-        <div>
-          <ng-container *ngIf="c?.user; else anonBlock">
-            <b
-              ><a [routerLink]="['', c.user]">{{ c.user }}</a></b
-            ></ng-container
-          >
-          <ng-template #anonBlock> <b>[Anonymous]</b></ng-template
-          >&nbsp;<span
-            class="text-muted"
-            title="{{ c.createdAt | date: 'medium' }}"
-            >commented {{ c.createdAt | dateAgo }}</span
-          >
-          <span class="badge bg-secondary float-end" *ngIf="isCreator()"
-            >Creator</span
-          >
-        </div>
-        <div>
-          {{ c.body }}
-        </div>
-      </div>
-
-      <!-- Have a comment input down below for convenience -->
-      <app-create-comment
-        *ngIf="comments && comments.length >= 10 && currUsername !== ''"
-        class="mb-3 d-block"
-        [commentText]="newComment"
-        (onTypeEvent)="newComment = $event"
-        (onSubmitEvent)="postComment()"
-        [submitting]="submitting"
-      ></app-create-comment>
-    </div>
-  </div>
-</div>
+<!-- Have a comment input down below for convenience -->
+<app-create-comment
+  *ngIf="comments && comments.length >= 10 && currUsername !== ''"
+  class="mb-3 d-block"
+  [commentText]="newComment"
+  (onTypeEvent)="newComment = $event"
+  (onSubmitEvent)="postComment()"
+  [submitting]="submitting"
+></app-create-comment>
