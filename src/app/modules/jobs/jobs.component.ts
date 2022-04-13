@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Job } from '@classes/job';
+import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 
@@ -19,7 +19,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   jobsLink = ProjectsRoutesNames.JOBS;
 
   private subs = new SubSink();
-  jobs$ = new ReplaySubject<Job[]>(1);
+  jobs$ = new ReplaySubject<JobWithSubscriptionStatus[]>(1);
   private loading = false; // prevent spamming subscribe buttons
   currUsername = ''; // only needed to compare subscribed status in UI
 
@@ -38,7 +38,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getProject(job: Job): Project | null {
+  getProject(job: JobWithSubscriptionStatus): Project | null {
     if (!job.project || job.project instanceof String) return null;
     return job.project as Project;
   }
@@ -48,7 +48,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     return project.creator;
   }
 
-  isSubscribed(job: Job) {
+  isSubscribed(job: JobWithSubscriptionStatus) {
     if (job?.subscribers?.length) {
       return job.subscribers.findIndex((x) => x === this.currUsername) !== -1;
     }
@@ -58,52 +58,58 @@ export class JobsComponent implements OnInit, OnDestroy {
   /*************************************************************************/
   /******************************* API CALLS *******************************/
   /*************************************************************************/
-  updateJobsOnApiResult(obs: Observable<[Job, Job[]]>): Subscription {
-    const subscription = obs.subscribe(
-      ([res, jobs]) => {
-        subscription.unsubscribe();
-        let indexToUpdate = jobs.findIndex((x) => x._id === res._id);
-        jobs[indexToUpdate] = res;
-        this.jobs$.next(jobs);
-        this.loading = false;
-      },
-      (err) => (this.loading = false)
-    );
-
-    return subscription;
-  }
-
-  subscribeToJob(job: Job) {
+  subscribeToJob(job: JobWithSubscriptionStatus) {
     const project = this.getProject(job);
 
     if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
       this.loading = true;
-      this.subs.sink = this.updateJobsOnApiResult(
-        this.jobsApi
-          .subscribeToJobByJobNumber(
-            project.creator,
-            project.name,
-            job.jobNumber
-          )
-          .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-      );
+      const sub = this.jobsApi
+        .subscribeToJobByJobNumber(
+          project.creator,
+          project.name,
+          job.jobNumber,
+          true,
+          true
+        )
+        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+        .subscribe(
+          ([jobRes, jobs]) => {
+            sub.unsubscribe();
+            let indexToUpdate = jobs.findIndex((x) => x._id === jobRes._id);
+            jobs[indexToUpdate].subscription = jobRes.subscription;
+            this.jobs$.next(jobs);
+            this.loading = false;
+          },
+          (err) => (this.loading = false)
+        );
     }
   }
 
-  unsubscribeFromJob(job: Job) {
+  unsubscribeFromJob(job: JobWithSubscriptionStatus) {
     const project = this.getProject(job);
 
     if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
       this.loading = true;
-      this.subs.sink = this.updateJobsOnApiResult(
-        this.jobsApi
-          .unsubscribeFromJobByJobNumber(
-            project.creator,
-            project.name,
-            job.jobNumber
-          )
-          .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-      );
+      const sub = this.jobsApi
+        .unsubscribeFromJobByJobNumber(
+          project.creator,
+          project.name,
+          job.jobNumber
+        )
+        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
+        .subscribe(
+          ([res, jobs]) => {
+            sub.unsubscribe();
+            if (res) {
+              let indexToUpdate = jobs.findIndex((x) => x._id === job._id);
+              delete job.subscription;
+              jobs[indexToUpdate] = job;
+              this.jobs$.next(jobs);
+            }
+            this.loading = false;
+          },
+          (err) => (this.loading = false)
+        );
     }
   }
 

@@ -68,7 +68,7 @@
 
       <td class="d-none d-md-table-cell" *ngIf="currUsername">
         <!-- TODO: subscribe action -->
-        <ng-container *ngIf="isSubscribed(j); else toSubscribeBlock">
+        <ng-container *ngIf="j.subscription?.accepted; else toSubscribeBlock">
           <!-- subscribed -->
           <a class="text-success" (click)="unsubscribeFromJob(j)">
             <i class="fas fa-check"></i>&nbsp;Subscribed
