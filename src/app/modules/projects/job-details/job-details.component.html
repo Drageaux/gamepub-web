@@ -26,7 +26,7 @@
 
       <!-- Comments -->
       <div
-        *ngFor="let c of comments"
+        *ngFor="let c of comments | sort: 'createdAt':-1"
         class="comment bg-white lift-1 p-2 mb-2 border border-1 rounded"
       >
         <div>

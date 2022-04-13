@@ -11,12 +11,14 @@ import { UploadComponent } from '@components/upload/upload.component';
 import { FileSizePipe } from './file-size.pipe';
 
 import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
+import { SortPipe } from './sort.pipe';
 
 @NgModule({
   declarations: [
     UploadComponent,
     FileSizePipe,
     DateAgoPipe,
+    SortPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     JobCardComponent,
@@ -25,6 +27,7 @@ import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
     UploadComponent,
     FileSizePipe,
     DateAgoPipe,
+    SortPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     JobCardComponent,
