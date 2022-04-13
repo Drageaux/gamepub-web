@@ -27,9 +27,9 @@
       (click)="onSubmit(commentInput.value)"
     >
       <ng-container *ngIf="submitting; else elseBlock"
-        >Commenting...</ng-container
+        ><span>Commenting...</span></ng-container
       >
-      <ng-template #elseBlock>Comment</ng-template>
+      <ng-template #elseBlock><span>Comment</span></ng-template>
     </button>
   </div>
   <button class="btn btn-secondary" (click)="commentText = ''">Clear</button>
