@@ -70,11 +70,14 @@
           </h5>
           <ol *ngIf="submissions">
             <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
-              <a
+              <!-- <a
                 target="_blank"
                 [href]="'https://www.github.com/' + s.githubRepo"
                 >{{ s.githubRepo }}</a
-              >
+              > -->
+              <a [routerLink]="['./', submissionsLink, s.submissionNumber]">{{
+                s.user
+              }}</a>
             </li>
 
             <a

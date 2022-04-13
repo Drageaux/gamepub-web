@@ -22,6 +22,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   newJobLink = ProjectsRoutesNames.NEWJOB;
   jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
+  submissionsLink = ProjectsRoutesNames.JOBSUBMISSIONS;
+  submissionParamName = ProjectsRoutesNames.JOBSUBMISSIONPARAMNAME;
 
   currUsername = '';
   job!: Job;

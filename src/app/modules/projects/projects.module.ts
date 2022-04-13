@@ -17,6 +17,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { CreateJobComponent } from './create-job/create-job.component';
 import { SubmitJobComponent } from './submit-job/submit-job.component';
 import { CreateCommentComponent } from './create-comment/create-comment.component';
+import { SubmissionDetailsComponent } from './submission-details/submission-details.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CreateCommentComponent } from './create-comment/create-comment.componen
     CreateJobComponent,
     SubmitJobComponent,
     CreateCommentComponent,
+    SubmissionDetailsComponent,
   ],
   imports: [
     CommonModule,
