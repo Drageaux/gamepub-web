@@ -15,7 +15,7 @@ import { ProjectsModule } from './projects.module';
  * @service ProjectsService
  */
 @Injectable({
-  providedIn: ProjectsModule,
+  providedIn: 'root',
 })
 export class JobPageService implements OnDestroy {
   private subs = new SubSink();
@@ -23,33 +23,20 @@ export class JobPageService implements OnDestroy {
   private _job$ = new ReplaySubject<Job | null>(1);
   private _jobNumber = 0;
 
-  constructor(
-    private projectsService: ProjectsService,
-    private jobsApi: JobsApiService
-  ) {
-    console.log('init:', projectsService.RandomNo);
-  }
-
-  get creator() {
-    return this.projectsService.username;
-  }
-
-  get projectName() {
-    return this.projectsService.projectname;
+  constructor(private jobsApi: JobsApiService) {
+    // console.log('init:', projectsService.RandomNo);
   }
 
   get jobNumber() {
     return this._jobNumber;
   }
 
-  changeJob(jobNumber: number) {
+  changeJob(creator: string, projectName: string, jobNumber: number) {
     if (jobNumber === this._jobNumber) return;
     this._jobNumber = jobNumber;
-    console.log(this.projectsService.username);
-    console.log(this.creator);
 
     this.subs.sink = this.jobsApi
-      .getJobByJobNumber(this.creator, this.projectName, this.jobNumber)
+      .getJobByJobNumber(creator, projectName, this.jobNumber)
       .subscribe(
         (job) => this._job$.next(job),
         (err) => this._job$.next(null)
