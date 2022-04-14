@@ -1,12 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
 import { JobSubmission } from '@classes/job-submission';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
+import { Subject } from 'rxjs';
 import { SubSink } from 'subsink';
+import { JobPageService } from '../job-page.service';
 import { ProjectsService } from '../projects.service';
 
 @Component({
@@ -16,9 +18,6 @@ import { ProjectsService } from '../projects.service';
 })
 export class JobPageComponent implements OnInit {
   private subs = new SubSink();
-  private _creator!: string;
-  private _projectname!: string;
-  private _jobnumber!: number | string;
 
   newJobLink = ProjectsRoutesNames.NEWJOB;
   jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
@@ -31,46 +30,52 @@ export class JobPageComponent implements OnInit {
   submissions!: JobSubmission[];
   submissionsLimit = 5;
 
-  get creator() {
-    return this._creator;
-  }
-
-  get projectName() {
-    return this._projectname;
-  }
-
-  get jobNumber() {
-    return this._jobnumber;
-  }
+  readonly noJobError$ = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private jobsApi: JobsApiService,
     private projectsService: ProjectsService,
+    private jobPageService: JobPageService,
     private usersService: UsersService,
     public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this._creator = this.projectsService.username;
-    this._projectname = this.projectsService.projectname;
-    this._jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
+    // handle error
+    this.subs.sink = this.noJobError$.subscribe((hasError) => {
+      if (hasError) this.router.navigate(['../']);
+    });
 
-    this.subs.sink = this.jobsApi
-      .getJobByJobNumber(this._creator, this._projectname, this._jobnumber)
-      .subscribe((job) => {
-        this.job = job;
+    this.subs.sink = this.route.params.subscribe((params) => {
+      if (params[this.jobParamName]) {
+        this.jobPageService.changeJob(parseInt(params[this.jobParamName]));
         this.ref.markForCheck();
-      });
+      } else {
+        // missing username or project name or job nubmer
+        this.noJobError$.next(true);
+      }
+    });
 
-    this.subs.sink = this.jobsApi
-      .getJobSubmissions(this._creator, this._projectname, this._jobnumber)
-      .subscribe((submissions) => {
-        this.submissions = submissions.sort(
-          (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
-        );
-        this.ref.markForCheck();
-      });
+    this.subs.sink = this.jobPageService.getJob().subscribe(
+      (job) => {
+        if (job) {
+          this.job = job;
+          this.ref.markForCheck();
+        } else this.noJobError$.next(true);
+      },
+      (err) => this.noJobError$.next(true)
+    );
+
+    // this.subs.sink = this.jobsApi
+    //   .getJobSubmissions(this._creator, this._projectname, this._jobnumber)
+    //   .subscribe((submissions) => {
+    //     this.submissions = submissions.sort(
+    //       (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
+    //     );
+    //     this.ref.markForCheck();
+    //   });
   }
 
   ngOnDestroy(): void {
