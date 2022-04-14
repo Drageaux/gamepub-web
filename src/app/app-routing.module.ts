@@ -27,6 +27,7 @@ import { AssetProxyComponent } from '@modules/assets/asset-proxy/asset-proxy.com
 import { SubmitJobComponent } from '@modules/projects/submit-job/submit-job.component';
 import { SubmissionDetailsComponent } from '@modules/projects/submission-details/submission-details.component';
 import { SubmissionListingComponent } from '@modules/projects/submission-listing/submission-listing.component';
+import { JobPageComponent } from '@modules/projects/job-page/job-page.component';
 
 const routes: Routes = [
   {
@@ -79,6 +80,10 @@ const routes: Routes = [
       },
       {
         path: `${ProjectsRoutesNames.PROJECTS}/${ProjectsRoutesNames.PROJECTPARAM}`,
+        loadChildren: () =>
+          import('@modules/projects/projects.module').then(
+            (m) => m.ProjectsModule
+          ),
         component: ProjectsComponent,
         children: [
           {
@@ -105,10 +110,11 @@ const routes: Routes = [
               },
               {
                 path: ProjectsRoutesNames.JOBPARAM,
+                component: JobPageComponent,
                 children: [
                   {
                     path: '',
-                    component: JobDetailsComponent,
+                    // component: JobDetailsComponent,
                     pathMatch: 'full',
                   },
                   {

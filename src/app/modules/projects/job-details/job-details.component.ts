@@ -1,3 +1,4 @@
+import { switchMap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import {
   ChangeDetectorRef,
@@ -14,6 +15,7 @@ import { Job } from '@classes/job';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobSubmission } from '@classes/job-submission';
 import { UsersService } from '@services/users.service';
+import { JobPageService } from '../job-page.service';
 
 @Component({
   selector: 'app-job-details',
@@ -21,27 +23,29 @@ import { UsersService } from '@services/users.service';
   styleUrls: ['./job-details.component.scss'],
 })
 export class JobDetailsComponent implements OnInit {
-  currUsername = '';
-
-  @Input()
-  creator!: string;
-
-  @Input()
-  projectname!: string;
-
-  @Input()
-  jobnumber!: number | string;
-
-  comments: JobComment[] = [];
-
   private subs = new SubSink();
+  currUsername = '';
+  comments: JobComment[] = [];
 
   newComment = '';
   submitting = false;
 
+  get creator() {
+    return this.jobPageService.creator;
+  }
+
+  get projectName() {
+    return this.jobPageService.projectName;
+  }
+
+  get jobNumber() {
+    return this.jobPageService.jobNumber;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
+    private jobPageService: JobPageService,
     private usersService: UsersService,
     public ref: ChangeDetectorRef
   ) {}
@@ -51,8 +55,18 @@ export class JobDetailsComponent implements OnInit {
       (username) => (this.currUsername = username || '')
     );
 
-    this.subs.sink = this.jobsApi
-      .getJobComments(this.creator, this.projectname, this.jobnumber)
+    console.log({ c: this.creator });
+    this.subs.sink = this.jobPageService
+      .getJob()
+      .pipe(
+        switchMap(() =>
+          this.jobsApi.getJobComments(
+            this.creator,
+            this.projectName,
+            this.jobNumber
+          )
+        )
+      )
       .subscribe((comments) => {
         this.comments = comments;
         this.ref.markForCheck();
@@ -66,8 +80,8 @@ export class JobDetailsComponent implements OnInit {
     this.subs.sink = this.jobsApi
       .postJobComment(
         this.creator,
-        this.projectname,
-        this.jobnumber,
+        this.projectName,
+        this.jobNumber,
         this.newComment
       )
       .subscribe(

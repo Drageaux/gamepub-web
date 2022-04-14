@@ -6,7 +6,8 @@ import { JobSubmission } from '@classes/job-submission';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { JobPageService } from '../job-page.service';
 import { ProjectsService } from '../projects.service';
@@ -48,19 +49,22 @@ export class JobPageComponent implements OnInit {
       if (hasError) this.router.navigate(['../']);
     });
 
-    this.subs.sink = this.route.params.subscribe((params) => {
-      if (params[this.jobParamName]) {
-        this.jobPageService.changeJob(parseInt(params[this.jobParamName]));
-        this.ref.markForCheck();
-      } else {
-        // missing username or project name or job nubmer
-        this.noJobError$.next(true);
-      }
-    });
+    this.subs.sink = this.route.params
+      .pipe(withLatestFrom(this.projectsService.getProject()))
+      .subscribe(([params, project]) => {
+        if (params[this.jobParamName]) {
+          this.jobPageService.changeJob(parseInt(params[this.jobParamName]));
+          this.ref.markForCheck();
+        } else {
+          // missing username or project name or job nubmer
+          this.noJobError$.next(true);
+        }
+      });
 
     this.subs.sink = this.jobPageService.getJob().subscribe(
       (job) => {
         if (job) {
+          console.log(job);
           this.job = job;
           this.ref.markForCheck();
         } else this.noJobError$.next(true);

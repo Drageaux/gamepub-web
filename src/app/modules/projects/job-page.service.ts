@@ -6,6 +6,7 @@ import { ProjectsApiService } from '@services/projects-api.service';
 import { ReplaySubject, Observable, pipe } from 'rxjs';
 import { Job } from '@classes/job';
 import { JobsApiService } from '@services/jobs-api.service';
+import { ProjectsModule } from './projects.module';
 
 /**
  * Share project data among the ProjectComponent and its children.
@@ -14,7 +15,7 @@ import { JobsApiService } from '@services/jobs-api.service';
  * @service ProjectsService
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: ProjectsModule,
 })
 export class JobPageService implements OnDestroy {
   private subs = new SubSink();
@@ -25,7 +26,9 @@ export class JobPageService implements OnDestroy {
   constructor(
     private projectsService: ProjectsService,
     private jobsApi: JobsApiService
-  ) {}
+  ) {
+    console.log('init:', projectsService.RandomNo);
+  }
 
   get creator() {
     return this.projectsService.username;
@@ -42,6 +45,8 @@ export class JobPageService implements OnDestroy {
   changeJob(jobNumber: number) {
     if (jobNumber === this._jobNumber) return;
     this._jobNumber = jobNumber;
+    console.log(this.projectsService.username);
+    console.log(this.creator);
 
     this.subs.sink = this.jobsApi
       .getJobByJobNumber(this.creator, this.projectName, this.jobNumber)
