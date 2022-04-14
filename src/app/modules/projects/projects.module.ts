@@ -23,6 +23,7 @@ import { SubmissionDetailsComponent } from './submission-details/submission-deta
 import { JobPageComponent } from './job-page/job-page.component';
 import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import { JobCommentsComponent } from './reusable-components/job-comments/job-comments.component';
+import { ProjectsRoutingModule } from './projects-routing.module';
 
 @NgModule({
   declarations: [
@@ -51,8 +52,9 @@ import { JobCommentsComponent } from './reusable-components/job-comments/job-com
     RouterModule,
     ReactiveFormsModule,
     FormsModule, // for quick 2-way binding like Commenting
+    ProjectsRoutingModule,
     SharedModule,
   ],
-  providers: [PackagesService],
+  // providers: [PackagesService],
 })
 export class ProjectsModule {}

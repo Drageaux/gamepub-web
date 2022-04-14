@@ -84,58 +84,6 @@ const routes: Routes = [
           import('@modules/projects/projects.module').then(
             (m) => m.ProjectsModule
           ),
-        component: ProjectsComponent,
-        children: [
-          {
-            path: '',
-            component: ProjectOverviewComponent,
-            pathMatch: 'full',
-          },
-          {
-            path: ProjectsRoutesNames.DETAILS,
-            component: ProjectDetailsComponent,
-          },
-          {
-            path: ProjectsRoutesNames.JOBS,
-            children: [
-              {
-                path: '',
-                component: JobListingComponent,
-                pathMatch: 'full',
-              },
-              {
-                path: ProjectsRoutesNames.NEWJOB,
-                component: CreateJobComponent,
-                pathMatch: 'full',
-              },
-              {
-                path: ProjectsRoutesNames.JOBPARAM,
-                component: JobPageComponent,
-                children: [
-                  {
-                    path: '',
-                    // component: JobDetailsComponent,
-                    pathMatch: 'full',
-                  },
-                  {
-                    path: `submit`,
-                    pathMatch: 'full',
-                    component: SubmitJobComponent,
-                  },
-                  {
-                    path: `${ProjectsRoutesNames.JOBSUBMISSIONS}`,
-                    pathMatch: 'full',
-                    component: SubmissionListingComponent,
-                  },
-                  {
-                    path: `${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,
-                    component: SubmissionDetailsComponent,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
       },
       // redirect to path with slug
       {
