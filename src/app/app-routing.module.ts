@@ -93,7 +93,11 @@ const routes: Routes = [
           {
             path: ProjectsRoutesNames.JOBS,
             children: [
-              { path: '', component: JobListingComponent, pathMatch: 'full' },
+              {
+                path: '',
+                component: JobListingComponent,
+                pathMatch: 'full',
+              },
               {
                 path: ProjectsRoutesNames.NEWJOB,
                 component: CreateJobComponent,
@@ -113,12 +117,12 @@ const routes: Routes = [
                     component: SubmitJobComponent,
                   },
                   {
-                    path: `${ProjectsRoutesNames.JOBPARAM}/${ProjectsRoutesNames.JOBSUBMISSIONS}`,
+                    path: `${ProjectsRoutesNames.JOBSUBMISSIONS}`,
                     pathMatch: 'full',
                     component: SubmissionListingComponent,
                   },
                   {
-                    path: `${ProjectsRoutesNames.JOBPARAM}/${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,
+                    path: `${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,
                     component: SubmissionDetailsComponent,
                   },
                 ],
