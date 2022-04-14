@@ -31,11 +31,11 @@ export class JobDetailsComponent implements OnInit {
   submitting = false;
 
   get creator() {
-    return this.jobPageService.creator;
+    return this.projectPageService.username;
   }
 
   get projectName() {
-    return this.jobPageService.projectName;
+    return this.projectPageService.projectname;
   }
 
   get jobNumber() {
@@ -45,6 +45,7 @@ export class JobDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
+    private projectPageService: ProjectsService,
     private jobPageService: JobPageService,
     private usersService: UsersService,
     public ref: ChangeDetectorRef
