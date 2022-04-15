@@ -14,23 +14,40 @@
 
   <div class="row">
     <div class="col-12 col-sm-4 mb-5 position-relative">
-      <div class="sticky-top" [style]="{ top: '1rem' }">
-        <div class="card text-left">
-          <div class="card-body">
-            <h5 class="card-title">
-              Submissions
-              <small class="text-muted">{{ submissions?.length || 0 }}</small>
-            </h5>
-            <ol *ngIf="submissions">
+      <div class="card sticky-top" [style]="{ top: '1rem' }">
+        <nav class="nav nav-pills flex-column">
+          <a
+            class="nav-link"
+            aria-current="page"
+            [routerLink]="['./']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ><h5 class="m-0">Comments</h5></a
+          >
+          <ul class="p-0">
+            <a
+              class="nav-link"
+              [routerLink]="['./', submissionsLink]"
+              [routerLinkActive]="'active'"
+              ><h5 class="m-0">
+                Submissions
+                <span class="badge bg-secondary">{{
+                  submissions?.length || 0
+                }}</span>
+              </h5></a
+            >
+            <ul *ngIf="submissions" [style]="{ listStyle: 'none' }">
               <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
                 <!-- <a
                 target="_blank"
                 [href]="'https://www.github.com/' + s.githubRepo"
                 >{{ s.githubRepo }}</a
               > -->
-                <a [routerLink]="['./', submissionsLink, s.submissionNumber]">{{
-                  s.user
-                }}</a>
+                <a
+                  [routerLink]="['./', submissionsLink, s.submissionNumber]"
+                  [routerLinkActive]="'fw-bold'"
+                  >#{{ s.submissionNumber }} by {{ s.user }}</a
+                >
               </li>
 
               <a
@@ -38,7 +55,12 @@
                 (click)="submissionsLimit = submissionsLimit + 5"
                 ><b>See more</b></a
               >
-            </ol>
+            </ul>
+          </ul>
+        </nav>
+
+        <div class="card text-left">
+          <div class="card-body">
             <hr />
             <h5>Got your own submission?</h5>
             <p class="card-text">Send it to the job creator.</p>
