@@ -16,13 +16,27 @@
             <a
               [routerLink]="['./', j.jobNumber]"
               class="d-inline d-md-none stretched-link"
-              >{{ j.title }}</a
             >
+              {{ j.title }}
+            </a>
             <a [routerLink]="['./', j.jobNumber]" class="d-none d-md-inline">
-              {{ j.title }}</a
-            >
-            <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
+              {{ j.title }}
+            </a>
+            <!-- Comments Count -->
+            <small *ngIf="j.commentsCount" class="float-end d-none d-sm-inline">
+              <i class="far fa-comment-alt"></i>
+              {{ j.commentsCount || 0 }}
+            </small>
           </h6>
+          <!-- Job Number -->
+          <small class="text-muted">
+            #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }}
+          </small>
+          <!-- Submissions Count -->
+          <small *ngIf="j.submissionsCount" class="ms-2 text-muted">
+            &bull;&nbsp;{{ j.acceptedSubmissionsCount || 0 }} out of
+            {{ j.submissionsCount }} submissions accepted
+          </small>
         </td>
 
         <td class="d-none d-md-table-cell">

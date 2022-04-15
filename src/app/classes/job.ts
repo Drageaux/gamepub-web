@@ -11,8 +11,13 @@ export interface Job {
   comments?: JobComment[];
   subscribers?: string[];
   closed?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 
   submissionsCount?: number;
+  acceptedSubmissionsCount?: number; // optionally returned by API
+  commentsCount?: number; // optionally returned by API
+  [key: string]: any;
 }
 
 export interface JobWithSubscriptionStatus extends Job {
