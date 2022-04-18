@@ -22,7 +22,7 @@ import { JobPageService } from '../job-page.service';
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.scss'],
 })
-export class JobDetailsComponent implements OnInit {
+export class JobDetailsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   currUsername = '';
   comments: JobComment[] = [];
@@ -56,7 +56,6 @@ export class JobDetailsComponent implements OnInit {
       (username) => (this.currUsername = username || '')
     );
 
-    console.log({ c: this.creator });
     this.subs.sink = this.jobPageService
       .getJob()
       .pipe(
@@ -99,5 +98,9 @@ export class JobDetailsComponent implements OnInit {
           this.ref.detectChanges();
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
