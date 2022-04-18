@@ -101,5 +101,6 @@ export class JobPageComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+    this.jobPageService.resetJob();
   }
 }

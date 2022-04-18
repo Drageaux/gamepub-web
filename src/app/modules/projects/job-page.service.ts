@@ -23,9 +23,7 @@ export class JobPageService implements OnDestroy {
   private _job$ = new ReplaySubject<Job | null>(1);
   private _jobNumber = 0;
 
-  constructor(private jobsApi: JobsApiService) {
-    // console.log('init:', projectsService.RandomNo);
-  }
+  constructor(private jobsApi: JobsApiService) {}
 
   get jobNumber() {
     return this._jobNumber;
@@ -45,6 +43,12 @@ export class JobPageService implements OnDestroy {
 
   getJob(): Observable<Job | null> {
     return this._job$.asObservable();
+  }
+
+  resetJob(): void {
+    this._job$.complete();
+    this._job$ = new ReplaySubject<Job | null>(1);
+    this._jobNumber = 0;
   }
 
   ngOnDestroy() {

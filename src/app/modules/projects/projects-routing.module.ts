@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { CreateJobComponent } from './create-job/create-job.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
 import { JobListingComponent } from './job-listing/job-listing.component';
 import { JobPageComponent } from './job-page/job-page.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
@@ -44,7 +45,7 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                // component: JobDetailsComponent,
+                component: JobDetailsComponent,
                 pathMatch: 'full',
               },
               {
