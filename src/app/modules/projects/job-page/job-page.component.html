@@ -13,7 +13,7 @@
   <hr />
 
   <div class="row">
-    <div class="col-12 col-sm-4 mb-5 position-relative">
+    <div class="col-12 col-sm-4 col-md-3 mb-5 position-relative">
       <div class="card sticky-top" [style]="{ top: '1rem' }">
         <nav class="nav nav-pills flex-column">
           <a
@@ -22,22 +22,35 @@
             [routerLink]="['./']"
             [routerLinkActive]="'active'"
             [routerLinkActiveOptions]="{ exact: true }"
-            ><h5 class="m-0">Comments</h5></a
+            ><h6 class="m-0">
+              Comments
+              <span class="badge bg-secondary">{{ job?.commentsCount }}</span>
+            </h6></a
           >
           <ul class="p-0">
             <a
               class="nav-link"
               [routerLink]="['./', submissionsLink]"
               [routerLinkActive]="'active'"
-              ><h5 class="m-0">
+              ><h6 class="m-0">
                 Submissions
                 <span class="badge bg-secondary">{{
                   submissions?.length || 0
                 }}</span>
-              </h5></a
+              </h6></a
             >
-            <ul *ngIf="submissions" [style]="{ listStyle: 'none' }">
-              <li *ngFor="let s of submissions | slice: 0:submissionsLimit">
+            <ul
+              *ngIf="submissions"
+              class="ps-3"
+              [style]="{ listStyle: 'none' }"
+            >
+              <li
+                *ngFor="
+                  let s of submissions
+                    | slice: 0:submissionsLimit
+                    | sort: 'submissionNumber'
+                "
+              >
                 <!-- <a
                 target="_blank"
                 [href]="'https://www.github.com/' + s.githubRepo"
@@ -59,20 +72,19 @@
           </ul>
         </nav>
 
-        <div class="card text-left">
-          <div class="card-body">
-            <hr />
-            <h5>Got your own submission?</h5>
-            <p class="card-text">Send it to the job creator.</p>
-            <a [routerLink]="['./', 'submit']" class="btn btn-success"
-              >Submission Page</a
-            >
-          </div>
+        <!-- <div class="card text-left"> -->
+        <div class="card-body">
+          <h5>Got your own submission?</h5>
+          <p class="card-text">Send it to the job creator.</p>
+          <a [routerLink]="['./', 'submit']" class="btn btn-success"
+            >Submission Page</a
+          >
         </div>
+        <!-- </div> -->
       </div>
     </div>
 
-    <div class="col-12 col-sm-8">
+    <div class="col-12 col-sm-8 col-md-9">
       <router-outlet></router-outlet>
     </div>
   </div>
