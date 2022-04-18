@@ -24,7 +24,9 @@
             [routerLinkActiveOptions]="{ exact: true }"
             ><h6 class="m-0">
               Comments
-              <span class="badge bg-secondary">{{ job?.commentsCount }}</span>
+              <span class="badge bg-secondary">{{
+                job?.commentsCount || 0
+              }}</span>
             </h6></a
           >
           <ul class="p-0">
@@ -35,7 +37,7 @@
               ><h6 class="m-0">
                 Submissions
                 <span class="badge bg-secondary">{{
-                  submissions?.length || 0
+                  job?.submissionsCount || 0
                 }}</span>
               </h6></a
             >
