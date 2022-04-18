@@ -17,6 +17,13 @@
     ></app-upload>
   </div>
   <div class="col">
-    <p>tags here</p>
+    Tags:
+    <ng-container *ngIf="project?.tags?.length; else noneBlock"
+      ><span *ngFor="let tag of project?.tags; let i = index"
+        >{{ tag | titlecase
+        }}{{ i + 1 < (project?.tags?.length || 0) ? ", " : "" }}</span
+      ></ng-container
+    >
+    <ng-template #noneBlock>(none added yet)</ng-template>
   </div>
 </div>
