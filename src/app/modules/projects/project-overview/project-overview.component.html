@@ -8,22 +8,31 @@
     <ng-template #placeholderImageBlock>
       <img [src]="'https://via.placeholder.com/250x250'" />
     </ng-template>
-    <button class="btn btn-secondary" (click)="updatingImage = !updatingImage">
-      <i class="fas fa-pencil-alt"></i> Edit
-    </button>
-    <app-upload
-      *ngIf="updatingImage"
-      (imageUploadedEvent)="onImageUploaded($event)"
-    ></app-upload>
+
+    <!-- Only allow editting image if creator -->
+    <ng-container *ngIf="usersService.username$ | async as username">
+      <button
+        *ngIf="isCreator(username)"
+        class="btn btn-secondary"
+        (click)="updatingImage = !updatingImage"
+      >
+        <i class="fas fa-pencil-alt"></i> Edit
+      </button>
+      <app-upload
+        *ngIf="updatingImage"
+        (imageUploadedEvent)="onImageUploaded($event)"
+      ></app-upload>
+    </ng-container>
   </div>
+
   <div class="col">
     Tags:
-    <ng-container *ngIf="project?.tags?.length; else noneBlock"
-      ><span *ngFor="let tag of project?.tags; let i = index"
-        >{{ tag | titlecase
-        }}{{ i + 1 < (project?.tags?.length || 0) ? ", " : "" }}</span
-      ></ng-container
-    >
+    <ng-container *ngIf="project?.tags?.length; else noneBlock">
+      <span *ngFor="let tag of project?.tags; let i = index">
+        {{ tag | titlecase
+        }}{{ i + 1 < (project?.tags?.length || 0) ? ", " : "" }}
+      </span>
+    </ng-container>
     <ng-template #noneBlock>(none added yet)</ng-template>
   </div>
 </div>

@@ -2,7 +2,11 @@
   <!-- <app-job-card *ngFor="let j of jobs" [job]="j"></app-job-card> -->
   <div class="d-flex flex-row justify-content-between mb-3">
     <h2 class="float-start m-0">Jobs</h2>
-    <button class="btn btn-primary float-end" [routerLink]="['./', newJobLink]">
+    <button
+      class="btn btn-primary float-end"
+      [routerLink]="['./', newJobLink]"
+      *ngIf="isCreator()"
+    >
       <i class="fas fa-plus"></i>&nbsp;New Job
     </button>
   </div>
