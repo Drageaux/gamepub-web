@@ -100,7 +100,6 @@ export class JobSubscriptionButtonsComponent implements OnInit {
         .subscribe(
           (job: JobWithSubscriptionStatus) => {
             sub.unsubscribe();
-            // this.job = job;
             this.jobUpdatedEvent.emit(job);
             this.loading = false;
           },
