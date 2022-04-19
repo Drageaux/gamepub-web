@@ -67,11 +67,17 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   getNotificationsAboutJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, { notified: true });
+    this.updateSubscription(job, {
+      accepted: job?.subscription?.accepted || false,
+      notified: true,
+    });
   }
 
   stopGettingNotificationsAboutJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, { notified: false });
+    this.updateSubscription(job, {
+      accepted: job?.subscription?.accepted || false,
+      notified: false,
+    });
   }
 
   /*************************************************************************/
