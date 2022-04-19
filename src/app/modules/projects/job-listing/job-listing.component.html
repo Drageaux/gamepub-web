@@ -10,7 +10,7 @@
   <table class="table table-hover table-bordered">
     <thead></thead>
     <tbody>
-      <tr *ngFor="let j of jobs">
+      <tr *ngFor="let j of jobs; let i = index">
         <td class="position-relative">
           <h6 class="m-0">
             <a
@@ -43,9 +43,8 @@
           <app-job-subscription-buttons
             [job]="j"
             [isCreator]="isCreator()"
+            (jobUpdatedEvent)="updateJob($event, i)"
           ></app-job-subscription-buttons>
-
-          <!-- (jobUpdatedEvent)="updateJob($event, i)" -->
         </td>
       </tr>
     </tbody>

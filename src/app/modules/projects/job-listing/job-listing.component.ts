@@ -1,6 +1,6 @@
 import { switchMap, tap } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Job } from '@classes/job';
+import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { JobsApiService } from '@services/jobs-api.service';
 import { of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
@@ -46,5 +46,10 @@ export class JobListingComponent implements OnInit {
 
   isCreator() {
     return this.currUsername === this.projectsService.username;
+  }
+
+  updateJob(job: JobWithSubscriptionStatus, index: number) {
+    this.jobs[index] = job;
+    this.ref.markForCheck();
   }
 }
