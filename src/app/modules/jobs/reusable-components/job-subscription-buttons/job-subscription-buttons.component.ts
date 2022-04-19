@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
@@ -25,7 +32,8 @@ export class JobSubscriptionButtonsComponent implements OnInit {
 
   constructor(
     private jobsApi: JobsApiService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {}
@@ -102,8 +110,13 @@ export class JobSubscriptionButtonsComponent implements OnInit {
             sub.unsubscribe();
             this.jobUpdatedEvent.emit(job);
             this.loading = false;
+            this.ref.markForCheck();
           },
-          (err) => (this.loading = false)
+          (err) => {
+            sub.unsubscribe();
+            this.loading = false;
+            this.ref.markForCheck();
+          }
         );
     }
   }

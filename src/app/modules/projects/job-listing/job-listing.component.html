@@ -39,7 +39,7 @@
           </small>
         </td>
 
-        <td class="d-none d-md-table-cell">
+        <td class="d-none d-md-table-cell" *ngIf="currUsername">
           <app-job-subscription-buttons
             [job]="j"
             [isCreator]="isCreator()"
