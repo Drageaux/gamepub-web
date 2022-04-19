@@ -9,6 +9,7 @@
       maxLength="400"
       #commentInput
       rows="3"
+      tabindex="0"
     ></textarea>
     <small
       class="position-absolute"
@@ -21,8 +22,11 @@
   </div>
 
   <div class="float-end">
-    <button class="btn btn-secondary" (click)="commentText = ''">Clear</button>
+    <button class="btn btn-secondary" (click)="commentText = ''" tabindex="-1">
+      Clear
+    </button>
     <button
+      tabindex="0"
       [disabled]="submitting || commentText === ''"
       class="btn btn-success ms-2"
       (click)="onSubmit(commentInput.value)"

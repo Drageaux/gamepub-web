@@ -88,14 +88,14 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         (comment) => {
           this.newComment = '';
           this.submitting = false;
-          // TODO: push new comment to array
-          this.ref.detectChanges();
+          this.comments = [...this.comments, comment];
+          this.ref.markForCheck();
         },
         (err) => {
           // TODO: display error message
           console.error(err);
           this.submitting = false;
-          this.ref.detectChanges();
+          this.ref.markForCheck();
         }
       );
   }
