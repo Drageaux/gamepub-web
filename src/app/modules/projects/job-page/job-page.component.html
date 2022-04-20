@@ -1,0 +1,89 @@
+<div class="container" *ngIf="job">
+  <!-- Header -->
+  <div class="d-flex flex-row justify-content-between mb-3">
+    <h2 class="m-0">
+      {{ job.title }}&nbsp;<span class="text-muted fw-normal"
+        >#{{ job.jobNumber }}</span
+      >
+    </h2>
+    <!-- <a [routerLink]="['../', newJobLink]"
+    ><button class="btn btn-primary">New Job</button></a
+    > -->
+  </div>
+  <hr />
+
+  <div class="row">
+    <div class="col-12 col-sm-4 col-md-3 mb-5 position-relative">
+      <div class="card sticky-top" [style]="{ top: '1rem' }">
+        <div class="card-body">
+          <div class="flex-column">
+            <h5 class="m-0">General</h5>
+            <ul class="ps-0" [style]="{ listStyle: 'none' }">
+              <li>
+                <a
+                  [routerLink]="['./']"
+                  [routerLinkActive]="'active fw-bold'"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  >Main Chat
+                  <span class="badge bg-secondary">{{
+                    job?.commentsCount || 0
+                  }}</span></a
+                >
+              </li>
+              <!-- <li class="text-muted">Creator's Log (coming soon)</li> -->
+            </ul>
+
+            <h5 class="m-0">
+              Submission Threads
+              <!-- <span class="badge bg-secondary">{{
+                job?.submissionsCount || 0
+              }}</span> -->
+            </h5>
+            <ul
+              *ngIf="submissions?.length; else emptyBlock"
+              class="ps-0"
+              [style]="{ listStyle: 'none' }"
+            >
+              <li
+                *ngFor="
+                  let s of submissions
+                    | slice: 0:submissionsLimit
+                    | sort: 'submissionNumber'
+                "
+              >
+                <!-- <a
+                target="_blank"
+                [href]="'https://www.github.com/' + s.githubRepo"
+                >{{ s.githubRepo }}</a
+              > -->
+                <a
+                  [routerLink]="['./', submissionsLink, s.submissionNumber]"
+                  [routerLinkActive]="'fw-bold'"
+                  >#{{ s.submissionNumber }} by {{ s.user }}</a
+                >
+              </li>
+
+              <a
+                *ngIf="submissionsLimit < submissions.length"
+                (click)="submissionsLimit = submissionsLimit + 20"
+                ><b>See more</b></a
+              >
+            </ul>
+            <ng-template #emptyBlock>(no submissions yet)</ng-template>
+          </div>
+
+          <hr />
+          <h5>Got your own submission?</h5>
+          <p class="card-text">Send it to the job creator.</p>
+          <a [routerLink]="['./', 'submit']" class="btn btn-success"
+            >Submission Page</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-8 col-md-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

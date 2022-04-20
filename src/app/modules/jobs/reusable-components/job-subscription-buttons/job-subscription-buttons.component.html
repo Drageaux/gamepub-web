@@ -1,0 +1,26 @@
+<ng-container *ngIf="!isCreator">
+  <ng-container *ngIf="job.subscription?.accepted; else toAcceptBlock">
+    <!-- accepted/subscribed -->
+    <a class="text-success me-2" (click)="unacceptJob(job)">
+      <i class="fas fa-check"></i>&nbsp;Accepted</a
+    >
+  </ng-container>
+  <ng-template #toAcceptBlock>
+    <a class="text-primary me-2" (click)="acceptJob(job)"
+      ><i class="fas fa-handshake"></i>&nbsp;Accept</a
+    >
+  </ng-template>
+</ng-container>
+<ng-container *ngIf="job.subscription?.notified; else toNotifyBlock">
+  <!-- notified -->
+  <a class="text-success" (click)="stopGettingNotificationsAboutJob(job)">
+    <i class="fas fa-bell"></i>&nbsp;Notified</a
+  >
+</ng-container>
+<ng-template #toNotifyBlock>
+  <a class="text-primary" (click)="getNotificationsAboutJob(job)"
+    ><i class="far fa-bell"></i>&nbsp;Notify</a
+  >
+</ng-template>
+
+<div *ngIf="loading"><i class="spinner fas fa-circle-notch"></i> Loading</div>

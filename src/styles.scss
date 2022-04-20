@@ -15,7 +15,7 @@
 
 // 5. Add additional custom code here
 // @import "_pagination";
-// @import "_badge";
+@import "_badge";
 // @import "_jumbotron";
 // @import "_alert";
 // @import "_progress";
@@ -48,6 +48,16 @@
 // Custom
 a {
   cursor: pointer;
+
+  &.bold-link {
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
 }
 
 .form-group {
@@ -87,4 +97,24 @@ body {
 // lift
 .lift-1 {
   box-shadow: rgba(0, 0, 0, 0.1) 1px 1px;
+}
+
+// animations
+.spinner {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  top: 0.75rem;
+  right: 0.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

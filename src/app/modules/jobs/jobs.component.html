@@ -1,10 +1,16 @@
 <h1>Jobs<br /></h1>
 <p>See job commissions in the community.</p>
 <br />
-<table class="table table-hover table-bordered" *ngIf="jobs$ | async as jobs">
+<table
+  class="table table-hover table-bordered"
+  *ngIf="{
+    jobs: jobs,
+    currUsername: usersService.username$ | async
+  } as data"
+>
   <thead></thead>
   <tbody>
-    <tr *ngFor="let j of jobs">
+    <tr *ngFor="let j of data.jobs; let i = index">
       <td class="position-relative">
         <ng-container *ngIf="getProject(j) as project">
           <h6 *ngIf="getUser(project) as user" class="d-flex">
@@ -66,30 +72,11 @@
         </ng-container>
       </td>
 
-      <td class="d-none d-md-table-cell" *ngIf="currUsername">
-        <ng-container *ngIf="j.subscription?.accepted; else toAcceptBlock">
-          <!-- accepted/subscribed -->
-          <a class="text-success" (click)="unacceptJob(j)">
-            <i class="fas fa-check"></i>&nbsp;Accepted
-          </a>
-        </ng-container>
-        <ng-template #toAcceptBlock>
-          <a class="text-primary" (click)="acceptJob(j)"
-            ><i class="fas fa-handshake"></i>&nbsp;Accept
-          </a>
-        </ng-template>
-        &nbsp;
-        <ng-container *ngIf="j.subscription?.notified; else toNotifyBlock">
-          <!-- notified -->
-          <a class="text-success" (click)="stopGettingNotificationsAboutJob(j)">
-            <i class="fas fa-bell"></i>&nbsp;Notified
-          </a>
-        </ng-container>
-        <ng-template #toNotifyBlock>
-          <a class="text-primary" (click)="getNotificationsAboutJob(j)"
-            ><i class="far fa-bell"></i>&nbsp;Notify
-          </a>
-        </ng-template>
+      <td class="d-none d-md-table-cell" *ngIf="data.currUsername">
+        <app-job-subscription-buttons
+          [job]="j"
+          (jobUpdatedEvent)="updateJob($event, i)"
+        ></app-job-subscription-buttons>
       </td>
     </tr>
   </tbody>

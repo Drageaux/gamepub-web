@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
@@ -13,28 +19,26 @@ import { SubSink } from 'subsink';
   selector: 'app-jobs',
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobsComponent implements OnInit, OnDestroy {
   projectsLink = ProjectsRoutesNames.ROOT;
   jobsLink = ProjectsRoutesNames.JOBS;
 
   private subs = new SubSink();
-  jobs$ = new ReplaySubject<JobWithSubscriptionStatus[]>(1);
-  private loading = false; // prevent spamming subscribe buttons
+  jobs: JobWithSubscriptionStatus[] = [];
   currUsername = ''; // only needed to compare subscribed status in UI
 
   constructor(
     private jobsApi: JobsApiService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.subs.sink = this.jobsApi.getAllJobs().subscribe((jobs) => {
-      this.jobs$.next(jobs);
-    });
-
-    this.subs.sink = this.usersService.username$.subscribe((name) => {
-      this.currUsername = name || '';
+      this.jobs = jobs;
+      this.ref.markForCheck();
     });
   }
 
@@ -48,87 +52,11 @@ export class JobsComponent implements OnInit, OnDestroy {
     return project.creator;
   }
 
-  isSubscribed(job: JobWithSubscriptionStatus) {
-    if (job?.subscribers?.length) {
-      return job.subscribers.findIndex((x) => x === this.currUsername) !== -1;
-    }
-    return false;
-  }
-
-  /*************************************************************************/
-  /***************************** EVENT HANDLERS ****************************/
-  /*************************************************************************/
-  /**
-   * Accept and get notified.
-   *
-   * @param job
-   */
-  acceptJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, { accepted: true, notified: true });
-  }
-
-  /**
-   * Unaccept and stop notifications.
-   * @param job
-   */
-  unacceptJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, { accepted: false, notified: false });
-  }
-
-  /**
-   * Only get notifications. No change to accepted status.
-   *
-   * @param job
-   */
-  getNotificationsAboutJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, {
-      accepted: job?.subscription?.accepted || false,
-      notified: true,
-    });
-  }
-
-  /**
-   * Only stop notifications. No change to accepted status.
-   *
-   * @param job
-   */
-  stopGettingNotificationsAboutJob(job: JobWithSubscriptionStatus) {
-    this.updateSubscription(job, {
-      accepted: job?.subscription?.accepted || false,
-      notified: false,
-    });
-  }
-
-  /*************************************************************************/
-  /******************************* API CALLS *******************************/
-  /*************************************************************************/
-  updateSubscription(
-    job: JobWithSubscriptionStatus,
-    body: { accepted?: boolean; notified?: boolean }
-  ) {
-    const project = this.getProject(job);
-
-    if (!this.loading && project?.creator && project?.name && job?.jobNumber) {
-      this.loading = true;
-      const sub = this.jobsApi
-        .subscribeToJobByJobNumber(
-          project.creator,
-          project.name,
-          job.jobNumber,
-          body
-        )
-        .pipe(withLatestFrom(this.jobs$)) // list of jobs to update in UI
-        .subscribe(
-          ([jobRes, jobs]) => {
-            sub.unsubscribe();
-            let indexToUpdate = jobs.findIndex((x) => x._id === jobRes._id);
-            jobs[indexToUpdate].subscription = jobRes.subscription;
-            this.jobs$.next(jobs);
-            this.loading = false;
-          },
-          (err) => (this.loading = false)
-        );
-    }
+  updateJob(job: JobWithSubscriptionStatus, index: number) {
+    // update only subscription field
+    // avoid white flash when updating the entire object
+    this.jobs[index].subscription = job.subscription;
+    this.ref.markForCheck();
   }
 
   ngOnDestroy(): void {

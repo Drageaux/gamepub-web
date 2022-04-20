@@ -20,7 +20,17 @@ export class ProjectsService implements OnDestroy {
   private _username = '';
   private _projectname = '';
 
-  constructor(private projectsApi: ProjectsApiService) {}
+  private _randomNo = '';
+
+  constructor(private projectsApi: ProjectsApiService) {
+    console.log('AppService Constructed');
+    this._randomNo = 'App ' + Math.floor(Math.random() * 1000 + 1);
+    console.log(this.RandomNo);
+  }
+
+  get RandomNo() {
+    return this._randomNo;
+  }
 
   get username() {
     return this._username;
@@ -35,6 +45,7 @@ export class ProjectsService implements OnDestroy {
 
     this._username = username;
     this._projectname = projectName;
+
     this.subs.sink = this.projectsApi
       .getProjectByFullPath(this._username, this._projectname)
       .subscribe(

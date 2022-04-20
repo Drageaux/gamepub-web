@@ -24,10 +24,10 @@ export class SubmitJobComponent implements OnInit {
   });
   @ViewChild('form') form!: NgForm;
 
-  projectsLink = `${ProjectsRoutesNames.ROOT}`;
-  jobsLink = `${ProjectsRoutesNames.JOBS}`;
+  projectsLink = ProjectsRoutesNames.ROOT;
+  jobsLink = ProjectsRoutesNames.JOBS;
   jobParamName = ProjectsRoutesNames.JOBPARAMNAME;
-  submissionsLink = ProjectsRoutesNames.JOBSUBMISSIONPARAM;
+  submissionsLink = ProjectsRoutesNames.JOBSUBMISSIONS;
   private username!: string;
   private projectname!: string;
   private jobnumber!: number | string;
@@ -48,13 +48,15 @@ export class SubmitJobComponent implements OnInit {
     private jobsApi: JobsApiService,
     private projectService: ProjectsService,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.username = this.projectService.username;
     this.projectname = this.projectService.projectname;
-    this.jobnumber = parseInt(this.route.snapshot.params[this.jobParamName]);
+    this.jobnumber = parseInt(
+      this.route.parent?.snapshot.params[this.jobParamName]
+    );
   }
-
-  ngOnInit(): void {}
 
   onSubmit() {
     const { githubRepo, body } = this.jobSubmissionForm.value;
@@ -74,6 +76,8 @@ export class SubmitJobComponent implements OnInit {
               this.projectname,
               this.jobsLink,
               this.jobnumber,
+              this.submissionsLink,
+              res.submissionNumber,
             ]);
           } else {
             // resetForm also resets the submitted status, while reset() doesn't

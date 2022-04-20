@@ -25,8 +25,8 @@ export const ProjectsRoutesNames = {
   JOBPARAM: ':jobnumber',
   JOBPARAMNAME: 'jobnumber',
   JOBSUBMISSIONS: 'submissions',
-  JOBSUBMISSIONPARAM: 'submissionnumber',
-  JOBSUBMISSIONPARAMNAME: ':submissionnumber',
+  JOBSUBMISSIONPARAM: ':submissionnumber',
+  JOBSUBMISSIONPARAMNAME: 'submissionnumber',
 };
 
 export const AssetsRoutesNames = {

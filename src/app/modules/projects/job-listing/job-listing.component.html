@@ -2,34 +2,53 @@
   <!-- <app-job-card *ngFor="let j of jobs" [job]="j"></app-job-card> -->
   <div class="d-flex flex-row justify-content-between mb-3">
     <h2 class="float-start m-0">Jobs</h2>
-    <button class="btn btn-primary float-end" [routerLink]="['./', newJobLink]">
+    <button
+      class="btn btn-primary float-end"
+      [routerLink]="['./', newJobLink]"
+      *ngIf="isCreator()"
+    >
       <i class="fas fa-plus"></i>&nbsp;New Job
     </button>
   </div>
   <hr />
-  <table class="table table-hover table-bordered" *ngIf="jobs$ | async as jobs">
+  <table class="table table-hover table-bordered">
     <thead></thead>
     <tbody>
-      <tr *ngFor="let j of jobs">
+      <tr *ngFor="let j of jobs; let i = index">
         <td class="position-relative">
-          <h6>
+          <h6 class="m-0">
             <a
               [routerLink]="['./', j.jobNumber]"
               class="d-inline d-md-none stretched-link"
-              >{{ j.title }}</a
             >
+              {{ j.title }}
+            </a>
             <a [routerLink]="['./', j.jobNumber]" class="d-none d-md-inline">
-              {{ j.title }}</a
-            >
-            <span class="ml-2 text-muted">&nbsp;#{{ j.jobNumber }}</span>
+              {{ j.title }}
+            </a>
+            <!-- Comments Count -->
+            <small *ngIf="j.commentsCount" class="float-end d-none d-sm-inline">
+              <i class="far fa-comment-alt"></i>
+              {{ j.commentsCount || 0 }}
+            </small>
           </h6>
+          <!-- Job Number -->
+          <small class="text-muted">
+            #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }}
+          </small>
+          <!-- Submissions Count -->
+          <small *ngIf="j.submissionsCount" class="ms-2 text-muted">
+            &bull;&nbsp;{{ j.acceptedSubmissionsCount || 0 }} out of
+            {{ j.submissionsCount }} submissions accepted
+          </small>
         </td>
 
-        <td class="d-none d-md-table-cell">
-          <!-- TODO: subscribe action -->
-          <a class="text-success"><i class="far fa-bell"></i>&nbsp;Subscribe</a>
-          <!-- TODO: subscribing -->
-          <!-- <a class="text-success"><i class="fas fa-check"></i>&nbsp;Subscribing</a> -->
+        <td class="d-none d-md-table-cell" *ngIf="currUsername">
+          <app-job-subscription-buttons
+            [job]="j"
+            [isCreator]="isCreator()"
+            (jobUpdatedEvent)="updateJob($event, i)"
+          ></app-job-subscription-buttons>
         </td>
       </tr>
     </tbody>

@@ -176,4 +176,38 @@ export class JobsApiService {
         map((res) => res.data)
       );
   }
+
+  getSubmissionThreadComments(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string
+  ) {
+    return this.http
+      .get<ApiResponse<JobComment[]>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/comments`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  postSubmissionComment(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string,
+    body: string
+  ): Observable<JobComment> {
+    return this.http
+      .post<ApiResponse<JobComment>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/comments`,
+        { body }
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
 }

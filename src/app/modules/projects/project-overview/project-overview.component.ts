@@ -13,6 +13,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
+import { UsersService } from '@services/users.service';
 import { Observable, of, Subject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -31,6 +32,7 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
+    public usersService: UsersService,
     private projectService: ProjectsService,
     private projectApi: ProjectsApiService,
     private ref: ChangeDetectorRef
@@ -55,6 +57,10 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
         this.project = project;
         this.ref.markForCheck(); // explicitly check changes in project reference
       });
+  }
+
+  isCreator(username: string) {
+    return username === this.project?.creator;
   }
 
   ngOnDestroy() {
