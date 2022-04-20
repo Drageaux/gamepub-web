@@ -7,6 +7,8 @@ import { ReplaySubject, Observable, pipe } from 'rxjs';
 import { Job } from '@classes/job';
 import { JobsApiService } from '@services/jobs-api.service';
 import { ProjectsModule } from './projects.module';
+import { JobSubmission } from '@classes/job-submission';
+import { switchMap, tap } from 'rxjs/operators';
 
 /**
  * Share project data among the ProjectComponent and its children.
@@ -22,6 +24,7 @@ export class JobPageService implements OnDestroy {
 
   private _job$ = new ReplaySubject<Job | null>(1);
   private _jobNumber = 0;
+  private _submissions$ = new ReplaySubject<JobSubmission[]>(1);
 
   constructor(private jobsApi: JobsApiService) {}
 
@@ -30,24 +33,44 @@ export class JobPageService implements OnDestroy {
   }
 
   changeJob(creator: string, projectName: string, jobNumber: number) {
-    if (jobNumber === this._jobNumber) return;
+    if (creator == '' || projectName == '' || jobNumber === this._jobNumber)
+      return;
     this._jobNumber = jobNumber;
 
     this.subs.sink = this.jobsApi
       .getJobByJobNumber(creator, projectName, this.jobNumber)
-      .subscribe(
-        (job) => this._job$.next(job),
-        (err) => this._job$.next(null)
-      );
+      .pipe(
+        tap((job) => this._job$.next(job)),
+        switchMap((job) => {
+          if (!job || !job?.jobNumber) {
+            throw new Error('Cannot parse job');
+          } else {
+            return this.jobsApi.getJobSubmissions(
+              creator,
+              projectName,
+              job.jobNumber
+            );
+          }
+        })
+      )
+      .subscribe((submissions) => {
+        this._submissions$.next(submissions);
+      });
   }
 
   getJob(): Observable<Job | null> {
     return this._job$.asObservable();
   }
 
+  getSubmissions(): Observable<JobSubmission[]> {
+    return this._submissions$.asObservable();
+  }
+
   resetJob(): void {
     this._job$.complete();
     this._job$ = new ReplaySubject<Job | null>(1);
+    this._submissions$.complete();
+    this._submissions$ = new ReplaySubject<JobSubmission[]>(1);
     this._jobNumber = 0;
   }
 

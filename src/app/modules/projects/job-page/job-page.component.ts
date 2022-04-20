@@ -71,30 +71,15 @@ export class JobPageComponent implements OnInit {
       .pipe(
         tap((job) => {
           if (job) {
-            console.log(job);
             this.job = job;
             this.ref.markForCheck();
           } else this.noJobError$.next(true);
           return job;
         }),
-        withLatestFrom(this.projectsService.getProject()),
-        switchMap(([job, project]) => {
-          if (!project || !job || !job?.jobNumber) {
-            this.noJobError$.next(true);
-            throw new Error('Cannot parse job');
-          } else {
-            return this.jobsApi.getJobSubmissions(
-              project.creator,
-              project.name,
-              job.jobNumber
-            );
-          }
-        })
+        switchMap(() => this.jobPageService.getSubmissions())
       )
       .subscribe((submissions) => {
-        this.submissions = submissions.sort(
-          (a, b) => (a.submissionNumber || 0) - (b?.submissionNumber || 0)
-        );
+        this.submissions = submissions;
         this.ref.markForCheck();
       });
   }
