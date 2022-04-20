@@ -1,31 +1,25 @@
-import { switchMap } from 'rxjs/operators';
-import { ProjectsService } from '../projects.service';
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JobsApiService } from '@services/jobs-api.service';
-import { SubSink } from 'subsink';
 import { JobComment } from '@classes/job-comment';
-import { Job } from '@classes/job';
 import { ProjectsRoutesNames } from '@classes/routes.names';
-import { JobSubmission } from '@classes/job-submission';
+import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
+import { switchMap, withLatestFrom } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 import { JobPageService } from '../job-page.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
-  selector: 'app-job-details',
-  templateUrl: './job-details.component.html',
-  styleUrls: ['./job-details.component.scss'],
+  selector: 'app-submission-details',
+  templateUrl: './submission-details.component.html',
+  styleUrls: ['./submission-details.component.scss'],
 })
-export class JobDetailsComponent implements OnInit, OnDestroy {
+export class SubmissionDetailsComponent implements OnInit {
   private subs = new SubSink();
   currUsername = '';
   comments: JobComment[] = [];
+
+  submissionParamName = ProjectsRoutesNames.JOBSUBMISSIONPARAMNAME;
 
   newComment = '';
   submitting = false;
@@ -56,14 +50,15 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       (username) => (this.currUsername = username || '')
     );
 
-    this.subs.sink = this.jobPageService
-      .getJob()
+    this.subs.sink = this.route.params
       .pipe(
-        switchMap(() =>
-          this.jobsApi.getJobComments(
+        withLatestFrom(this.jobPageService.getJob()),
+        switchMap(([params, job]) =>
+          this.jobsApi.getSubmissionThreadComments(
             this.creator,
             this.projectName,
-            this.jobNumber
+            this.jobNumber,
+            params[this.submissionParamName]
           )
         )
       )
@@ -75,13 +70,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   postComment() {
     if (!this.newComment) return;
-
     this.submitting = true;
     this.subs.sink = this.jobsApi
-      .postJobComment(
+      .postSubmissionComment(
         this.creator,
         this.projectName,
         this.jobNumber,
+        this.route.snapshot.params[this.submissionParamName],
         this.newComment
       )
       .subscribe(

@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Job } from '@classes/job';
-import { Project } from '@classes/project';
-import { JobsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
+import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { noWhitespaceValidator } from '@utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
@@ -28,7 +27,7 @@ export class CreateJobComponent implements OnInit, OnDestroy {
   @ViewChild('form') form!: NgForm;
 
   projectsLink = `${ProjectsRoutesNames.ROOT}`;
-  jobsLink = `${JobsRoutesNames.JOBS}`;
+  jobsLink = `${ProjectsRoutesNames.JOBS}`;
 
   get title() {
     return this.jobForm.get('title');
@@ -68,7 +67,6 @@ export class CreateJobComponent implements OnInit, OnDestroy {
           } else {
             // resetForm also resets the submitted status, while reset() doesn't
             this.form.resetForm(this.jobForm.value);
-            console.error({ project: res });
           }
         },
         (err) => {

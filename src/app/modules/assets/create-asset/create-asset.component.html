@@ -1,6 +1,8 @@
 <div class="container">
-  <h1>Post an asset<br /></h1>
-  <p>Showcase your asset on your profile.</p>
+  <div class="text-center my-4 border-bottom">
+    <h1>Post an asset</h1>
+    <p>Showcase your asset on your profile.</p>
+  </div>
 
   <form
     class="form-group"
@@ -8,52 +10,56 @@
     #form="ngForm"
     (ngSubmit)="onSubmit()"
   >
-    <label for="display-name" class="required">Display Name</label>
-    <input
-      id="display-name"
-      type="text"
-      formControlName="displayName"
-      class="form-control"
-      required
-    />
-    <div class="help-texts">
-      <div
-        *ngIf="
-          displayName?.invalid && (displayName?.dirty || displayName?.touched)
-        "
-        class="text-danger"
-      >
-        <div *ngIf="displayName?.errors?.['minlength']">
-          Display name must be at least 3 characters long.
-        </div>
-        <div *ngIf="displayName?.errors?.['maxlength']">
-          Display name must be at most 100 characters long.
-        </div>
-      </div>
-      <small id="display-name-help" class="form-text text-muted"
-        >Give a clear descriptive name between 3-100 characters. Example:
-        <b>3D Fantasy Character</b>.
-      </small>
-    </div>
-
-    <label for="github-repo" class="required">GitHub Repo</label>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text">github.com/</div>
-      </div>
+    <div class="mb-3">
+      <label for="display-name" class="required">Display Name</label>
       <input
-        id="github-repo"
+        id="display-name"
         type="text"
-        formControlName="githubRepo"
+        formControlName="displayName"
         class="form-control"
-        placeholder="owner/project-name"
         required
       />
+      <div class="help-texts">
+        <div
+          *ngIf="
+            displayName?.invalid && (displayName?.dirty || displayName?.touched)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="displayName?.errors?.['minlength']">
+            Display name must be at least 3 characters long.
+          </div>
+          <div *ngIf="displayName?.errors?.['maxlength']">
+            Display name must be at most 100 characters long.
+          </div>
+        </div>
+        <small id="display-name-help" class="form-text text-muted"
+          >Give a clear descriptive name between 3-100 characters. Example:
+          <b>3D Fantasy Character</b>.
+        </small>
+      </div>
     </div>
-    <div class="help-texts">
-      <small id="github-repo-help" class="form-text text-muted"
-        >Link your asset's source code from a GitHub repository.</small
-      >
+
+    <div class="mb-3">
+      <label for="github-repo" class="required">GitHub Repo</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">github.com/</div>
+        </div>
+        <input
+          id="github-repo"
+          type="text"
+          formControlName="githubRepo"
+          class="form-control"
+          placeholder="owner/project-name"
+          required
+        />
+      </div>
+      <div class="help-texts">
+        <small id="github-repo-help" class="form-text text-muted"
+          >Link your asset's source code from a GitHub repository.</small
+        >
+      </div>
     </div>
 
     <hr />

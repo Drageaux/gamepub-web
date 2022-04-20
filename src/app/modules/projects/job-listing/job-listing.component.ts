@@ -1,12 +1,11 @@
-import { map, switchMap } from 'rxjs/operators';
-import { Component, Input, OnInit } from '@angular/core';
-import { Job } from '@classes/job';
-import { Project } from '@classes/project';
+import { switchMap, tap } from 'rxjs/operators';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { JobsApiService } from '@services/jobs-api.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 import { ProjectsRoutesNames } from '@classes/routes.names';
-import { Profile } from '@classes/profile';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'app-job-listing',
@@ -16,27 +15,41 @@ import { Profile } from '@classes/profile';
 export class JobListingComponent implements OnInit {
   newJobLink = ProjectsRoutesNames.NEWJOB;
 
-  project!: Project;
-  jobs$!: Observable<Job[]>;
+  jobs: Job[] = [];
+  currUsername = '';
 
   constructor(
     private projectsService: ProjectsService,
-    private jobsApi: JobsApiService
+    private usersService: UsersService,
+    private jobsApi: JobsApiService,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.jobs$ = this.projectsService.getProject().pipe(
-      switchMap((project) => {
-        if (!project?.name || !project?.creator) return of([]);
-        return this.jobsApi.getJobsByProject(project.creator, project.name);
-      })
-    );
+    this.projectsService
+      .getProject()
+      .pipe(
+        switchMap((project) => {
+          if (!project?.name || !project?.creator) return of([]);
+          return this.jobsApi.getJobsByProject(project.creator, project.name);
+        })
+      )
+      .subscribe((jobs) => {
+        this.jobs = jobs;
+        this.ref.markForCheck();
+      });
 
-    // this.jobs$ = of([
-    //   { _id: '0', project: '0', title: 'Main Character 3D model' },
-    //   { _id: '0', project: '0', title: 'Main Character 3D animation' },
-    //   { _id: '0', project: '0', title: '20 Main Character sounds' },
-    //   { _id: '0', project: '0', title: 'Product Manager needed!' },
-    // ]);
+    this.usersService.username$.subscribe((username) => {
+      this.currUsername = username || '';
+    });
+  }
+
+  isCreator() {
+    return this.currUsername === this.projectsService.username;
+  }
+
+  updateJob(job: JobWithSubscriptionStatus, index: number) {
+    this.jobs[index] = job;
+    this.ref.markForCheck();
   }
 }

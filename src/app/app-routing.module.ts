@@ -4,14 +4,8 @@ import { AdminComponent } from '@modules/admin/admin.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
 import { CreateProjectComponent } from '@modules/projects/create-project/create-project.component';
 import { ProjectProxyComponent } from '@modules/projects/project-proxy/project-proxy.component';
-import { ProjectsComponent } from '@modules/projects/projects.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
-import { JobDetailsComponent } from '@modules/projects/job-details/job-details.component';
-import { JobListingComponent } from '@modules/projects/job-listing/job-listing.component';
-import { ProjectOverviewComponent } from '@modules/projects/project-overview/project-overview.component';
-import { ProjectDetailsComponent } from '@modules/projects/project-details/project-details.component';
-import { CreateJobComponent } from '@modules/projects/create-job/create-job.component';
 import { CreateAssetComponent } from '@modules/assets/create-asset/create-asset.component';
 import { JobsComponent } from '@modules/jobs/jobs.component';
 import {
@@ -76,33 +70,10 @@ const routes: Routes = [
       },
       {
         path: `${ProjectsRoutesNames.PROJECTS}/${ProjectsRoutesNames.PROJECTPARAM}`,
-        component: ProjectsComponent,
-        children: [
-          {
-            path: '',
-            component: ProjectOverviewComponent,
-            pathMatch: 'full',
-          },
-          {
-            path: ProjectsRoutesNames.DETAILS,
-            component: ProjectDetailsComponent,
-          },
-          {
-            path: ProjectsRoutesNames.JOBS,
-            children: [
-              { path: '', component: JobListingComponent, pathMatch: 'full' },
-              {
-                path: ProjectsRoutesNames.NEWJOB,
-                component: CreateJobComponent,
-                pathMatch: 'full',
-              },
-              {
-                path: ProjectsRoutesNames.JOBPARAM,
-                component: JobDetailsComponent,
-              },
-            ],
-          },
-        ],
+        loadChildren: () =>
+          import('@modules/projects/projects.module').then(
+            (m) => m.ProjectsModule
+          ),
       },
       // redirect to path with slug
       {

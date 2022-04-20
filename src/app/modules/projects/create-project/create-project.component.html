@@ -1,7 +1,8 @@
 <div class="container">
-  <h1>Create a new project<br /></h1>
-  <p>Have an idea? Start here.</p>
-  <hr />
+  <div class="text-center my-4 border-bottom">
+    <h1>Create a new project<br /></h1>
+    <p>Have an idea? Start here.</p>
+  </div>
 
   <form
     class="form-group"
@@ -10,15 +11,21 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="row">
-      <div class="col-12 col-sm-6">
+      <div class="col-12 col-sm-6 mb-3">
         <label for="formatted-name" class="required">Name</label>
-        <input
-          id="formatted-name"
-          type="text"
-          formControlName="formattedName"
-          class="form-control"
-          required
-        />
+        <div class="position-relative">
+          <input
+            id="formatted-name"
+            type="text"
+            formControlName="formattedName"
+            class="form-control"
+            autocomplete="off"
+            required
+          />
+          <div *ngIf="formattedName?.pending">
+            <i class="spinner fas fa-circle-notch position-absolute"></i>
+          </div>
+        </div>
 
         <div class="help-texts">
           <div
@@ -49,7 +56,7 @@
             "
             class="text-success"
           >
-            {{ formattedName?.value }} is available.
+            <b>{{ formattedName?.value }}</b> is available.
           </div>
           <small class="form-text text-muted"
             >Give a unique name 3-100 characters long, alphanumeric, single
@@ -59,9 +66,9 @@
         </div>
       </div>
 
-      <div class="col-12 col-sm-6 mt-2 mt-sm-0">
+      <div class="col-12 col-sm-6 mb-3">
         <label for="display-name"
-          >Display Name <small class="text-muted">(Optional)</small></label
+          >Display Name&nbsp;<small class="text-muted">(Optional)</small></label
         >
         <input
           id="display-name"
@@ -93,33 +100,35 @@
       </div>
     </div>
 
-    <label for="github-repo"
-      >GitHub Repo <small class="text-muted">(Optional)</small>
-    </label>
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text">github.com/</div>
+    <div class="mb-3">
+      <label for="github-repo"
+        >GitHub Repo <small class="text-muted">(Optional)</small>
+      </label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">github.com/</div>
+        </div>
+        <input
+          id="github-repo"
+          type="text"
+          formControlName="githubRepo"
+          class="form-control"
+          placeholder="owner/project-name"
+        />
       </div>
-      <input
-        id="github-repo"
-        type="text"
-        formControlName="githubRepo"
-        class="form-control"
-        placeholder="owner/project-name"
-      />
-    </div>
-    <div class="help-texts">
-      <small id="github-repo-help" class="form-text text-muted"
-        >Link your project's source code repository from GitHub to help others
-        see the progress and join your cause.</small
-      >
+      <div class="help-texts">
+        <small id="github-repo-help" class="form-text text-muted"
+          >Link your project's source code repository from GitHub to help others
+          see the progress and join your cause.</small
+        >
+      </div>
     </div>
 
     <hr />
     <button
       class="btn btn-success"
       type="submit"
-      [disabled]="projectForm.invalid || form.submitted"
+      [disabled]="projectForm.invalid || projectForm.pending || form.submitted"
     >
       {{ !form.submitted ? "Create project" : "Creating project..." }}
     </button>
