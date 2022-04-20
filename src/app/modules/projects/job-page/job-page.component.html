@@ -18,7 +18,7 @@
         <div class="card-body">
           <div class="flex-column">
             <h5 class="m-0">General</h5>
-            <ul class="ps-3" [style]="{ listStyle: 'none' }">
+            <ul class="ps-0" [style]="{ listStyle: 'none' }">
               <li>
                 <a
                   [routerLink]="['./']"
@@ -41,7 +41,7 @@
             </h5>
             <ul
               *ngIf="submissions?.length; else emptyBlock"
-              class="ps-3"
+              class="ps-0"
               [style]="{ listStyle: 'none' }"
             >
               <li
@@ -69,9 +69,7 @@
                 ><b>See more</b></a
               >
             </ul>
-            <ng-template #emptyBlock
-              ><span class="ps-3"> (no submissions yet)</span></ng-template
-            >
+            <ng-template #emptyBlock>(no submissions yet)</ng-template>
           </div>
 
           <hr />
