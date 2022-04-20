@@ -17,15 +17,14 @@
       <div class="card sticky-top" [style]="{ top: '1rem' }">
         <div class="card-body">
           <div class="flex-column">
-            <h6 class="m-0">General</h6>
+            <h5 class="m-0">General</h5>
             <ul class="ps-3" [style]="{ listStyle: 'none' }">
               <li>
                 <a
                   [routerLink]="['./']"
                   [routerLinkActive]="'active fw-bold'"
                   [routerLinkActiveOptions]="{ exact: true }"
-                >
-                  Main Chat
+                  >Main Chat
                   <span class="badge bg-secondary">{{
                     job?.commentsCount || 0
                   }}</span></a
@@ -34,14 +33,14 @@
               <!-- <li class="text-muted">Creator's Log (coming soon)</li> -->
             </ul>
 
-            <h6 class="m-0">
+            <h5 class="m-0">
               Submission Threads
-              <span class="badge bg-secondary">{{
+              <!-- <span class="badge bg-secondary">{{
                 job?.submissionsCount || 0
-              }}</span>
-            </h6>
+              }}</span> -->
+            </h5>
             <ul
-              *ngIf="submissions"
+              *ngIf="submissions?.length; else emptyBlock"
               class="ps-3"
               [style]="{ listStyle: 'none' }"
             >
@@ -70,8 +69,12 @@
                 ><b>See more</b></a
               >
             </ul>
+            <ng-template #emptyBlock
+              ><span class="ps-3"> (no submissions yet)</span></ng-template
+            >
           </div>
 
+          <hr />
           <h5>Got your own submission?</h5>
           <p class="card-text">Send it to the job creator.</p>
           <a [routerLink]="['./', 'submit']" class="btn btn-success"
