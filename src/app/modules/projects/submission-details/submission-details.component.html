@@ -1,1 +1,26 @@
-<p>submission-details works!</p>
+<!-- New Comment -->
+<!-- <app-create-comment
+  *ngIf="currUsername !== ''"
+  class="mb-3 d-block"
+  [commentText]="newComment"
+  (onTypeEvent)="newComment = $event"
+  (onSubmitEvent)="postComment()"
+  [submitting]="submitting"
+></app-create-comment> -->
+
+<app-job-comments
+  [comments]="comments"
+  [creator]="creator"
+  [currUsername]="currUsername"
+></app-job-comments>
+
+<!-- Have a comment input down below for convenience -->
+<!-- TODO: *ngIf="comments && comments.length >= 10 && currUsername !== ''" -->
+<app-create-comment
+  *ngIf="currUsername !== ''"
+  class="mb-3 d-block"
+  [commentText]="newComment"
+  (onTypeEvent)="newComment = $event"
+  (onSubmitEvent)="postComment()"
+  [submitting]="submitting"
+></app-create-comment>
