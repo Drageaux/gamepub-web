@@ -34,7 +34,7 @@ import { CreateJobComponent } from './create-job/create-job.component';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    FormsModule,
+    FormsModule, // for quick 2-way binding like Commenting
     SharedModule,
   ],
   providers: [PackagesService],

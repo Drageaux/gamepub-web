@@ -14,6 +14,7 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { noWhitespaceValidator } from 'src/app/utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -28,7 +29,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+      [
+        noWhitespaceValidator,
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+      ],
       [this.validateUniqueProjectName.bind(this)]
     ),
     displayName: new FormControl('', [
@@ -39,6 +45,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   });
   @ViewChild('form') form!: NgForm;
 
+  /*************************************************************************/
+  /******************************** GETTERS ********************************/
+  /*************************************************************************/
   get displayName() {
     return this.projectForm.get('displayName');
   }
@@ -47,11 +56,22 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
     return this.projectForm.get('formattedName');
   }
 
+  /*************************************************************************/
+  /************************** COMPONENT LIFECYCLE **************************/
+  /*************************************************************************/
   constructor(private projectApi: ProjectsApiService, private router: Router) {}
 
   ngOnInit(): void {}
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
+  /*************************************************************************/
+  /********************************** FORM *********************************/
+  /*************************************************************************/
   onSubmit() {
+    // TODO: catch error when submitted before checkName validator finishes
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
     this.subs.sink = this.projectApi
@@ -62,20 +82,20 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
       } as Project)
       .subscribe(
         (res: Project) => {
-          console.log(res);
-          if (!res?.creator) {
-            // TODO: needs testing
-            this.router.navigate([this.projectsLink, res._id]);
-          } else {
+          // navigate
+          if (res?.creator) {
             this.router.navigate([
               '',
               res.creator,
               this.projectsLink,
               res.name,
             ]);
+          } else {
+            this.router.navigate([this.projectsLink, res._id]);
           }
         },
         (err) => {
+          // TODO: display error after submitting, but reset the submit button
           // resetForm also resets the submitted status, while reset() doesn't
           this.form.resetForm(this.projectForm.value);
           console.error(err);
@@ -93,9 +113,5 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
           .pipe(map((isTaken) => (isTaken ? { projectNameTaken: true } : null)))
       )
     );
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
   }
 }

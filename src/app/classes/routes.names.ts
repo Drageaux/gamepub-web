@@ -14,6 +14,9 @@ export const JobsRoutesNames = {
 export const ProjectsRoutesNames = {
   NEWPROJECT: 'new-project',
   ROOT: 'projects',
+  ROOTPROXYPARAM: ':projectid',
+  ROOTPROXYPARAMNAME: 'projectid',
+  PROJECTS: 'projects',
   PROJECTPARAM: ':projectname',
   PROJECTPARAMNAME: 'projectname',
   DETAILS: 'details',
@@ -21,4 +24,16 @@ export const ProjectsRoutesNames = {
   NEWJOB: 'new-job',
   JOBPARAM: ':jobnumber',
   JOBPARAMNAME: 'jobnumber',
+};
+
+export const AssetsRoutesNames = {
+  NEWASSET: 'new-asset',
+  ROOT: 'assets',
+  ROOTPROXYPARAM: ':assetpuid',
+  ROOTPROXYPARAMNAME: 'assetpuid',
+  ASSETS: 'assets',
+  ASSETPARAM: ':assetpuid',
+  ASSETPARAMNAME: 'assetpuid',
+  SLUGPARAM: ':assetslug',
+  SLUGPARAMNAME: 'assetslug',
 };
