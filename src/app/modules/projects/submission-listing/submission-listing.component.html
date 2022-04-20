@@ -1,7 +1,0 @@
-<ul *ngIf="submissions" class="ps-3" [style]="{ listStyle: 'none' }">
-  <li *ngFor="let s of submissions | sort: 'submissionNumber'">
-    <a [routerLink]="['./', s.submissionNumber]" [routerLinkActive]="'fw-bold'"
-      >#{{ s.submissionNumber }} by {{ s.user }}</a
-    >
-  </li>
-</ul>
