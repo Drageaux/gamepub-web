@@ -4,14 +4,8 @@ import { AdminComponent } from '@modules/admin/admin.component';
 import { AssetDashboardComponent } from '@modules/asset-dashboard/asset-dashboard.component';
 import { CreateProjectComponent } from '@modules/projects/create-project/create-project.component';
 import { ProjectProxyComponent } from '@modules/projects/project-proxy/project-proxy.component';
-import { ProjectsComponent } from '@modules/projects/projects.component';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { FeedComponent } from '@modules/feed/feed.component';
-import { JobDetailsComponent } from '@modules/projects/job-details/job-details.component';
-import { JobListingComponent } from '@modules/projects/job-listing/job-listing.component';
-import { ProjectOverviewComponent } from '@modules/projects/project-overview/project-overview.component';
-import { ProjectDetailsComponent } from '@modules/projects/project-details/project-details.component';
-import { CreateJobComponent } from '@modules/projects/create-job/create-job.component';
 import { CreateAssetComponent } from '@modules/assets/create-asset/create-asset.component';
 import { JobsComponent } from '@modules/jobs/jobs.component';
 import {
@@ -24,10 +18,6 @@ import {
 import { AuthRoleGuard } from './guards/auth-role.guard';
 import { AssetsComponent } from '@modules/assets/assets.component';
 import { AssetProxyComponent } from '@modules/assets/asset-proxy/asset-proxy.component';
-import { SubmitJobComponent } from '@modules/projects/submit-job/submit-job.component';
-import { SubmissionDetailsComponent } from '@modules/projects/submission-details/submission-details.component';
-import { SubmissionListingComponent } from '@modules/projects/submission-listing/submission-listing.component';
-import { JobPageComponent } from '@modules/projects/job-page/job-page.component';
 
 const routes: Routes = [
   {

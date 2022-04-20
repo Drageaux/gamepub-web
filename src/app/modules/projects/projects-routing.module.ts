@@ -9,7 +9,6 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 import { ProjectsComponent } from './projects.component';
 import { SubmissionDetailsComponent } from './submission-details/submission-details.component';
-import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import { SubmitJobComponent } from './submit-job/submit-job.component';
 
 const routes: Routes = [
@@ -52,11 +51,6 @@ const routes: Routes = [
                 path: `submit`,
                 pathMatch: 'full',
                 component: SubmitJobComponent,
-              },
-              {
-                path: `${ProjectsRoutesNames.JOBSUBMISSIONS}`,
-                pathMatch: 'full',
-                component: SubmissionListingComponent,
               },
               {
                 path: `${ProjectsRoutesNames.JOBSUBMISSIONS}/${ProjectsRoutesNames.JOBSUBMISSIONPARAM}`,

@@ -21,7 +21,6 @@ import { SubmitJobComponent } from './submit-job/submit-job.component';
 import { CreateCommentComponent } from './reusable-components/create-comment/create-comment.component';
 import { SubmissionDetailsComponent } from './submission-details/submission-details.component';
 import { JobPageComponent } from './job-page/job-page.component';
-import { SubmissionListingComponent } from './submission-listing/submission-listing.component';
 import { JobCommentsComponent } from './reusable-components/job-comments/job-comments.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { JobsModule } from '@modules/jobs/jobs.module';
@@ -43,7 +42,6 @@ import { JobsModule } from '@modules/jobs/jobs.module';
     CreateCommentComponent,
     SubmissionDetailsComponent,
     JobPageComponent,
-    SubmissionListingComponent,
 
     // reusables
     JobCommentsComponent,
