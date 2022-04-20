@@ -15,32 +15,31 @@
   <div class="row">
     <div class="col-12 col-sm-4 col-md-3 mb-5 position-relative">
       <div class="card sticky-top" [style]="{ top: '1rem' }">
-        <nav class="nav nav-pills flex-column">
-          <a
-            class="nav-link"
-            aria-current="page"
-            [routerLink]="['./']"
-            [routerLinkActive]="'active'"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ><h6 class="m-0">
-              Main Chat
+        <div class="card-body">
+          <div class="flex-column">
+            <h6 class="m-0">General</h6>
+            <ul class="ps-3" [style]="{ listStyle: 'none' }">
+              <li>
+                <a
+                  [routerLink]="['./']"
+                  [routerLinkActive]="'active fw-bold'"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                >
+                  Main Chat
+                  <span class="badge bg-secondary">{{
+                    job?.commentsCount || 0
+                  }}</span></a
+                >
+              </li>
+              <!-- <li class="text-muted">Creator's Log (coming soon)</li> -->
+            </ul>
+
+            <h6 class="m-0">
+              Submission Threads
               <span class="badge bg-secondary">{{
-                job?.commentsCount || 0
+                job?.submissionsCount || 0
               }}</span>
-            </h6></a
-          >
-          <ul class="p-0">
-            <a
-              class="nav-link"
-              [routerLink]="['./', submissionsLink]"
-              [routerLinkActive]="'active'"
-              ><h6 class="m-0">
-                Submission Threads
-                <span class="badge bg-secondary">{{
-                  job?.submissionsCount || 0
-                }}</span>
-              </h6></a
-            >
+            </h6>
             <ul
               *ngIf="submissions"
               class="ps-3"
@@ -67,22 +66,18 @@
 
               <a
                 *ngIf="submissionsLimit < submissions.length"
-                (click)="submissionsLimit = submissionsLimit + 5"
+                (click)="submissionsLimit = submissionsLimit + 20"
                 ><b>See more</b></a
               >
             </ul>
-          </ul>
-        </nav>
+          </div>
 
-        <!-- <div class="card text-left"> -->
-        <div class="card-body">
           <h5>Got your own submission?</h5>
           <p class="card-text">Send it to the job creator.</p>
           <a [routerLink]="['./', 'submit']" class="btn btn-success"
             >Submission Page</a
           >
         </div>
-        <!-- </div> -->
       </div>
     </div>
 
