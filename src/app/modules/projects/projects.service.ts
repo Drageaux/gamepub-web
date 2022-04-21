@@ -2,7 +2,9 @@ import { SubSink } from 'subsink';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Project } from '@classes/project';
 import { ProjectsApiService } from '@services/projects-api.service';
-import { ReplaySubject, Observable, pipe } from 'rxjs';
+import { ReplaySubject, Observable, pipe, of } from 'rxjs';
+import { UsersService } from '@services/users.service';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Share project data among the ProjectComponent and its children.
@@ -22,7 +24,10 @@ export class ProjectsService implements OnDestroy {
 
   private _randomNo = '';
 
-  constructor(private projectsApi: ProjectsApiService) {
+  constructor(
+    private projectsApi: ProjectsApiService,
+    private usersService: UsersService
+  ) {
     console.log('AppService Constructed');
     this._randomNo = 'App ' + Math.floor(Math.random() * 1000 + 1);
     console.log(this.RandomNo);
@@ -56,6 +61,16 @@ export class ProjectsService implements OnDestroy {
 
   getProject(): Observable<Project | null> {
     return this.project$.asObservable();
+  }
+
+  isCreator(): Observable<boolean> {
+    return this.usersService.username$.pipe(
+      // TODO: check if logged in user is this profile's user
+      map((loggedInUsername) => {
+        return this.username === loggedInUsername;
+      }),
+      catchError((err) => of(false))
+    );
   }
 
   ngOnDestroy() {
