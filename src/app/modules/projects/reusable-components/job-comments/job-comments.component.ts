@@ -20,7 +20,7 @@ export class JobCommentsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  isCreator() {
-    return this.creator === this.currUsername;
+  isCommenterCreator(commenter: string) {
+    return this.creator && commenter && this.creator === commenter;
   }
 }
