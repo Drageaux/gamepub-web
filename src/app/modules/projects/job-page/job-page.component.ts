@@ -31,6 +31,11 @@ export class JobPageComponent implements OnInit {
   comments!: JobComment[];
   submissions!: JobSubmission[];
   submissionsLimit = 5;
+  descriptionLimit = 40;
+
+  get Math() {
+    return Math;
+  }
 
   readonly noJobError$ = new Subject<boolean>();
 

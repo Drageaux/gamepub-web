@@ -2,24 +2,8 @@
   <!-- Header -->
   <div class="d-flex flex-row justify-content-between mb-3">
     <a [routerLink]="['../']" class="bold-link align-self-center"
-      ><i class="fas fa-angle-left"></i
-      ><span class="d-none d-sm-inline">Back to Jobs</span></a
+      ><i class="fas fa-angle-left"></i><span>&nbsp;Back to Jobs</span></a
     >
-
-    <h2 class="mb-0 mx-3 align-self-center">
-      {{ job.title }}&nbsp;<span class="text-muted fw-normal"
-        >#{{ job.jobNumber }}</span
-      >
-    </h2>
-
-    <div class="align-self-center">
-      {{ job.subscriptionsCount }} subscribers
-      <app-job-subscription-buttons
-        *ngIf="usersService.username$ | async"
-        [job]="job"
-        [isCreator]="projectsService.isCreator() | async"
-      ></app-job-subscription-buttons>
-    </div>
   </div>
 
   <div class="row">
@@ -93,6 +77,40 @@
     </div>
 
     <div class="col-12 col-sm-8 col-md-9">
+      <div class="card mb-3 lift-1">
+        <div class="card-header d-flex justify-content-between">
+          <h2 class="d-inline align-self-center">
+            {{ job.title }}&nbsp;<span class="text-muted fw-normal"
+              >#{{ job.jobNumber }}</span
+            >
+          </h2>
+
+          <div class="align-self-center">
+            <!-- TODO: restyle this -->
+            {{ job.subscriptionsCount }} subscribers
+            <app-job-subscription-buttons
+              *ngIf="usersService.username$ | async"
+              [job]="job"
+              [isCreator]="projectsService.isCreator() | async"
+            ></app-job-subscription-buttons>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h6>Description</h6>
+          <p *ngIf="job?.body?.length as length">
+            {{ job?.body?.slice(0, Math.min(length, descriptionLimit)) }}
+
+            <ng-container
+              *ngIf="length > descriptionLimit || false; else showLessBlock"
+            >
+              <span>Show more</span>
+            </ng-container>
+            <ng-template #showLessBlock>Show less</ng-template>
+          </p>
+        </div>
+      </div>
+
       <router-outlet></router-outlet>
     </div>
   </div>
