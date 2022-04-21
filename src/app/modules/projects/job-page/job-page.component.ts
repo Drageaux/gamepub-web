@@ -38,9 +38,9 @@ export class JobPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private jobsApi: JobsApiService,
-    private projectsService: ProjectsService,
+    public projectsService: ProjectsService,
+    public usersService: UsersService,
     private jobPageService: JobPageService,
-    private usersService: UsersService,
     public ref: ChangeDetectorRef
   ) {}
 
