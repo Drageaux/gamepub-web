@@ -14,10 +14,12 @@
     <h6 class="d-inline me-2">Description</h6>
     <small class="text-muted">
       <!-- Job Number -->
-      <span>{{ job.createdAt | dateAgo }} </span>
+      <span class="text-muted" title="{{ job.createdAt | date: 'medium' }}">{{
+        job.createdAt | dateAgo
+      }}</span>
       <!-- Collaborators (Job Takers) Count -->
-      <span *ngIf="job.collaboratorsCount"
-        >&bull;&nbsp;{{ job.collaboratorsCount }} collab{{
+      <span *ngIf="job.collaboratorsCount">
+        &bull;&nbsp;{{ job.collaboratorsCount }} collab{{
           job.collaboratorsCount !== 1 ? "s" : ""
         }}</span
       >

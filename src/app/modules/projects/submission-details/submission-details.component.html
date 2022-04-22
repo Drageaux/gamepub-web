@@ -22,7 +22,13 @@
   </div>
 
   <div class="card-body">
-    <h6>Submission #{{ subm.submissionNumber }}</h6>
+    <h6 class="d-inline">
+      Submission #{{ subm.submissionNumber }} by
+      <a [routerLink]="['', subm.user]">{{ subm.user }}</a>
+    </h6>
+    <span class="text-muted" title="{{ subm.createdAt | date: 'medium' }}"
+      >&nbsp;{{ subm.createdAt | dateAgo }}</span
+    >
     <p class="m-0">
       {{ subm.body }}
       Github:

@@ -34,7 +34,9 @@
 
           <small class="text-muted">
             <!-- Job Number -->
-            <span> #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }} </span>
+            <span title="{{ j.createdAt | date: 'medium' }}"
+              >#{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }}
+            </span>
             <!-- Collaborators (Job Takers) Count -->
             <span *ngIf="j.collaboratorsCount"
               >&bull;&nbsp;{{ j.collaboratorsCount }} collab{{
