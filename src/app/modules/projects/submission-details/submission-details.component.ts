@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
+import { ReplaySubject } from 'rxjs';
 import { switchMap, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { JobPageService } from '../job-page.service';
@@ -17,6 +19,7 @@ import { ProjectsService } from '../projects.service';
 export class SubmissionDetailsComponent implements OnInit {
   private subs = new SubSink();
   currUsername = '';
+  job$ = new ReplaySubject<Job>(1);
   comments: JobComment[] = [];
 
   submissionParamName = ProjectsRoutesNames.JOBSUBMISSIONPARAMNAME;
@@ -39,7 +42,7 @@ export class SubmissionDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
-    private projectPageService: ProjectsService,
+    public projectPageService: ProjectsService,
     private jobPageService: JobPageService,
     private usersService: UsersService,
     public ref: ChangeDetectorRef
@@ -49,6 +52,12 @@ export class SubmissionDetailsComponent implements OnInit {
     this.subs.sink = this.usersService.username$.subscribe(
       (username) => (this.currUsername = username || '')
     );
+
+    this.subs.sink = this.jobPageService.getJob().subscribe((job) => {
+      if (job) {
+        this.job$.next(job);
+      }
+    });
 
     this.subs.sink = this.route.params
       .pipe(
