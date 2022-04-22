@@ -86,8 +86,6 @@
           </h2>
 
           <div class="align-self-center">
-            <!-- TODO: restyle this -->
-            {{ job.subscriptionsCount }} subscribers
             <app-job-subscription-buttons
               *ngIf="usersService.username$ | async"
               [job]="job"
@@ -97,7 +95,21 @@
         </div>
 
         <div class="card-body">
-          <h6>Description</h6>
+          <small class="text-muted">
+            <!-- Job Number -->
+            <span>{{ job.createdAt | dateAgo }} </span>
+            <!-- Collaborators (Job Takers) Count -->
+            <span *ngIf="job.collaboratorsCount"
+              >&bull;&nbsp;{{ job.collaboratorsCount }} collab{{
+                job.collaboratorsCount !== 1 ? "s" : ""
+              }}</span
+            >
+            <!-- Submissions Count -->
+            <span *ngIf="job.submissionsCount">
+              &bull;&nbsp;{{ job.acceptedSubmissionsCount || 0 }} out of
+              {{ job.submissionsCount }} submissions accepted
+            </span>
+          </small>
           <p *ngIf="job?.body?.length as length">
             {{ job?.body?.slice(0, Math.min(length, descriptionLimit)) }}
 

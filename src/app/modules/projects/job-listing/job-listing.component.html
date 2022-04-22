@@ -33,9 +33,10 @@
             </small>
           </h6>
 
-          <!-- Job Number -->
           <small class="text-muted">
+            <!-- Job Number -->
             <span> #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }} </span>
+            <!-- Collaborators (Job Takers) Count -->
             <span *ngIf="j.collaboratorsCount"
               >&bull;&nbsp;{{ j.collaboratorsCount }} collab{{
                 j.collaboratorsCount !== 1 ? "s" : ""
