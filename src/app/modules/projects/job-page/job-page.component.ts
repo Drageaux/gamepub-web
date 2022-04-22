@@ -66,22 +66,18 @@ export class JobPageComponent implements OnInit {
         }
       });
 
-    this.subs.sink = this.jobPageService
-      .getJob()
-      .pipe(
-        tap((job) => {
-          if (job) {
-            this.job = job;
-            this.ref.markForCheck();
-          } else this.noJobError$.next(true);
-          return job;
-        }),
-        switchMap(() => this.jobPageService.getSubmissions())
-      )
-      .subscribe((submissions) => {
-        this.submissions = submissions;
+    this.subs.sink = this.jobPageService.getJob().subscribe((job) => {
+      if (job) {
+        this.job = job;
         this.ref.markForCheck();
-      });
+      } else this.noJobError$.next(true);
+      return job;
+    });
+
+    this.jobPageService.getSubmissions().subscribe((submissions) => {
+      this.submissions = submissions;
+      this.ref.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {
