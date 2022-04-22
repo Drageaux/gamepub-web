@@ -32,14 +32,20 @@
               {{ j.commentsCount || 0 }}
             </small>
           </h6>
+
           <!-- Job Number -->
           <small class="text-muted">
-            #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }}
-          </small>
-          <!-- Submissions Count -->
-          <small *ngIf="j.submissionsCount" class="ms-2 text-muted">
-            &bull;&nbsp;{{ j.acceptedSubmissionsCount || 0 }} out of
-            {{ j.submissionsCount }} submissions accepted
+            <span> #{{ j.jobNumber }} posted {{ j.createdAt | dateAgo }} </span>
+            <span *ngIf="j.collaboratorsCount"
+              >&bull;&nbsp;{{ j.collaboratorsCount }} collab{{
+                j.collaboratorsCount !== 1 ? "s" : ""
+              }}</span
+            >
+            <!-- Submissions Count -->
+            <span *ngIf="j.submissionsCount">
+              &bull;&nbsp;{{ j.acceptedSubmissionsCount || 0 }} out of
+              {{ j.submissionsCount }} submissions accepted
+            </span>
           </small>
         </td>
 
