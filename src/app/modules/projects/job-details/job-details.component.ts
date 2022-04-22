@@ -31,6 +31,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   newComment = '';
   submitting = false;
+  descriptionLimit = 40;
 
   get creator() {
     return this.projectPageService.username;
@@ -42,6 +43,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   get jobNumber() {
     return this.jobPageService.jobNumber;
+  }
+
+  get Math() {
+    return Math;
   }
 
   constructor(

@@ -8,6 +8,38 @@
   [submitting]="submitting"
 ></app-create-comment> -->
 
+<div class="card mb-3 lift-1" *ngIf="job$ | async as job">
+  <div class="card-body">
+    <!-- TODO: Job Image -->
+    <h6 class="d-inline me-2">Description</h6>
+    <small class="text-muted">
+      <!-- Job Number -->
+      <span>{{ job.createdAt | dateAgo }} </span>
+      <!-- Collaborators (Job Takers) Count -->
+      <span *ngIf="job.collaboratorsCount"
+        >&bull;&nbsp;{{ job.collaboratorsCount }} collab{{
+          job.collaboratorsCount !== 1 ? "s" : ""
+        }}</span
+      >
+      <!-- Submissions Count -->
+      <span *ngIf="job.submissionsCount">
+        &bull;&nbsp;{{ job.acceptedSubmissionsCount || 0 }} out of
+        {{ job.submissionsCount }} submissions accepted
+      </span>
+    </small>
+    <p *ngIf="job?.body?.length as length">
+      {{ job?.body?.slice(0, Math.min(length, descriptionLimit)) }}
+
+      <ng-container
+        *ngIf="length > descriptionLimit || false; else showLessBlock"
+      >
+        <span>Show more</span>
+      </ng-container>
+      <ng-template #showLessBlock>Show less</ng-template>
+    </p>
+  </div>
+</div>
+
 <app-job-comments
   [comments]="comments"
   [creator]="creator"
