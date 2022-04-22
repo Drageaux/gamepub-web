@@ -50,9 +50,11 @@
 a {
   cursor: pointer;
   text-decoration: none;
-  &:hover,
-  &:focus {
-    text-decoration: underline;
+  &:not(.nav-link):not(.navbar-brand) {
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
   }
 
   &.bold-link {
