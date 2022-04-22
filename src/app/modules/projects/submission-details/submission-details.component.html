@@ -8,7 +8,7 @@
   [submitting]="submitting"
 ></app-create-comment> -->
 
-<div class="card mb-3 lift-1">
+<div class="card mb-3 lift-1" *ngIf="submission$ | async as subm">
   <div class="card-header" *ngIf="projectPageService.isCreator() | async">
     <h6>
       Creator Section
@@ -22,10 +22,13 @@
   </div>
 
   <div class="card-body">
-    <h6>Submission Description</h6>
-    <p>
-      <!-- Github Repo: {{}} -->
-      <!--  -->
+    <h6>Submission #{{ subm.submissionNumber }}</h6>
+    <p class="m-0">
+      {{ subm.body }}
+      Github:
+      <a target="_blank" href="https://github.com/{{ subm.githubRepo }}">{{
+        subm.githubRepo
+      }}</a>
     </p>
   </div>
 </div>

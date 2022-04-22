@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
+import { JobSubmission } from '@classes/job-submission';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, combineLatest } from 'rxjs';
 import { switchMap, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { JobPageService } from '../job-page.service';
@@ -20,6 +21,7 @@ export class SubmissionDetailsComponent implements OnInit {
   private subs = new SubSink();
   currUsername = '';
   job$ = new ReplaySubject<Job>(1);
+  submission$ = new ReplaySubject<JobSubmission>(1);
   comments: JobComment[] = [];
 
   submissionParamName = ProjectsRoutesNames.JOBSUBMISSIONPARAMNAME;
@@ -63,15 +65,24 @@ export class SubmissionDetailsComponent implements OnInit {
       .pipe(
         withLatestFrom(this.jobPageService.getJob()),
         switchMap(([params, job]) =>
-          this.jobsApi.getSubmissionThreadComments(
-            this.creator,
-            this.projectName,
-            this.jobNumber,
-            params[this.submissionParamName]
-          )
+          combineLatest([
+            this.jobsApi.getJobSubmission(
+              this.creator,
+              this.projectName,
+              this.jobNumber,
+              params[this.submissionParamName]
+            ),
+            this.jobsApi.getSubmissionThreadComments(
+              this.creator,
+              this.projectName,
+              this.jobNumber,
+              params[this.submissionParamName]
+            ),
+          ])
         )
       )
-      .subscribe((comments) => {
+      .subscribe(([submissionDetails, comments]) => {
+        this.submission$.next(submissionDetails);
         this.comments = comments;
         this.ref.markForCheck();
       });

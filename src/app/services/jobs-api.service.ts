@@ -18,6 +18,10 @@ export class JobsApiService {
 
   constructor(private http: HttpClient) {}
 
+  /*************************************************************************/
+  /********************************** JOB **********************************/
+  /*************************************************************************/
+
   getAllJobs() {
     return this.http.get<ApiResponse<Job[]>>(`${this.apiUrl}/jobs`).pipe(
       shareReplay(1),
@@ -80,6 +84,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** SUBSCRIPTION *****************************/
+  /*************************************************************************/
   subscribeToJobByJobNumber(
     username: string,
     projName: string,
@@ -113,6 +120,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** JOB COMMENTS *****************************/
+  /*************************************************************************/
   getJobComments(
     username: string,
     projName: string,
@@ -145,6 +155,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** SUBMISSIONS ******************************/
+  /*************************************************************************/
   getJobSubmissions(
     username: string,
     projName: string,
@@ -153,6 +166,22 @@ export class JobsApiService {
     return this.http
       .get<ApiResponse<JobSubmission[]>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getJobSubmission(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string
+  ): Observable<JobSubmission> {
+    return this.http
+      .get<ApiResponse<JobSubmission>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}`
       )
       .pipe(
         shareReplay(1),
@@ -177,6 +206,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /************************** SUBMISSION COMMENTS **************************/
+  /*************************************************************************/
   getSubmissionThreadComments(
     username: string,
     projName: string,
