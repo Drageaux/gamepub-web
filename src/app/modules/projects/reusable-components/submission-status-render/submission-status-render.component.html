@@ -1,0 +1,23 @@
+<span
+  class="status-wrapper d-inline-block text-center"
+  [style]="{ width: '1rem' }"
+>
+  <ng-container [ngSwitch]="status">
+    <span *ngSwitchCase="SubmissionStatusEnum.OPEN">
+      <i class="far fa-dot-circle text-info"></i>
+    </span>
+    <span *ngSwitchCase="SubmissionStatusEnum.APPROVED">
+      <i class="fas fa-check text-success"></i>
+    </span>
+    <span *ngSwitchCase="SubmissionStatusEnum.CHANGE_REQUESTED">
+      <i class="fas fa-sync-alt text-warning"></i>
+    </span>
+    <span *ngSwitchCase="SubmissionStatusEnum.MERGED">
+      <i class="fas fa-code-branch text-success"></i>
+    </span>
+    <span *ngSwitchCase="SubmissionStatusEnum.CLOSED">
+      <i class="fas fa-times text-danger"></i>
+    </span>
+  </ng-container>
+</span>
+<span *ngIf="withText">&nbsp;{{ SubmissionStatusRenderEnum[status] }}</span>
