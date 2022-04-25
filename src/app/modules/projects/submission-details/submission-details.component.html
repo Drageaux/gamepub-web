@@ -34,11 +34,18 @@
       >&nbsp;{{ subm.createdAt | dateAgo }}</span
     >
     <p class="m-0">
-      {{ subm.body }}
+      Status:
+      <app-submission-status-render
+        [status]="status"
+      ></app-submission-status-render>
+      <br />
       Github:
       <a target="_blank" href="https://github.com/{{ subm.githubRepo }}">{{
         subm.githubRepo
       }}</a>
+      <br />
+
+      {{ subm.body }}
     </p>
   </div>
 </div>

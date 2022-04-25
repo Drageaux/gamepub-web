@@ -59,7 +59,6 @@ export class SubmissionDetailsComponent implements OnInit {
     this.subs.sink = this.jobPageService.getJob().subscribe((job) => {
       if (job) {
         this.job$.next(job);
-        this.status = job.status;
       }
     });
 
@@ -85,6 +84,7 @@ export class SubmissionDetailsComponent implements OnInit {
       )
       .subscribe(([submissionDetails, comments]) => {
         this.submission$.next(submissionDetails);
+        this.status = submissionDetails.status;
         this.comments = comments;
         this.ref.markForCheck();
       });
@@ -126,7 +126,10 @@ export class SubmissionDetailsComponent implements OnInit {
         this.route.snapshot.params[this.submissionParamName],
         SubmissionStatusEnum.APPROVED
       )
-      .subscribe();
+      .subscribe(() => {
+        this.status = SubmissionStatusEnum.APPROVED;
+        this.ref.markForCheck();
+      });
   }
 
   rejectSubmission() {
@@ -138,8 +141,9 @@ export class SubmissionDetailsComponent implements OnInit {
         this.route.snapshot.params[this.submissionParamName],
         SubmissionStatusEnum.CLOSED
       )
-      .subscribe((res) => {
+      .subscribe(() => {
         this.status = SubmissionStatusEnum.CLOSED;
+        this.ref.markForCheck();
       });
   }
 
