@@ -58,15 +58,19 @@
                     | sort: 'submissionNumber'
                 "
               >
-                <!-- <a
-                target="_blank"
-                [href]="'https://www.github.com/' + s.githubRepo"
-                >{{ s.githubRepo }}</a
-              > -->
                 <a
                   [routerLink]="['./', submissionsLink, s.submissionNumber]"
                   [routerLinkActive]="'fw-bold'"
-                  >#{{ s.submissionNumber }} by {{ s.user }}</a
+                  ><app-submission-status-render
+                    [status]="s.status"
+                    [withText]="false"
+                  ></app-submission-status-render
+                  >&nbsp;<span class="d-inline d-sm-none d-md-inline"
+                    >#{{ s.submissionNumber }} by {{ s.user }}</span
+                  >
+                  <small class="d-none d-sm-inline d-md-none">{{
+                    s.user
+                  }}</small></a
                 >
               </li>
 
