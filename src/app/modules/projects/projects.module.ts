@@ -24,6 +24,7 @@ import { JobPageComponent } from './job-page/job-page.component';
 import { JobCommentsComponent } from './reusable-components/job-comments/job-comments.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { JobsModule } from '@modules/jobs/jobs.module';
+import { SubmissionStatusRenderComponent } from './reusable-components/submission-status-render/submission-status-render.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { JobsModule } from '@modules/jobs/jobs.module';
 
     // reusables
     JobCommentsComponent,
+    SubmissionStatusRenderComponent,
   ],
   imports: [
     CommonModule,
