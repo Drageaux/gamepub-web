@@ -2,8 +2,12 @@
 
 $charcoal: #424b54; // used for background
 $lava: #c81d25; // red streaks
+$cherry-red: #990011;
+$off-white: #fcf6f5;
 $sakura: #ffb7c5; // ?? highlights
 $sakura-websafe: #ffcccc; // web-safe closest to sakura pink
+$peach: #fcedda;
+$burn-orange: #ee4e34;
 $aero: #6bbaec; // contrast
 
 @import "functions";
@@ -12,8 +16,10 @@ $aero: #6bbaec; // contrast
 
 .dark {
   /* redefine theme colors for dark theme */
-  $primary: #424b54;
-  $secondary: #111111;
+  // $primary: #424b54;
+  $primary: $cherry-red;
+  // $secondary: #111111;
+  $secondary: $off-white;
   $success: #222222;
   $dark: #000;
 
@@ -22,7 +28,7 @@ $aero: #6bbaec; // contrast
     "secondary": $secondary,
     "success": $success,
     "danger": $danger,
-    "info": $indigo,
+    "info": $info,
     "dark": $dark,
     "light": $light,
   );
