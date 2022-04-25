@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Job } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
-import { JobSubmission } from '@classes/job-submission';
+import { JobSubmission, SubmissionStatusEnum } from '@classes/job-submission';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { UsersService } from '@services/users.service';
@@ -21,6 +21,7 @@ export class SubmissionDetailsComponent implements OnInit {
   private subs = new SubSink();
   currUsername = '';
   job$ = new ReplaySubject<Job>(1);
+  status: SubmissionStatusEnum = SubmissionStatusEnum.OPEN;
   submission$ = new ReplaySubject<JobSubmission>(1);
   comments: JobComment[] = [];
 
@@ -58,6 +59,7 @@ export class SubmissionDetailsComponent implements OnInit {
     this.subs.sink = this.jobPageService.getJob().subscribe((job) => {
       if (job) {
         this.job$.next(job);
+        this.status = job.status;
       }
     });
 
@@ -113,6 +115,32 @@ export class SubmissionDetailsComponent implements OnInit {
           this.ref.markForCheck();
         }
       );
+  }
+
+  approveSubmission() {
+    this.subs.sink = this.jobsApi
+      .updateSubmissionStatus(
+        this.creator,
+        this.projectName,
+        this.jobNumber,
+        this.route.snapshot.params[this.submissionParamName],
+        SubmissionStatusEnum.APPROVED
+      )
+      .subscribe();
+  }
+
+  rejectSubmission() {
+    this.subs.sink = this.jobsApi
+      .updateSubmissionStatus(
+        this.creator,
+        this.projectName,
+        this.jobNumber,
+        this.route.snapshot.params[this.submissionParamName],
+        SubmissionStatusEnum.CLOSED
+      )
+      .subscribe((res) => {
+        this.status = SubmissionStatusEnum.CLOSED;
+      });
   }
 
   ngOnDestroy(): void {

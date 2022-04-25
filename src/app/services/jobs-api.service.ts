@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
-import { JobSubmission } from '@classes/job-submission';
+import { JobSubmission, SubmissionStatusEnum } from '@classes/job-submission';
 import { JobSubscription } from '@classes/job-subscription';
 import { Project } from '@classes/project';
 import { Observable, of } from 'rxjs';
@@ -236,6 +236,27 @@ export class JobsApiService {
       .post<ApiResponse<JobComment>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/comments`,
         { body }
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  /*************************************************************************/
+  /*************************** SUBMISSION STATUS ***************************/
+  /*************************************************************************/
+  updateSubmissionStatus(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string,
+    status: SubmissionStatusEnum
+  ) {
+    return this.http
+      .put<ApiResponse<JobComment>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/status`,
+        { status }
       )
       .pipe(
         shareReplay(1),

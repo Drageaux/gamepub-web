@@ -17,8 +17,12 @@
       >
     </h6>
 
-    <button class="btn btn-success mb-2 me-2">Approve Submission</button><br />
-    <button class="btn btn-danger">Delete Submission</button>
+    <button class="btn btn-success mb-2 me-2" (click)="approveSubmission()">
+      Approve Submission</button
+    ><br />
+    <button class="btn btn-danger" (click)="rejectSubmission()">
+      Close Submission
+    </button>
   </div>
 
   <div class="card-body">
