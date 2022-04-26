@@ -1,0 +1,24 @@
+<div class="card">
+  <a [routerLink]="buildRouterLink(project)">
+    <!-- <a> -->
+    <div>{{ project.displayName || project.name }}</div>
+    <!-- TODO: Add optimized image and alt -->
+    <app-progressive-image
+      *ngIf="project.imageUrl; else placeholder"
+      [src]="''"
+      [fallback]="project.imageUrl"
+      [imgClass]="'img-fluid'"
+      class="d-block"
+    >
+    </app-progressive-image>
+    <ng-template #placeholder
+      ><img
+        class="placeholder"
+        alt="Placeholder by Manoj Mahadik/Scop.io"
+        width="720"
+        height="480"
+        src="/assets/img/placeholder.jpg"
+      />
+    </ng-template>
+  </a>
+</div>
