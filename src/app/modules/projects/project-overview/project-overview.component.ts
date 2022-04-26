@@ -33,13 +33,13 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     public usersService: UsersService,
-    private projectService: ProjectsService,
+    public projectsService: ProjectsService,
     private projectApi: ProjectsApiService,
     private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.subs.sink = this.projectService.getProject().subscribe((proj) => {
+    this.subs.sink = this.projectsService.getProject().subscribe((proj) => {
       if (proj) {
         this.project = proj;
       }
@@ -57,10 +57,6 @@ export class ProjectOverviewComponent implements OnInit, OnDestroy {
         this.project = project;
         this.ref.markForCheck(); // explicitly check changes in project reference
       });
-  }
-
-  isCreator(username: string) {
-    return username === this.project?.creator;
   }
 
   ngOnDestroy() {

@@ -32,6 +32,7 @@
 @import "_containers";
 @import "_card";
 @import "_buttons";
+@import "_button-group";
 @import "_forms";
 @import "_grid";
 @import "_tables";
@@ -48,15 +49,16 @@
 // Custom
 a {
   cursor: pointer;
-
-  &.bold-link {
-    font-weight: 500;
-    text-decoration: none;
-
+  text-decoration: none;
+  &:not(.nav-link):not(.navbar-brand) {
     &:hover,
     &:focus {
       text-decoration: underline;
     }
+  }
+
+  &.bold-link {
+    font-weight: 500;
   }
 }
 

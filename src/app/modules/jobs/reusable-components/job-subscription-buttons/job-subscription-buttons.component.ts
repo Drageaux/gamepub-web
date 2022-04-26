@@ -25,7 +25,7 @@ export class JobSubscriptionButtonsComponent implements OnInit {
   private subs = new SubSink();
 
   @Input() job!: Job;
-  @Input() isCreator?: boolean;
+  @Input() isCreator?: boolean | null | undefined;
   @Output() jobUpdatedEvent = new EventEmitter<JobWithSubscriptionStatus>();
 
   loading = false; // prevent spamming subscribe buttons

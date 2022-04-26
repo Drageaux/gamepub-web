@@ -6,6 +6,7 @@ import { JobsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
 import { JobsApiService } from '@services/jobs-api.service';
 import { noWhitespaceValidator } from '@utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
+import { JobPageService } from '../job-page.service';
 import { ProjectsService } from '../projects.service';
 
 @Component({
@@ -30,7 +31,7 @@ export class SubmitJobComponent implements OnInit {
   submissionsLink = ProjectsRoutesNames.JOBSUBMISSIONS;
   private username!: string;
   private projectname!: string;
-  private jobnumber!: number | string;
+  private jobnumber!: number;
 
   /*************************************************************************/
   /******************************** GETTERS ********************************/
@@ -46,6 +47,7 @@ export class SubmitJobComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private jobsApi: JobsApiService,
+    private jobPageService: JobPageService,
     private projectService: ProjectsService,
     private router: Router
   ) {}
@@ -59,14 +61,18 @@ export class SubmitJobComponent implements OnInit {
   }
 
   onSubmit() {
-    const { githubRepo, body } = this.jobSubmissionForm.value;
-    this.subs.sink = this.jobsApi
-      .postJobSubmission(this.username, this.projectname, this.jobnumber, {
-        githubRepo: githubRepo.trim(),
-        body: body.trim(),
-      } as JobSubmission)
+    if (this.username == '' || this.projectname == '' || !this.jobnumber)
+      return;
+
+    this.subs.sink = this.jobPageService
+      .postSubmission(
+        this.username,
+        this.projectname,
+        this.jobnumber,
+        this.jobSubmissionForm.value
+      )
       .subscribe(
-        (res: JobSubmission) => {
+        (res) => {
           if (res) {
             // keep the navigation requirements at a minimum);
             // reuse username and projectname so the backend query doesn't need to populate

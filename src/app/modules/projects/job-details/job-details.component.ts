@@ -16,6 +16,7 @@ import { ProjectsRoutesNames } from '@classes/routes.names';
 import { JobSubmission } from '@classes/job-submission';
 import { UsersService } from '@services/users.service';
 import { JobPageService } from '../job-page.service';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-job-details',
@@ -25,10 +26,12 @@ import { JobPageService } from '../job-page.service';
 export class JobDetailsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   currUsername = '';
+  job$ = new ReplaySubject<Job>(1);
   comments: JobComment[] = [];
 
   newComment = '';
   submitting = false;
+  descriptionLimit = 40;
 
   get creator() {
     return this.projectPageService.username;
@@ -40,6 +43,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   get jobNumber() {
     return this.jobPageService.jobNumber;
+  }
+
+  get Math() {
+    return Math;
   }
 
   constructor(
@@ -56,8 +63,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       (username) => (this.currUsername = username || '')
     );
 
-    this.subs.sink = this.jobPageService
-      .getJob()
+    this.subs.sink = this.jobPageService.getJob().subscribe((job) => {
+      if (job) {
+        this.job$.next(job);
+      }
+    });
+
+    this.subs.sink = this.job$
       .pipe(
         switchMap(() =>
           this.jobsApi.getJobComments(

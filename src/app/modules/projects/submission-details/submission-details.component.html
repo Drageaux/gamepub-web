@@ -8,6 +8,48 @@
   [submitting]="submitting"
 ></app-create-comment> -->
 
+<div class="card mb-3 lift-1" *ngIf="submission$ | async as subm">
+  <div class="card-header" *ngIf="projectPageService.isCreator() | async">
+    <h6>
+      Creator Section
+      <small class="text-danger"
+        >(Only you can see this as the job creator)</small
+      >
+    </h6>
+
+    <button class="btn btn-success mb-2 me-2" (click)="approveSubmission()">
+      Approve Submission</button
+    ><br />
+    <button class="btn btn-danger" (click)="rejectSubmission()">
+      Close Submission
+    </button>
+  </div>
+
+  <div class="card-body">
+    <h6 class="d-inline">
+      Submission #{{ subm.submissionNumber }} by
+      <a [routerLink]="['', subm.user]">{{ subm.user }}</a>
+    </h6>
+    <span class="text-muted" title="{{ subm.createdAt | date: 'medium' }}"
+      >&nbsp;{{ subm.createdAt | dateAgo }}</span
+    >
+    <p class="m-0">
+      Status:
+      <app-submission-status-render
+        [status]="status"
+      ></app-submission-status-render>
+      <br />
+      Github:
+      <a target="_blank" href="https://github.com/{{ subm.githubRepo }}">{{
+        subm.githubRepo
+      }}</a>
+      <br />
+
+      {{ subm.body }}
+    </p>
+  </div>
+</div>
+
 <app-job-comments
   [comments]="comments"
   [creator]="creator"

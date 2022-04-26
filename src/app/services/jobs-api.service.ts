@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Job, JobWithSubscriptionStatus } from '@classes/job';
 import { JobComment } from '@classes/job-comment';
-import { JobSubmission } from '@classes/job-submission';
+import { JobSubmission, SubmissionStatusEnum } from '@classes/job-submission';
 import { JobSubscription } from '@classes/job-subscription';
 import { Project } from '@classes/project';
 import { Observable, of } from 'rxjs';
@@ -17,6 +17,10 @@ export class JobsApiService {
   apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+
+  /*************************************************************************/
+  /********************************** JOB **********************************/
+  /*************************************************************************/
 
   getAllJobs() {
     return this.http.get<ApiResponse<Job[]>>(`${this.apiUrl}/jobs`).pipe(
@@ -80,6 +84,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** SUBSCRIPTION *****************************/
+  /*************************************************************************/
   subscribeToJobByJobNumber(
     username: string,
     projName: string,
@@ -113,6 +120,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** JOB COMMENTS *****************************/
+  /*************************************************************************/
   getJobComments(
     username: string,
     projName: string,
@@ -145,6 +155,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /****************************** SUBMISSIONS ******************************/
+  /*************************************************************************/
   getJobSubmissions(
     username: string,
     projName: string,
@@ -153,6 +166,22 @@ export class JobsApiService {
     return this.http
       .get<ApiResponse<JobSubmission[]>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  getJobSubmission(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string
+  ): Observable<JobSubmission> {
+    return this.http
+      .get<ApiResponse<JobSubmission>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}`
       )
       .pipe(
         shareReplay(1),
@@ -177,6 +206,9 @@ export class JobsApiService {
       );
   }
 
+  /*************************************************************************/
+  /************************** SUBMISSION COMMENTS **************************/
+  /*************************************************************************/
   getSubmissionThreadComments(
     username: string,
     projName: string,
@@ -204,6 +236,27 @@ export class JobsApiService {
       .post<ApiResponse<JobComment>>(
         `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/comments`,
         { body }
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  /*************************************************************************/
+  /*************************** SUBMISSION STATUS ***************************/
+  /*************************************************************************/
+  updateSubmissionStatus(
+    username: string,
+    projName: string,
+    jobNumber: number | string,
+    submissionNumber: number | string,
+    status: SubmissionStatusEnum
+  ) {
+    return this.http
+      .put<ApiResponse<JobComment>>(
+        `${this.apiUrl}/users/${username}/projects/${projName}/jobs/${jobNumber}/submissions/${submissionNumber}/status`,
+        { status }
       )
       .pipe(
         shareReplay(1),

@@ -11,9 +11,10 @@
   <thead></thead>
   <tbody>
     <tr *ngFor="let j of data.jobs; let i = index">
-      <td class="position-relative">
-        <ng-container *ngIf="getProject(j) as project">
-          <h6 *ngIf="getUser(project) as user" class="d-flex">
+      <td class="position-relative" *ngIf="getProject(j) as project">
+        <ng-container *ngIf="getUser(project) as user">
+          <div class="d-flex">
+            <!-- Job's project image -->
             <a
               [routerLink]="[
                 '',
@@ -35,6 +36,8 @@
               </app-progressive-image>
             </a>
             <div>
+              <!-- Job title -->
+              <!-- In mobile, stretch the link to be the entire cell -->
               <a
                 [routerLink]="[
                   '',
@@ -48,6 +51,7 @@
               >
                 {{ j.title }}
               </a>
+
               <a
                 [routerLink]="[
                   '',
@@ -61,14 +65,29 @@
               >
                 {{ j.title }}
               </a>
+
               <br />
-              <a [routerLink]="['', user, projectsLink, project.name]">
-                <span class="ml-2 text-muted fw-normal">{{
-                  project.name
-                }}</span>
-              </a>
+              <div [style]="{ lineHeight: 1.25 }">
+                <!-- Project it belongs to -->
+                <a [routerLink]="['', user, projectsLink, project.name]">
+                  <small class="ml-2 text-muted">{{ project.name }}</small>
+                </a>
+                <br />
+                <!-- Details -->
+                <small
+                  class="text-muted"
+                  title="{{ j.createdAt | date: 'medium' }}"
+                >
+                  {{ j.createdAt | dateAgo }}
+                  <span *ngIf="j.collaboratorsCount"
+                    >&bull;&nbsp;{{ j.collaboratorsCount }} collab{{
+                      j.collaboratorsCount !== 1 ? "s" : ""
+                    }}</span
+                  >
+                </small>
+              </div>
             </div>
-          </h6>
+          </div>
         </ng-container>
       </td>
 

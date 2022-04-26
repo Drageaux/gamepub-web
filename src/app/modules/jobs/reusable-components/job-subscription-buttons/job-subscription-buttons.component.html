@@ -1,26 +1,45 @@
-<ng-container *ngIf="!isCreator">
+<div
+  *ngIf="!isCreator"
+  class="btn-group"
+  role="group"
+  aria-label="Subscribe and Notify buttons"
+>
   <ng-container *ngIf="job.subscription?.accepted; else toAcceptBlock">
     <!-- accepted/subscribed -->
-    <a class="text-success me-2" (click)="unacceptJob(job)">
-      <i class="fas fa-check"></i>&nbsp;Accepted</a
-    >
+    <button class="btn btn-secondary" type="button" (click)="unacceptJob(job)">
+      <i class="fas fa-check"></i>&nbsp;
+    </button>
   </ng-container>
   <ng-template #toAcceptBlock>
-    <a class="text-primary me-2" (click)="acceptJob(job)"
-      ><i class="fas fa-handshake"></i>&nbsp;Accept</a
-    >
+    <button class="btn btn-success" type="button" (click)="acceptJob(job)">
+      <i class="fas fa-handshake"></i>&nbsp;Collab
+    </button>
   </ng-template>
-</ng-container>
-<ng-container *ngIf="job.subscription?.notified; else toNotifyBlock">
-  <!-- notified -->
-  <a class="text-success" (click)="stopGettingNotificationsAboutJob(job)">
-    <i class="fas fa-bell"></i>&nbsp;Notified</a
-  >
-</ng-container>
-<ng-template #toNotifyBlock>
-  <a class="text-primary" (click)="getNotificationsAboutJob(job)"
-    ><i class="far fa-bell"></i>&nbsp;Notify</a
-  >
-</ng-template>
 
-<div *ngIf="loading"><i class="spinner fas fa-circle-notch"></i> Loading</div>
+  <ng-container *ngIf="job.subscription?.accepted">
+    <ng-container *ngIf="job.subscription?.notified; else toNotifyBlock">
+      <!-- notified -->
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="stopGettingNotificationsAboutJob(job)"
+      >
+        <i class="fas fa-bell"></i>
+      </button>
+    </ng-container>
+    <ng-template #toNotifyBlock>
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="getNotificationsAboutJob(job)"
+      >
+        <i class="far fa-bell-slash"></i>
+      </button>
+    </ng-template>
+  </ng-container>
+
+  <!-- Loading changes the length of the button group and kind of irritating -->
+  <!-- <div *ngIf="loading">
+    <i class="spinner fas fa-circle-notch align-self-center"></i> Loading
+  </div> -->
+</div>

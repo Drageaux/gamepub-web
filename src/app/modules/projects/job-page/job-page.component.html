@@ -1,18 +1,25 @@
 <div class="container" *ngIf="job">
   <!-- Header -->
-  <div class="d-flex flex-row justify-content-between mb-3">
-    <h2 class="m-0">
+  <div class="d-flex flex-row justify-content-between align-items-center mb-3">
+    <a [routerLink]="['../']" class="bold-link"
+      ><i class="fas fa-angle-left"></i><span>&nbsp;Back to Job List</span></a
+    >
+    <h2 class="d-inline">
       {{ job.title }}&nbsp;<span class="text-muted fw-normal"
         >#{{ job.jobNumber }}</span
       >
     </h2>
-    <!-- <a [routerLink]="['../', newJobLink]"
-    ><button class="btn btn-primary">New Job</button></a
-    > -->
+    <div>
+      <app-job-subscription-buttons
+        *ngIf="usersService.username$ | async"
+        [job]="job"
+        [isCreator]="projectsService.isCreator() | async"
+      ></app-job-subscription-buttons>
+    </div>
   </div>
-  <hr />
 
   <div class="row">
+    <!-- Sidebar -->
     <div class="col-12 col-sm-4 col-md-3 mb-5 position-relative">
       <div class="card sticky-top" [style]="{ top: '1rem' }">
         <div class="card-body">
@@ -51,15 +58,19 @@
                     | sort: 'submissionNumber'
                 "
               >
-                <!-- <a
-                target="_blank"
-                [href]="'https://www.github.com/' + s.githubRepo"
-                >{{ s.githubRepo }}</a
-              > -->
                 <a
                   [routerLink]="['./', submissionsLink, s.submissionNumber]"
                   [routerLinkActive]="'fw-bold'"
-                  >#{{ s.submissionNumber }} by {{ s.user }}</a
+                  ><app-submission-status-render
+                    [status]="s.status"
+                    [withText]="false"
+                  ></app-submission-status-render
+                  >&nbsp;<span class="d-inline d-sm-none d-md-inline"
+                    >#{{ s.submissionNumber }} by {{ s.user }}</span
+                  >
+                  <small class="d-none d-sm-inline d-md-none">{{
+                    s.user
+                  }}</small></a
                 >
               </li>
 
@@ -75,13 +86,14 @@
           <hr />
           <h5>Got your own submission?</h5>
           <p class="card-text">Send it to the job creator.</p>
-          <a [routerLink]="['./', 'submit']" class="btn btn-success"
+          <a [routerLink]="['./', 'submit']" class="btn btn-primary"
             >Submission Page</a
           >
         </div>
       </div>
     </div>
 
+    <!-- Thread Content -->
     <div class="col-12 col-sm-8 col-md-9">
       <router-outlet></router-outlet>
     </div>

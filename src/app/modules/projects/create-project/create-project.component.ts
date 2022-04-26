@@ -71,7 +71,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   /********************************** FORM *********************************/
   /*************************************************************************/
   onSubmit() {
-    // TODO: catch error when submitted before checkName validator finishes
+    // TODO: catch error when submitted before async checkName validator finishes
     const { formattedName, displayName, githubRepo } = this.projectForm.value;
 
     this.subs.sink = this.projectApi
