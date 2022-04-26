@@ -2,12 +2,17 @@
   <div class="card-header">
     <!-- TODO: Breadcrumb Title -->
     <header class="p-2 p-md-0">
-      <h1>{{ project.displayName || project.name }}</h1>
       <h2 class="lead">
-        <a [href]="'https://github.com/' + project.githubRepo" target="_blank">
-          <span class="fw-normal">{{ project.githubRepo }}</span>
-        </a>
+        Created by
+        <a
+          [routerLink]="['', project.creator]"
+          routerLinkActive="router-link-active"
+          class="fw-normal"
+          >{{ project.creator }}</a
+        >
       </h2>
+
+      <h1>{{ project.displayName || project.name }}</h1>
     </header>
 
     <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">

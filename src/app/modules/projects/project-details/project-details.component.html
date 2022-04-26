@@ -1,4 +1,12 @@
-project-details work!
+GitHub:
+<a
+  *ngIf="githubRepo; else noGit"
+  [href]="'https://github.com/' + githubRepo"
+  target="_blank"
+>
+  <span class="fw-normal">{{ githubRepo }}</span>
+</a>
+<ng-template #noGit><span>(none)</span></ng-template>
 <app-project-tree
   *ngIf="githubContents$ | async as contents"
   [contents]="contents"
