@@ -4,37 +4,32 @@
   </h1>
 
   <div *ngIf="isUser() | async">
-    <!-- TODO: Create new Project -->
     <a class="btn btn-primary" [routerLink]="['', newProjectLink]"
       >New Project</a
     >
-    <!-- TODO: Create new Asset -->
     <a class="btn btn-primary ms-2" [routerLink]="['/new-asset']">New Asset</a>
   </div>
 </header>
-<!-- TODO: List 2-3 top project contributions -->
 
-<!-- TODO: List projects -->
-<div>
-  <h3>Projects</h3>
-  <div *ngIf="projects$ | async as projs" class="row">
-    <ng-container *ngFor="let p of projs">
+<div *ngIf="{ projs: projects$ | async, assets: assets$ | async } as data">
+  <!-- TODO: List 2-3 top project contributions -->
+
+  <div *ngIf="data.projs" class="row">
+    <h3>{{ data.projs.length }} Projects</h3>
+    <ng-container *ngFor="let p of data.projs">
       <app-project-card
         [project]="p"
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-5ths col-xxl-2 mb-4"
+        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-5ths col-xxl-2 mb-3 mt-1"
       ></app-project-card>
     </ng-container>
   </div>
-</div>
 
-<!-- TODO: List assets like gallery style -->
-<div>
-  <h3>Assets</h3>
-  <div *ngIf="assets$ | async as assets" class="row">
-    <ng-container *ngFor="let a of assets">
+  <div *ngIf="data.assets" class="row">
+    <h3>{{ data.assets.length }} Assets</h3>
+    <ng-container *ngFor="let a of data.assets">
       <app-asset-card
         [asset]="a"
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-5ths col-xxl-2 mb-4"
+        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-5ths col-xxl-2 mb-3 mt-1"
       ></app-asset-card>
     </ng-container>
   </div>
