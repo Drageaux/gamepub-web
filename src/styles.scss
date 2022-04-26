@@ -91,12 +91,66 @@ a {
   }
 }
 
+// https://stackoverflow.com/questions/10387740/five-equal-columns-in-twitter-bootstrap
+.col-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths,
+.col-xl-5ths,
+.col-xxl-5ths {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-5ths {
+  width: 20%;
+  float: left;
+}
+
+@media (min-width: 576px) {
+  .col-sm-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1400px) {
+  .col-xxl-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+// body
 body {
   // saturate background to make other components pop
   // background-color: rgb(235,239,247);
 }
 
-// lift
+// lift, box shadow
 .lift-1 {
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
