@@ -1,29 +1,30 @@
-<h1 *ngIf="username$ | async as username">
-  <strong>{{ username }}</strong>
-</h1>
+<header class="d-flex justify-content-between">
+  <h1 *ngIf="username$ | async as username">
+    <strong>{{ username }}</strong>
+  </h1>
 
-<div *ngIf="isUser() | async">
-  <h3>Create</h3>
-  <!-- TODO: Create new Project -->
-  <a class="btn btn-primary" [routerLink]="['', newProjectLink]">New Project</a>
-
-  <!-- TODO: Create new Asset -->
-  <a class="btn btn-primary" [routerLink]="['/new-asset']">New Asset</a>
-</div>
-
+  <div *ngIf="isUser() | async">
+    <!-- TODO: Create new Project -->
+    <a class="btn btn-primary" [routerLink]="['', newProjectLink]"
+      >New Project</a
+    >
+    <!-- TODO: Create new Asset -->
+    <a class="btn btn-primary ms-2" [routerLink]="['/new-asset']">New Asset</a>
+  </div>
+</header>
 <!-- TODO: List 2-3 top project contributions -->
 
 <!-- TODO: List projects -->
 <div>
   <h3>Projects</h3>
-  <ul *ngIf="projects$ | async as projs">
-    <li *ngFor="let p of projs">
-      <a [routerLink]="['', p.creator, projectsLink, p.name]">{{
-        p.displayName || p.name
-      }}</a
-      ><span *ngIf="p.private">&nbsp;(private)</span>
-    </li>
-  </ul>
+  <div *ngIf="projects$ | async as projs" class="row">
+    <ng-container *ngFor="let p of projs">
+      <app-project-card
+        [project]="p"
+        class="col-12 col-sm-6 col-lg-4 mb-4"
+      ></app-project-card>
+    </ng-container>
+  </div>
 </div>
 
 <!-- TODO: List assets like gallery style -->
