@@ -19,7 +19,7 @@
 // @import "_jumbotron";
 // @import "_alert";
 // @import "_progress";
-// @import "_media";
+@import "_images";
 @import "_list-group";
 // @import "_close";
 // @import "_toasts";
@@ -105,7 +105,10 @@ body {
   &:hover,
   &:focus {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transform: translateY(-0.25rem);
+
+    &.lift-up {
+      transform: translateY(-0.25rem);
+    }
   }
 }
 
