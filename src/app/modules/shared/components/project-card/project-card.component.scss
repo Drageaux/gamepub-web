@@ -1,8 +1,10 @@
 img.placeholder {
-  max-width: 720px;
+  max-width: 100%;
   max-height: 480px;
+  // aspect-ratio: 720 / 480;
+  // object-fit: cover;    object-fit: contain;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .card {

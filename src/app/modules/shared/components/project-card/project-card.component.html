@@ -22,7 +22,7 @@
   <div class="card-body">
     <a class="stretched-link" [routerLink]="buildRouterLink(project)"
       ><b>{{ project.displayName || project.name }}</b></a
-    ><br />
+    ><span *ngIf="project.private">&nbsp;(private)</span><br />
     <small
       ><a
         [routerLink]="['', project.creator]"
