@@ -13,6 +13,7 @@ import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 import { SortPipe } from './sort.pipe';
 import { ProjectCardComponent } from './components/project-card/project-card.component';
 import { RouterModule } from '@angular/router';
+import { AssetCardComponent } from './components/asset-card/asset-card.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RouterModule } from '@angular/router';
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     ProjectCardComponent,
+    AssetCardComponent,
   ],
   exports: [
     UploadComponent,
@@ -32,6 +34,7 @@ import { RouterModule } from '@angular/router';
     ProgressiveImageComponent,
     ProgressiveImageDirective,
     ProjectCardComponent,
+    AssetCardComponent,
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
   providers: [],

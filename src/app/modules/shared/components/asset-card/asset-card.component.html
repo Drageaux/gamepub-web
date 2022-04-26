@@ -1,9 +1,9 @@
 <div class="card position-relative lift-1 lift-up overflow-hidden">
   <!-- TODO: Add optimized image and alt -->
-  <app-progressive-image
-    *ngIf="project.imageUrl; else placeholder"
+  <!-- <app-progressive-image
+    *ngIf="asset.imageUrl; else placeholder"
     [src]="''"
-    [fallback]="project.imageUrl"
+    [fallback]="asset.imageUrl"
     [imgClass]="'img-fluid card-img-top'"
     class="d-block"
   >
@@ -16,19 +16,20 @@
       height="480"
       src="/assets/img/placeholder.jpg"
     />
-  </ng-template>
+  </ng-template> -->
 
   <div class="card-body">
-    <a class="stretched-link" [routerLink]="buildRouterLink(project)"
-      ><b>{{ project.displayName || project.name }}</b></a
-    ><span *ngIf="project.private">&nbsp;(private)</span><br />
+    <a class="stretched-link" [routerLink]="buildRouterLink(asset)"
+      ><b>{{ asset.displayName || asset.githubRepo }}</b></a
+    >
+    <br />
     <small
       ><a
-        [routerLink]="['', project.creator]"
+        [routerLink]="['', asset.creator]"
         routerLinkActive="router-link-active"
         class="link-secondary position-relative"
         style="z-index: 1"
-        >{{ project.creator }}</a
+        >{{ asset.creator }}</a
       ></small
     >
   </div>
