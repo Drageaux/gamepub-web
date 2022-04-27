@@ -1,7 +1,9 @@
 <div class="container">
   <div class="text-center my-4 border-bottom">
     <h1>Post an asset</h1>
-    <p>Showcase your asset on your profile.</p>
+    <p>
+      Showcase your asset on your profile. (Currently only support GitHub repos)
+    </p>
   </div>
 
   <form
@@ -10,6 +12,16 @@
     #form="ngForm"
     (ngSubmit)="onSubmit()"
   >
+    <p>
+      <b class="text-muted">Recommended:</b> 3D models, prefabs, text files,
+      image files, and one-layer dependencies. <br />To quickly package & export
+      models, prefabs, code, etc.
+      <b class="text-muted">without the *.unitypackage format</b>, see
+      <a href="https://github.com/jeffcampbellmakesgames/unity-package-tools"
+        >JCMG Package Tools</a
+      >. <br />This helps with automatically showing more meaningful pieces of
+      information on your asset page.
+    </p>
     <div class="mb-3">
       <label for="display-name" class="required">Display Name</label>
       <input
