@@ -1,33 +1,72 @@
 <ng-container *ngIf="manifest; else loading">
-  <ul>
-    <li *ngFor="let unityDependency of manifest.dependencies | keyvalue">
-      {{ unityDependency | json }}
-    </li>
-  </ul>
-
-  <ul *ngIf="manifest.scopedRegistries?.length">
-    Scoped Registries
-    <li *ngFor="let registry of manifest.scopedRegistries">
-      <ul>
-        Registry:
-        {{
-          registry.name
-        }}
-        <!-- different ng-template for OpenUPM -->
-        <ng-container *ngIf="isOpenUpmRegistry(registry); else otherRegistry">
-          <li *ngFor="let p of trimPackageList(registry.scopes)">
-            <app-openupm-package-details [packageName]="p">
-            </app-openupm-package-details>
-          </li>
-        </ng-container>
-
-        <ng-template #otherRegistry
-          ><li *ngFor="let p of registry.scopes">
-            {{ p }}
-          </li></ng-template
+  <div *ngIf="githubPackages">
+    <h5>GitHub Packages</h5>
+    <ul>
+      <li *ngFor="let ghP of githubPackages | keyvalue">
+        <app-package-list-item-details
+          [packageName]="ghP.key"
+          [sourceOrVersion]="ghP.value"
+          [registry]="RegistryEnum.GITHUB"
         >
+        </app-package-list-item-details>
+      </li>
+    </ul>
+  </div>
+
+  <ng-container *ngIf="manifest.scopedRegistries?.length">
+    <div *ngFor="let registry of manifest.scopedRegistries">
+      <h5>
+        <span>{{
+          isOpenUpmRegistry(registry) ? RegistryEnum.OPENUPM : registry.name
+        }}</span>
+        Registry
+      </h5>
+      <ul>
+        <li *ngFor="let p of trimPackageList(registry.scopes)">
+          <app-package-list-item-details
+            [packageName]="p"
+            [registry]="isOpenUpmRegistry(registry) ? RegistryEnum.OPENUPM : ''"
+          >
+          </app-package-list-item-details>
+        </li>
       </ul>
-    </li>
-  </ul>
+    </div>
+  </ng-container>
+
+  <div>
+    <h5>Unity Registry</h5>
+    <ul>
+      <li *ngFor="let unityDependency of regularUnityPackages | keyvalue">
+        <app-package-list-item-details
+          [packageName]="unityDependency.key"
+          [sourceOrVersion]="unityDependency.value"
+        ></app-package-list-item-details>
+      </li>
+    </ul>
+    <ng-container
+      *ngIf="!showBuiltinUnityPackages; else builtinUnityPackagesBlock"
+      ><a
+        class="link-primary"
+        (click)="showBuiltinUnityPackages = !showBuiltinUnityPackages"
+        *ngIf="builtinUnityPackages.length"
+        >See built-in Unity Packages</a
+      ></ng-container
+    >
+    <ng-template #builtinUnityPackagesBlock>
+      <ul>
+        <li *ngFor="let unityDependency of builtinUnityPackages | keyvalue">
+          <app-package-list-item-details
+            [packageName]="unityDependency.key"
+            [sourceOrVersion]="unityDependency.value"
+          ></app-package-list-item-details>
+        </li>
+      </ul>
+      <a
+        class="link-primary"
+        (click)="showBuiltinUnityPackages = !showBuiltinUnityPackages"
+        >See less</a
+      >
+    </ng-template>
+  </div>
 </ng-container>
-<ng-template #loading> Loading packages... </ng-template>
+<ng-template #loading>Loading packages...</ng-template>

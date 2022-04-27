@@ -1,1 +1,16 @@
-<h1>{{ asset?.displayName }}</h1>
+<ng-container *ngIf="asset">
+  <h1>{{ asset.displayName }}</h1>
+  <h4>
+    GitHub:
+    <a
+      *ngIf="asset.githubRepo; else noGit"
+      [href]="'https://github.com/' + asset?.githubRepo"
+      target="_blank"
+    >
+      <span class="fw-normal">{{ asset?.githubRepo }}</span>
+    </a>
+    <ng-template #noGit><span>(none)</span></ng-template>
+  </h4>
+</ng-container>
+<hr />
+<span class="text-muted">(More contents coming soon)</span>

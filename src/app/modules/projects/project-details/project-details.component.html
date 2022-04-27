@@ -1,17 +1,27 @@
-<div class="container mx-auto px-0">
-  GitHub:
-  <a
-    *ngIf="githubRepo; else noGit"
-    [href]="'https://github.com/' + githubRepo"
-    target="_blank"
-  >
-    <span class="fw-normal">{{ githubRepo }}</span>
-  </a>
-  <ng-template #noGit><span>(none)</span></ng-template>
-  <app-project-tree
+<div
+  *ngIf="{ githubRepo: githubRepo$ | async } as data"
+  class="container mx-auto px-0"
+>
+  <h4>
+    GitHub:
+    <a
+      *ngIf="data.githubRepo; else noGit"
+      [href]="'https://github.com/' + data.githubRepo"
+      target="_blank"
+    >
+      <span class="fw-normal">{{ data.githubRepo }}</span>
+    </a>
+    <ng-template #noGit><span>(none)</span></ng-template>
+  </h4>
+
+  <hr />
+  <h4>Packages</h4>
+  <!-- TODO: Make file directory helpful -->
+  <!-- <app-project-tree
     *ngIf="githubContents$ | async as contents"
     [contents]="contents"
-  ></app-project-tree>
+  ></app-project-tree> -->
+
   <app-package-listing
     *ngIf="manifest$ | async as manifest"
     [manifest]="manifest"
