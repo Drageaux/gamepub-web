@@ -4,10 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@modules/shared/shared.module';
 import { RouterModule } from '@angular/router';
 
-import { PackagesService } from '@services/packages.service';
-
 import { CreateProjectComponent } from './create-project/create-project.component';
-import { OpenupmPackageDetailsComponent } from './openupm-package-details/openupm-package-details.component';
+import { OpenupmPackageDetailsComponent } from './package-listing/package-list-item-details/package-list-item-details.component';
 import { PackageListingComponent } from './package-listing/package-listing.component';
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 import { ProjectTreeComponent } from './reusable-components/project-tree/project-tree.component';
@@ -57,6 +55,5 @@ import { SubmissionStatusRenderComponent } from './reusable-components/submissio
     JobsModule, // import sharables
     SharedModule,
   ],
-  // providers: [PackagesService],
 })
 export class ProjectsModule {}

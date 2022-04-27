@@ -1,0 +1,4 @@
+{{ packageName }}
+<ng-container *ngIf="package$ | async as pkg">
+  {{ getLatestVersionDetails(pkg)?.displayName }}
+</ng-container>

@@ -1,15 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
-import { Package } from '@classes/package';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { Package, PackageName } from '@classes/package';
 import { RegistryScope } from '@classes/scoped-registry';
+import { environment } from 'src/environments/environment';
+import { ApiResponse } from './api-response';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PackagesService {
+  apiUrl = environment.apiUrl;
   // openUpmApiUrl = 'https://api.openupm.com/packages';
-  // openUpmPackagesUrl = 'https://package.openupm.com';
-  openUpmPackagesUrl = '/registry/openupm';
+  unityPackagesUrl = 'packages/unity';
+  openUpmPackagesUrl = 'packages/openupm';
+  // openUpmPackagesUrl = '/registry/openupm';
   allPackagesUrl = '/packages/extra';
 
   constructor(private http: HttpClient) {}
@@ -22,10 +26,25 @@ export class PackagesService {
   //     .pipe(map((val) => val));
   // }
 
-  expandOpenUpmPackageInfo(scope: RegistryScope): Observable<Package> {
-    console.log(scope);
+  expandUnityRegistryPackageInfo(name: PackageName): Observable<Package> {
     return this.http
-      .get<Package>(`${this.openUpmPackagesUrl}/${scope}`)
-      .pipe(tap(console.log), shareReplay());
+      .get<ApiResponse<Package>>(
+        `${this.apiUrl}/${this.unityPackagesUrl}/${name}`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
+  }
+
+  expandOpenUpmPackageInfo(scope: RegistryScope): Observable<Package> {
+    return this.http
+      .get<ApiResponse<Package>>(
+        `${this.apiUrl}/${this.openUpmPackagesUrl}/${scope}`
+      )
+      .pipe(
+        shareReplay(1),
+        map((res) => res.data)
+      );
   }
 }
