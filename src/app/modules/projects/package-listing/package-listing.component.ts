@@ -1,8 +1,11 @@
-import { VersionOfPackageMapping } from './../../../classes/unity-manifest';
 import { Component, Input, OnInit } from '@angular/core';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { EXCLUDED_PACKAGES, RegistryEnum } from '@classes/CONSTANTS';
-import { UnityManifest } from '@classes/unity-manifest';
+import {
+  UnityManifest,
+  PackageToSourceMapping,
+  VersionOfPackageMapping,
+} from '@classes/unity-manifest';
 import { PackageName } from '@classes/package';
 import { ScopedRegistry } from '@classes/scoped-registry';
 
@@ -17,6 +20,7 @@ export class PackageListingComponent implements OnInit {
   showBuiltinUnityPackages = false;
   regularUnityPackages: VersionOfPackageMapping = {};
   builtinUnityPackages: VersionOfPackageMapping = {};
+  githubPackages: PackageToSourceMapping = {};
 
   constructor(private projectsApi: ProjectsApiService) {}
 
@@ -24,6 +28,8 @@ export class PackageListingComponent implements OnInit {
     Object.entries(this.manifest.dependencies).forEach(([name, version]) => {
       if (name.startsWith('com.unity.modules')) {
         this.builtinUnityPackages[name] = version;
+      } else if (version.startsWith('https://github.com/')) {
+        this.githubPackages[name] = version;
       } else {
         this.regularUnityPackages[name] = version;
       }
