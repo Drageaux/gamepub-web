@@ -1,4 +1,14 @@
-{{ packageName }}
-<ng-container *ngIf="package$ | async as pkg">
+<div>
+  {{ packageName }}
+  <a
+    class="ms-1"
+    *ngIf="registry === RegistryEnum.OPENUPM"
+    target="_blank"
+    [href]="'https://openupm.com/packages/' + packageName"
+    ><i class="fas fa-external-link-alt"></i
+  ></a>
+</div>
+
+<!-- <ng-container *ngIf="package$ | async as pkg">
   {{ getLatestVersionDetails(pkg)?.displayName }}
-</ng-container>
+</ng-container> -->

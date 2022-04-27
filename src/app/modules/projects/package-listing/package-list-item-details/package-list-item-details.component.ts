@@ -10,11 +10,12 @@ import { RegistryEnum } from '@classes/CONSTANTS';
   styleUrls: ['./package-list-item-details.component.scss'],
 })
 export class OpenupmPackageDetailsComponent implements OnInit {
+  RegistryEnum = RegistryEnum;
+
   @Input() packageName!: string;
   @Input() sourceOrVersion?: string;
-  package$?: Observable<Package | null>;
-
   @Input() registry: RegistryEnum | string = RegistryEnum.UNITY;
+  package$?: Observable<Package | null>;
 
   constructor(private pkgsService: PackagesService) {}
 
