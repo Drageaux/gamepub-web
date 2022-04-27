@@ -28,5 +28,29 @@
       ></app-package-list-item-details>
     </li>
   </ul>
+  <ng-container
+    *ngIf="!showBuiltinUnityPackages; else builtinUnityPackagesBlock"
+    ><a
+      class="link-primary"
+      (click)="showBuiltinUnityPackages = !showBuiltinUnityPackages"
+      *ngIf="builtinUnityPackages.length"
+      >See built-in Unity Packages</a
+    ></ng-container
+  >
+  <ng-template #builtinUnityPackagesBlock>
+    <ul>
+      <li *ngFor="let unityDependency of builtinUnityPackages | keyvalue">
+        <app-package-list-item-details
+          [packageName]="unityDependency.key"
+          [sourceOrVersion]="unityDependency.value"
+        ></app-package-list-item-details>
+      </li>
+    </ul>
+    <a
+      class="link-primary"
+      (click)="showBuiltinUnityPackages = !showBuiltinUnityPackages"
+      >See less</a
+    >
+  </ng-template>
 </ng-container>
 <ng-template #loading>Loading packages...</ng-template>

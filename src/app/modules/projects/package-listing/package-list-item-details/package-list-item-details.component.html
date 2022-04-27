@@ -1,13 +1,13 @@
-<div>
-  {{ packageName }}
+<span class="position-relative">
+  {{ packageName }}{{ sourceOrVersion ? "@" + sourceOrVersion : "" }}
   <a
-    class="ms-1"
+    class="ms-1 stretched-link"
     *ngIf="registry === RegistryEnum.OPENUPM"
     target="_blank"
     [href]="'https://openupm.com/packages/' + packageName"
     ><i class="fas fa-external-link-alt"></i
   ></a>
-</div>
+</span>
 
 <!-- <ng-container *ngIf="package$ | async as pkg">
   {{ getLatestVersionDetails(pkg)?.displayName }}
