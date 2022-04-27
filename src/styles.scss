@@ -19,7 +19,7 @@
 // @import "_jumbotron";
 // @import "_alert";
 // @import "_progress";
-// @import "_media";
+@import "_images";
 @import "_list-group";
 // @import "_close";
 // @import "_toasts";
@@ -28,6 +28,7 @@
 // @import "_popover";
 // @import "_carousel";
 // @import "_spinners";
+@import "_nav";
 @import "_transitions";
 @import "_containers";
 @import "_card";
@@ -36,7 +37,6 @@
 @import "_forms";
 @import "_grid";
 @import "_tables";
-@import "_nav";
 @import "_navbar";
 @import "_utilities";
 
@@ -91,14 +91,85 @@ a {
   }
 }
 
+// https://stackoverflow.com/questions/10387740/five-equal-columns-in-twitter-bootstrap
+.col-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths,
+.col-xl-5ths,
+.col-xxl-5ths {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-5ths {
+  width: 20%;
+  float: left;
+}
+
+@media (min-width: 576px) {
+  .col-sm-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1400px) {
+  .col-xxl-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+// body
 body {
   // saturate background to make other components pop
   // background-color: rgb(235,239,247);
 }
 
-// lift
+// lift, box shadow
 .lift-1 {
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transform: translateY(0);
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    &.lift-up {
+      transform: translateY(-0.25rem);
+    }
+  }
+}
+
+.lift-2 {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
 // animations

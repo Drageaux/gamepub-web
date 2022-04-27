@@ -4,7 +4,7 @@ import { GithubContents } from '@classes/github-contents';
 import { UnityManifest } from '@classes/unity-manifest';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { ProjectsService } from '../projects.service';
   styleUrls: ['./project-details.component.scss'],
 })
 export class ProjectDetailsComponent implements OnInit {
+  githubRepo = '';
   username!: string;
   projName!: string;
 
@@ -27,15 +28,17 @@ export class ProjectDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.githubContents$ = this.projectService
-      .getProject()
-      .pipe(
-        switchMap((proj) =>
-          proj && proj.githubRepo
-            ? this.projectApi.loadRepoTree(proj.githubRepo)
-            : of(null)
-        )
-      );
+    this.githubContents$ = this.projectService.getProject().pipe(
+      tap((proj) => {
+        this.githubRepo = proj?.githubRepo || '';
+        return proj;
+      }),
+      switchMap((proj) =>
+        proj && proj.githubRepo
+          ? this.projectApi.loadRepoTree(proj.githubRepo)
+          : of(null)
+      )
+    );
 
     this.manifest$ = this.projectService
       .getProject()

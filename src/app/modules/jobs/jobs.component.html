@@ -25,15 +25,27 @@
                 j.jobNumber
               ]"
               class="pr-3"
+              style=""
             >
               <app-progressive-image
-                *ngIf="project.imageUrl"
+                *ngIf="project.imageUrl; else placeholder"
                 [src]="''"
                 [fallback]="project.imageUrl"
-                [imgClass]="'img-fluid'"
+                [imgClass]="'job-listing'"
                 class="d-block"
               >
               </app-progressive-image>
+              <ng-template #placeholder>
+                <app-progressive-image
+                  [src]="'/assets/img/placeholder.jpg'"
+                  [imgClass]="'job-listing'"
+                  [imgAlt]="
+                    'Project placeholder illustration by Manoj Mahadik/Scop.io'
+                  "
+                  class="d-block placeholder"
+                >
+                </app-progressive-image>
+              </ng-template>
             </a>
             <div>
               <!-- Job title -->

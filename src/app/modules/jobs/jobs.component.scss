@@ -14,7 +14,9 @@ a {
 }
 
 app-progressive-image {
-  width: 180px;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 240px;
 }
 
 .job-title {

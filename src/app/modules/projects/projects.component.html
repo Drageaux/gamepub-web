@@ -1,44 +1,51 @@
-<div *ngIf="project">
-  <!-- TODO: Breadcrumb Title -->
-  <header class="p-2 p-md-0">
-    <h1>{{ project.displayName || project.name }}</h1>
-    <h2 class="lead">
-      <a [href]="'https://github.com/' + project.githubRepo" target="_blank">
-        <span class="fw-normal">{{ project.githubRepo }}</span>
-      </a>
-    </h2>
-  </header>
+<div *ngIf="project" class="card">
+  <div class="card-header">
+    <!-- TODO: Breadcrumb Title -->
+    <header class="p-2 p-md-0">
+      <h2 class="lead">
+        Created by
+        <a
+          [routerLink]="['', project.creator]"
+          routerLinkActive="router-link-active"
+          class="fw-normal"
+          >{{ project.creator }}</a
+        >
+      </h2>
 
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a
-        [routerLink]="['./']"
-        class="nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Overview</a
-      >
-    </li>
-    <li class="nav-item">
-      <a
-        [routerLink]="['./', detailsLink]"
-        class="nav-link"
-        routerLinkActive="active"
-      >
-        Details
-      </a>
-    </li>
-    <li class="nav-item">
-      <a
-        [routerLink]="['./', jobsLink]"
-        class="nav-link"
-        routerLinkActive="active"
-        >Jobs
-      </a>
-    </li>
-  </ul>
+      <h1>{{ project.displayName || project.name }}</h1>
+    </header>
 
-  <div class="py-3">
+    <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
+      <li class="nav-item">
+        <a
+          [routerLink]="['./']"
+          class="nav-link"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Overview</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          [routerLink]="['./', detailsLink]"
+          class="nav-link"
+          routerLinkActive="active"
+        >
+          Details
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          [routerLink]="['./', jobsLink]"
+          class="nav-link"
+          routerLinkActive="active"
+          >Jobs
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body py-3">
     <router-outlet></router-outlet>
   </div>
 </div>

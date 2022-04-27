@@ -1,9 +1,19 @@
-project-details work!
-<app-project-tree
-  *ngIf="githubContents$ | async as contents"
-  [contents]="contents"
-></app-project-tree>
-<app-package-listing
-  *ngIf="manifest$ | async as manifest"
-  [manifest]="manifest"
-></app-package-listing>
+<div class="container mx-auto px-0">
+  GitHub:
+  <a
+    *ngIf="githubRepo; else noGit"
+    [href]="'https://github.com/' + githubRepo"
+    target="_blank"
+  >
+    <span class="fw-normal">{{ githubRepo }}</span>
+  </a>
+  <ng-template #noGit><span>(none)</span></ng-template>
+  <app-project-tree
+    *ngIf="githubContents$ | async as contents"
+    [contents]="contents"
+  ></app-project-tree>
+  <app-package-listing
+    *ngIf="manifest$ | async as manifest"
+    [manifest]="manifest"
+  ></app-package-listing>
+</div>

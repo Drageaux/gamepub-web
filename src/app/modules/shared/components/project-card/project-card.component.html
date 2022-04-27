@@ -1,0 +1,35 @@
+<div class="card position-relative lift-1 lift-up overflow-hidden">
+  <!-- TODO: Add optimized image and alt -->
+  <app-progressive-image
+    *ngIf="project.imageUrl; else placeholder"
+    [src]="''"
+    [fallback]="project.imageUrl"
+    [imgClass]="'img-fluid card-img-top'"
+    class="d-block"
+  >
+  </app-progressive-image>
+  <ng-template #placeholder
+    ><img
+      class="card-img-top placeholder"
+      alt="Project placeholder illustration by Manoj Mahadik/Scop.io"
+      width="720"
+      height="480"
+      src="/assets/img/placeholder.jpg"
+    />
+  </ng-template>
+
+  <div class="card-body">
+    <a class="stretched-link" [routerLink]="buildRouterLink(project)"
+      ><b>{{ project.displayName || project.name }}</b></a
+    ><span *ngIf="project.private">&nbsp;(private)</span><br />
+    <small
+      ><a
+        [routerLink]="['', project.creator]"
+        routerLinkActive="router-link-active"
+        class="link-secondary position-relative"
+        style="z-index: 1"
+        >{{ project.creator }}</a
+      ></small
+    >
+  </div>
+</div>

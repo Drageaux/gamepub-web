@@ -5,13 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ProgressiveImageComponent } from './progressive-image/progressive-image.component';
 import { ProgressiveImageDirective } from './progressive-image/progressive-image.directive';
-import { JobCardComponent } from './components/job-card/job-card.component';
 import { UploadComponent } from '@components/upload/upload.component';
 
 import { FileSizePipe } from './file-size.pipe';
 
 import { DateAgoPipe } from '@modules/shared/date-ago.pipe';
 import { SortPipe } from './sort.pipe';
+import { ProjectCardComponent } from './components/project-card/project-card.component';
+import { RouterModule } from '@angular/router';
+import { AssetCardComponent } from './components/asset-card/asset-card.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { SortPipe } from './sort.pipe';
     SortPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
-    JobCardComponent,
+    ProjectCardComponent,
+    AssetCardComponent,
   ],
   exports: [
     UploadComponent,
@@ -30,9 +33,10 @@ import { SortPipe } from './sort.pipe';
     SortPipe,
     ProgressiveImageComponent,
     ProgressiveImageDirective,
-    JobCardComponent,
+    ProjectCardComponent,
+    AssetCardComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   providers: [],
 })
 export class SharedModule {}
