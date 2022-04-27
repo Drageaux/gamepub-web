@@ -56,14 +56,15 @@ _integrity: "sha512-I54vWnYtxY+yCDiAbcSwuhH6jwFTBP1D1IzQ6vSItMhyLw/vxAb6OfGwQt9x
 _resolved: "/pkgprom/com.unity.2d.animation-5.0.8.tgz"
 */
 export interface PackageDetails {
-  category: string;
+  name: string;
+  version: VersionName;
   description: string;
   displayName: string;
-  name: string;
-  relatedPackages: Map<PackageName, VersionName>;
+  keyword: string[];
+  category: string;
+  relatedPackages?: Map<PackageName, VersionName>;
   repository: { url: string; type: 'git' | string; revisions: string };
-  unity: string;
-  // unityRelease: string;
-  version: VersionName;
+  unity: string; // proper Unity version
+  unityRelease?: string;
   _id: string;
 }
