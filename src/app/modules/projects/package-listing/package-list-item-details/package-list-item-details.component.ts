@@ -1,4 +1,4 @@
-import { Package } from '@classes/package';
+import { Package, VersionName } from '@classes/package';
 import { Observable, of } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { PackagesService } from '@services/packages.service';
@@ -46,6 +46,17 @@ export class OpenupmPackageDetailsComponent implements OnInit {
       if (latestVer && pkg.versions) {
         return pkg.versions[latestVer];
       }
+    }
+    return null;
+  }
+
+  getMinorVersion(version: VersionName) {
+    const match = version.match(
+      /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+    );
+    console.log(match);
+    if (match && match[1] && match[2]) {
+      return match[1] + '.' + match[2];
     }
     return null;
   }

@@ -1,12 +1,49 @@
-<span class="position-relative">
-  {{ packageName }}{{ sourceOrVersion ? "@" + sourceOrVersion : "" }}
+<span class="position-relative" [ngSwitch]="registry">
   <a
-    class="ms-1 stretched-link"
-    *ngIf="registry === RegistryEnum.OPENUPM"
+    class="stretched-link"
+    *ngSwitchCase="RegistryEnum.OPENUPM"
     target="_blank"
     [href]="'https://openupm.com/packages/' + packageName"
-    ><i class="fas fa-external-link-alt"></i
+  >
+    {{ packageName }}{{ sourceOrVersion ? "@" + sourceOrVersion : "" }}
+    <i class="fas fa-external-link-alt text-muted"></i
   ></a>
+
+  <a
+    class="stretched-link"
+    *ngSwitchCase="RegistryEnum.GITHUB"
+    target="_blank"
+    [href]="sourceOrVersion"
+  >
+    {{ packageName }} ({{ sourceOrVersion }})
+    <i class="fas fa-external-link-alt text-muted"></i
+  ></a>
+
+  <ng-container *ngSwitchCase="RegistryEnum.UNITY">
+    <a
+      class="stretched-link"
+      *ngIf="
+        sourceOrVersion && getMinorVersion(sourceOrVersion) as minorVer;
+        else rawTextBlock
+      "
+      target="_blank"
+      [href]="
+        'https://docs.unity3d.com/Packages/' +
+        packageName +
+        '@' +
+        minorVer +
+        '/manual/index.html'
+      "
+    >
+      {{ packageName }}{{ sourceOrVersion ? "@" + sourceOrVersion : "" }}
+      <i class="fas fa-external-link-alt text-muted"></i
+    ></a>
+  </ng-container>
+
+  <ng-template #rawTextBlock>
+    {{ packageName
+    }}{{ sourceOrVersion ? "@" + sourceOrVersion : "" }}</ng-template
+  >
 </span>
 
 <!-- <ng-container *ngIf="package$ | async as pkg">
