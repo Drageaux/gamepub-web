@@ -3,6 +3,7 @@
 
 export type PackageName = string;
 export type VersionName = string;
+export type Source = string;
 
 // Package template
 /*
