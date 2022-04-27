@@ -2,7 +2,7 @@
   class="status-wrapper d-inline-block text-center"
   [style]="{ width: '1rem' }"
 >
-  <ng-container [ngSwitch]="status">
+  <ng-container [ngSwitch]="status.toLocaleUpperCase()">
     <span *ngSwitchCase="SubmissionStatusEnum.OPEN">
       <i class="far fa-dot-circle text-info"></i>
     </span>
