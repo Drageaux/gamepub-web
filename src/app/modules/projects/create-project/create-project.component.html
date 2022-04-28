@@ -48,6 +48,10 @@
               The project <b>{{ formattedName?.value }}</b> already exists on
               this account.
             </div>
+            <div *ngIf="formattedName?.errors?.['pattern']">
+              Incorrect format. Letters and numbers only, with single hyphens
+              "-" and no other symbols. Also cannot start or end with hyphens.
+            </div>
           </div>
           <div
             *ngIf="
@@ -147,6 +151,16 @@
           <!-- <b>{{ 400 - commentText.length }}</b> -->
         </small>
         <div class="help-texts">
+          <div
+            *ngIf="
+              githubRepo?.invalid && (githubRepo?.dirty || githubRepo?.touched)
+            "
+            class="text-danger"
+          >
+            <div *ngIf="githubRepo?.errors">
+              Please enter correct format owner-name/project-name
+            </div>
+          </div>
           <small id="body-help" class="form-text text-muted"></small>
         </div>
       </div>

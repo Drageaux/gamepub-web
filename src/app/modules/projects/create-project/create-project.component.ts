@@ -62,6 +62,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
     return this.projectForm.get('formattedName');
   }
 
+  get githubRepo() {
+    return this.projectForm.get('githubRepo');
+  }
+
   /*************************************************************************/
   /************************** COMPONENT LIFECYCLE **************************/
   /*************************************************************************/
