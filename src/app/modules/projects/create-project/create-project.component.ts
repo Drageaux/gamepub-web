@@ -8,13 +8,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '@auth0/auth0-angular';
 import { Project } from '@classes/project';
 import { ProjectsRoutesNames } from '@classes/routes.names';
 import { ProjectsApiService } from '@services/projects-api.service';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { noWhitespaceValidator } from 'src/app/utils/no-whitespace.validator';
+import { githubRepoPatternValidator } from '@utils/github-repo-pattern.validator';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -26,12 +26,17 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   projectsLink = ProjectsRoutesNames.ROOT;
 
+  get formatPattern() {
+    return /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/i;
+  }
+
   projectForm = new FormGroup({
     formattedName: new FormControl(
       '',
       [
         noWhitespaceValidator,
         Validators.required,
+        Validators.pattern(this.formatPattern),
         Validators.minLength(3),
         Validators.maxLength(100),
       ],
@@ -41,7 +46,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
       Validators.minLength(3),
       Validators.maxLength(100),
     ]),
-    githubRepo: new FormControl(''),
+    githubRepo: new FormControl('', [githubRepoPatternValidator]),
+    body: new FormControl('', Validators.maxLength(8000)),
   });
   @ViewChild('form') form!: NgForm;
 
@@ -72,13 +78,15 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
   /*************************************************************************/
   onSubmit() {
     // TODO: catch error when submitted before async checkName validator finishes
-    const { formattedName, displayName, githubRepo } = this.projectForm.value;
+    const { formattedName, displayName, githubRepo, body } =
+      this.projectForm.value;
 
     this.subs.sink = this.projectApi
       .createProject({
         name: formattedName.trim(),
         displayName: displayName.trim() || '',
         githubRepo: githubRepo.trim(),
+        body: body.trim() || '',
       } as Project)
       .subscribe(
         (res: Project) => {

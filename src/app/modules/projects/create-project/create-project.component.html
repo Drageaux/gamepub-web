@@ -124,6 +124,34 @@
       </div>
     </div>
 
+    <div class="mb-3">
+      <label for="body"
+        >Description <small class="text-muted">(Optional)</small>
+      </label>
+
+      <div class="position-relative">
+        <textarea
+          id="body"
+          formControlName="body"
+          class="form-control"
+          maxLength="8000"
+          rows="6"
+        ></textarea>
+        <small
+          class="position-absolute"
+          [style]="{
+            right: '1rem',
+            bottom: '0.5rem'
+          }"
+        >
+          <!-- <b>{{ 400 - commentText.length }}</b> -->
+        </small>
+        <div class="help-texts">
+          <small id="body-help" class="form-text text-muted"></small>
+        </div>
+      </div>
+    </div>
+
     <hr />
     <button
       class="btn btn-success"
