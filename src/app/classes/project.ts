@@ -11,7 +11,7 @@ export interface Project {
   imageUrl?: string;
   tags?: string[];
   githubRepo?: string;
-  description?: string;
+  body?: string;
   private?: boolean;
 
   jobsCount?: number;
