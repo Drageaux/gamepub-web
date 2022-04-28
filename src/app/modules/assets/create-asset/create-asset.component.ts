@@ -26,7 +26,7 @@ export class CreateAssetComponent implements OnInit {
     ]),
     githubRepo: new FormControl('', [
       Validators.required,
-      githubRepoPatternValidator,
+      githubRepoPatternValidator(),
     ]),
   });
   @ViewChild('form') form!: NgForm;

@@ -46,7 +46,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
       Validators.minLength(3),
       Validators.maxLength(100),
     ]),
-    githubRepo: new FormControl('', [githubRepoPatternValidator]),
+    githubRepo: new FormControl('', [githubRepoPatternValidator(true)]),
     body: new FormControl('', Validators.maxLength(8000)),
   });
   @ViewChild('form') form!: NgForm;
