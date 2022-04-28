@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Asset } from '@classes/asset';
-import { AssetsRoutesNames, ProjectsRoutesNames } from '@classes/routes.names';
+import { AssetsRoutesNames } from '@classes/routes.names';
 import { AssetsApiService } from '@services/assets-api.service';
+import { githubRepoPatternValidator } from '@utils/github-repo-pattern.validator';
 import { noWhitespaceValidator } from 'src/app/utils/no-whitespace.validator';
 import { SubSink } from 'subsink';
 
@@ -23,7 +24,10 @@ export class CreateAssetComponent implements OnInit {
       Validators.minLength(3),
       Validators.maxLength(100),
     ]),
-    githubRepo: new FormControl('', [Validators.required]),
+    githubRepo: new FormControl('', [
+      Validators.required,
+      githubRepoPatternValidator,
+    ]),
   });
   @ViewChild('form') form!: NgForm;
 
